@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Bootstrap Login Form Template</title>
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+		<link rel="stylesheet" href="styles/form-elements.css">
+        <link rel="stylesheet" href="styles/style.css">
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <!-- Favicon and touch icons -->
+        <link rel="shortcut icon" href="ico/favicon.png">
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="ico/apple-touch-icon-144-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="ico/apple-touch-icon-114-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="ico/apple-touch-icon-72-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" href="ico/apple-touch-icon-57-precomposed.png">
+
+    </head>
+
+    <body>
+
+        <!-- Top content -->
+        <div class="top-content">
+        	
+            <div class="inner-bg">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-8 col-sm-offset-2 text">
+                            <h1><strong>Bootstrap</strong> Login Form</h1>
+                            <div class="description">
+                            	<p>
+	                            	This is a free responsive login form made with Bootstrap. 
+	                            	Download it on <a href="#"><strong>AZMIND</strong></a>, customize and use it as you like!
+                            	</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3 form-box">
+                        	<div class="form-top">
+                        		<div class="form-top-left">
+                        			<h3>登录到网站</h3>
+                            		<p>输入手机号与密码:</p>
+                        		</div>
+                        		<div class="form-top-right">
+                        			<i class="fa fa-lock"></i>
+                        		</div>
+                            </div>
+                            <div class="form-bottom">
+			                    <form role="form" id="loginForm" name="loginForm" action="" method="post" class="login-form">
+			                    	<div class="form-group">
+			                    		<label class="sr-only" for="mobile">用户名</label>
+			                        	<input type="text" name="mobile" placeholder="mobile..." class="form-username form-control" required="true" id="mobile">
+			                        </div>
+			                        <div class="form-group">
+			                        	<label class="sr-only" for="password">密码</label>
+			                        	<input type="password" name="password" placeholder="Password..." class="form-password form-control" required="true" id="password">
+			                        </div>
+			                        <button type="submit" class="btn" onclick="login()">登录!</button>
+			                    </form>
+		                    </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3 social-login">
+                        	<h3>...or login with:</h3>
+                        	<div class="social-login-buttons">
+	                        	<a class="btn btn-link-2" href="#">
+	                        		<i class="fa fa-facebook"></i> Facebook
+	                        	</a>
+	                        	<a class="btn btn-link-2" href="#">
+	                        		<i class="fa fa-twitter"></i> Twitter
+	                        	</a>
+	                        	<a class="btn btn-link-2" href="#">
+	                        		<i class="fa fa-google-plus"></i> Google Plus
+	                        	</a>
+                        	</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+
+        <!-- Javascript -->
+        <script th:src="@{/js/jquery-1.11.1.min.js}"></script>
+        <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+        <script th:src="@{/js/jquery.backstretch.min.js}"></script>
+        <script th:src="@{/js/scripts.js}"></script>
+        <script th:src="@{/js/jquery/jquery.min.js}"></script>
+        <script th:src="@{/js/jquery/jquery.validate.min.js}"></script>
+        <script th:src="@{/js/jquery/localization/messages_zh.min.js}"></script>
+        <!-- layer -->
+        <script th:src="@{/layer/layer.js}"></script>
+        <!-- md5.js -->
+        <script th:src="@{/js/md5.min.js}"></script>
+        <!-- common.js -->
+        <script th:src="@{/js/common.js}"></script>
+        <!--[if lt IE 10]>
+        <script th:src="@{/js/placeholder.js}"></script>
+        <![endif]-->
+
+    </body>
+
+
+    <script>
+        function login(){
+            $("#loginForm").validate({
+                submitHandler:function(form){
+                        doLogin();
+                }
+            });
+        }
+        function doLogin(){
+            g_showLoading();
+
+            var inputPass = $("#password").val();
+            var salt = g_passsword_salt;
+            var str = ""+salt.charAt(0)+salt.charAt(2) + inputPass +salt.charAt(5) + salt.charAt(4);
+            var password = md5(str);
+
+            $.ajax({
+                url: "/login/do_login",
+                type: "POST",
+                data:{
+                    mobile:$("#mobile").val(),
+                    password: password
+                },
+                success:function(data){
+                    layer.closeAll();
+                    if(data.code == 0){
+                        layer.msg("成功");
+                        window.location.href="/";
+                    }else{
+                        layer.msg(data.msg);
+                        //layer.msg("成功");
+                        // window.location.href="/login";
+                    }
+                },
+                error:function(){
+                    layer.closeAll();
+                }
+            });
+        }
+    </script>
+
+</html>

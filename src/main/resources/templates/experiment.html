@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>[[${experiment.exp_name}]]</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="description" content="Course Project">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" th:href="@{/styles/bootstrap4/bootstrap.min.css}">
+<link href="plugins/fontawesome-free-5.0.1/css/fontawesome-all.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" th:href="@{/styles/experiment_styles.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/styles/experimentPages.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/styles/courses_responsive.css}">
+</head>
+<body>
+
+<div class="super_container">
+
+	<!-- Header -->
+
+	<header class="header d-flex flex-row">
+		<div class="header_content d-flex flex-row align-items-center">
+			<!-- Logo -->
+			<div class="logo_container">
+				<div class="logo">
+					<img th:src="@{/images/logo.png}" alt="">
+					<span>course</span>
+				</div>
+			</div>
+
+			<!-- Main Navigation -->
+			<nav class="main_nav_container">
+				<div class="main_nav">
+					<ul class="main_nav_list">
+						<li class="main_nav_item"><a th:href="@{/}">主页</a></li>
+						<li class="main_nav_item"><a th:href="@{/exp_profile}">理论实验</a></li>
+						<li class="main_nav_item"><a th:href="@{/fctf_profile}">实操题目</a></li>
+						<li class="main_nav_item"><a th:href="@{/test}">测评</a></li>
+						<li class="main_nav_item"><a th:href="@{/myhome}">我的主页</a></li>
+					</ul>
+				</div>
+			</nav>
+			
+		</div>
+		<div class="header_side d-flex flex-row justify-content-center align-items-center">
+			
+			<li class="main_nav_side"><a href="login.html">登录</a></li>
+			<li class="main_nav_side"><div style="color:#000000">/</div></li>
+			<li class="main_nav_side"><a href="register.html">注册 </a></li>
+		</div>
+
+		<!-- Hamburger -->
+		<div class="hamburger_container">
+			<i class="fas fa-bars trans_200"></i>
+		</div>
+
+	</header>
+	
+	<header class="search">
+		<div class="search_content">
+				<div class="row">
+					<div class="col text-center">
+						<div class="newsletter_form_container mx-auto">
+							<form action="post">
+								<div class="newsletter_form d-flex flex-md-row flex-column flex-xs-column align-items-center justify-content-center">
+									<input id="newsletter_email" class="newsletter_email" type="email" placeholder="请输入实验名或题目名" required="required" data-error="Valid email is required.">
+									<button id="newsletter_submit" type="submit" class="newsletter_submit_btn trans_300" value="Submit">Search</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+		</div>	
+	</header>
+	<!-- Menu -->
+	<div class="menu_container menu_mm">
+
+		<!-- Menu Close Button -->
+		<div class="menu_close_container">
+			<div class="menu_close"></div>
+		</div>
+
+		<!-- Menu Items -->
+		<div class="menu_inner menu_mm">
+			<div class="menu menu_mm">
+				<ul class="menu_list menu_mm">
+					<li class="menu_item menu_mm"><a href="index.html">Home</a></li>
+					<li class="menu_item menu_mm"><a href="#">About us</a></li>
+					<li class="menu_item menu_mm"><a href="#">Courses</a></li>
+					<li class="menu_item menu_mm"><a href="fctf_profile.html">Elements</a></li>
+					<li class="menu_item menu_mm"><a href="news.html">News</a></li>
+					<li class="menu_item menu_mm"><a href="contact.html">Contact</a></li>
+				</ul>
+
+				<!-- Menu Social -->
+				
+				<div class="menu_social_container menu_mm">
+					<ul class="menu_social menu_mm">
+						<li class="menu_social_item menu_mm"><a href="#"><i class="fab fa-pinterest"></i></a></li>
+						<li class="menu_social_item menu_mm"><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+						<li class="menu_social_item menu_mm"><a href="#"><i class="fab fa-instagram"></i></a></li>
+						<li class="menu_social_item menu_mm"><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+						<li class="menu_social_item menu_mm"><a href="#"><i class="fab fa-twitter"></i></a></li>
+					</ul>
+				</div>
+
+				<div class="menu_copyright menu_mm">Colorlib All rights reserved</div>
+			</div>
+
+		</div>
+
+	</div>
+	
+	<!-- Home -->
+
+	<div class="home">
+		<div class="home_background_container prlx_parent">
+			<div class="home_background prlx" style="background-image:url(/images/courses_background.jpg)"></div>
+		</div>
+		
+	</div>
+
+	<!-- Popular -->
+
+			<div class="exptoppart">
+				<div class="main">
+					<div class="expTopList" data-name="实验信息">
+						<div class="exp_img_list">
+							<img class="exp_img" th:src="@{/images/E00662.jpg}" onerror="noCourseImg(this)"/>
+							
+							<div id="exp_countDown" style="filter:alpha(opacity=75); -moz-opacity:0.75;  -khtml-opacity: 0.75; opacity: 0.75;display:none; position: absolute; background-color:#30373c; width: 494px; bottom: 0px; height: 60px;">
+								<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+
+	<link rel="stylesheet" th:src="@{/css/jquery.alerts.css}" type="text/css">
+	<script type="text/javascript" th:src="@{/js/jquery/jquery.alerts.js?date=20160717141901}"></script>
+<script>
+var timer ;
+$(document).ready(function(e) {
+   // countDown(180,null,"#clockbox .hour","#clockbox .minute","#clockbox .second");
+});
+function isFirstClose(){
+	var flag = false;
+	var userId = $("#sessionuuid").val();
+	$.ajax({
+		url: "mes!queryIsFirstForExp.action",
+		dataType: "json",
+		type: "post",
+		data: {userId:userId,type:"10110014"},
+		async : false,
+		success: function(data){
+			if($(data).attr("result") == "success" && $(data).attr("message") == "true") {
+				flag = true;
+			}
+		}
+	});
+	return flag;
+}
+/*倒计时部分*/
+var sys_second = 0;
+var end_time = 0;
+
+function countDown(scd, day_elem, hour_elem, minute_elem, second_elem,resource_jsp) {
+	clearInterval(timer);
+    if(isFirstClose()){
+		$("#Bubble_time").css("display","none");
+    }
+	var closeBubble=0;
+    end_time = new Date().getTime(); //月份是实际月份-1
+    end_time += 1000 * scd;
+    sys_second = (end_time - new Date().getTime()) / 1000;
+    timer = setInterval(function() {
+    	if(closeBubble*1000===waitMillSecond){
+    		$("#Bubble_time").css("display","none");
+    	} 
+    		closeBubble += 1;
+
+        if (sys_second > 0) {
+        if(sys_second==6){
+        	if(resource_jsp=="rue"){
+        		jAlert("对不起！资源时间已到，将在5秒后关掉！", "资源超时警告", null, 5000,null,"warn",-210,-40);
+        	} else{
+        		jAlert("对不起！资源时间已到，将在5秒后关掉！", "资源超时警告", null, 5000,null,"warn",null,null);
+        	}
+       			
+       		var mpsSrc = LocationUtil.getContextPath() + "sound/countdown.wav"
+       		document.getElementById("mps").src= mpsSrc;
+       		document.getElementById("mps").play();
+        }
+            sys_second -= 1;
+            var day = Math.floor((sys_second / 3600) / 24);
+            var hour = day * 24 + Math.floor((sys_second / 3600) % 24);
+            var minute = Math.floor((sys_second / 60) % 60);
+            var second = Math.floor(sys_second % 60);
+            day_elem && $(day_elem).text(day); //计算天
+            $(hour_elem).text(hour < 10 ? "0" + hour: hour); //计算小时
+            $(minute_elem).text(minute < 10 ? "0" + minute: minute); //计算分
+            $(second_elem).text(second < 10 ? "0" + second: second); // 计算秒
+        } else {
+        	
+            clearInterval(timer);
+            $("#blackBg").css("display", "block");
+            $("#prompt_box").css("display", "block");
+           if(resource_jsp=="rum"){
+           		window.open('','_parent','');
+				window.close();
+           }else {
+          	 if (stopExpt($("#ceid").val(), "true")) {
+					resetExp();
+					stopsuccess();
+					//li_xlong 课程有实验加时钟
+					var leftr=parent.document.getElementById("rightFrame").contentWindow.document.body;
+					var couid=$(leftr).find("#courName-a").attr("href").split("=")[1];
+					var leftiframe=parent.document.getElementById("leftFrame").contentWindow.document.body;
+					var divEle = $(leftiframe).find("#courseList").find("#"+couid).find("div").eq(1);
+					$(divEle).empty();
+			} else {
+					jAlert("系统繁忙，销毁失败，请刷新页面，再手动销毁..！", null, function() {}, 5000);
+			}
+           }
+        }
+    },
+    1000);
+}
+function deleteTimer(){
+	clearInterval(timer);
+}
+
+	</script>
+	<audio id="mps" src="" >
+</audio>
+	
+		<div class="colockbox" id="clockbox" style="background: rgba(0, 0, 0, 0) url('images/common/colockbg.png') no-repeat scroll 0 0;">
+					<font class="clockname">实验机销毁倒计时：</font>
+					<span class="hour">&nbsp;</span> 
+					<span class="minute">&nbsp;</span> 
+					<span class="second">&nbsp;</span> </div>
+	
+	
+					
+				
+								<img th:src="@{/images/clock.gif}" style="position:absolute;left:315px;bottom:20px;"/>
+							</div>
+						</div>
+						<div class="exp_right_list">
+							
+								
+								
+									<div class="exp_name" title="">[[${experiment.exp_name}]]</div>
+									<div class="inerColl">
+										<i class="icon gray"><i class="icon orange" style="width:82.38%;"></i></i>
+										<span class="evaluateNum" style="margin-right:10px;">42人评价</span>
+										<div class="exp_menu" style="display: inline-block;">
+											<div class="personNum ri"><img th:src="@{/images/person-icon.png}"/>学习人数：208</div>
+											<div class="difficulty ri"><img th:src="@{/images/difficulty-icon.png}"/>难度：[[${experiment.degree}]]</div>
+											
+										</div>
+										<span class="collect">收藏 <i><img title="加入收藏" th:src="@{/images/collection.png}" class="cursorimg"/></i></span>
+										<div class="labnameDIv">标签：</div>
+<div class="labasiDIv">
+												
+													<span class="lablesp" title="Web安全">[[${experiment.class1}]]</span>
+												
+													<span class="lablesp" title="SQL注入">SQL注入</span>
+												 
+										</div>
+									</div>	
+								
+							<div class="affiliation ri" style="margin-left: 10px;">
+										<div class="affiliationlist">
+											
+												<p title="SQL注入进阶"><a href="cour.do?w=1&c=C172.19.104.182014090911000400001" target="_blank">SQL注入进阶</a></p>
+											 
+										</div>
+									
+								</div>
+							
+								
+							
+							<div class="hr"></div>
+							
+									<div class="exp_introduce_name">实验简介：
+									</div>
+								
+									<div class="exp_introduce_list" title="伪静态：伪静态通俗点说就是假的静态页面，也就是通过各种技术手段，让动态页面的URL看上去和静态页面的一样。实验中主要讲了识别伪静态页面，学会在伪静态页面中寻找注入点。">[[${experiment.brief_intro}]]</div>
+							<div class="hr"></div>		
+										<span class="infoSpan">实验过程中，如果虚拟机环境存在问题，请联系<img th:src="@{/img/qq_01.jpg}" title="研究院北410实验室" alt="研究院北410实验室">qq：1212121212</span>
+									
+										<button class="exp_begin_btn" id="addexp-button" style="display:block;border:none">
+											添加实验
+										</button>
+								
+								<div id="create-mac" class="mac" style="display:none;font-size:12px;left:120px;margin-top:8px;">
+									<input type="checkbox" style="margin-top:-1px" id="legalcheck" checked="checked">
+										
+												阅读并接受
+											<a target="_blank" href="protocol.html">合天网安实验室法律声明</a>
+										
+								</div>
+									
+										<div id="end-mac" class="mac" style="display:none;margin-top: 6px;"><a href="javascript:void(0)">结束并释放实验机</a></div>
+										<div id="ending-mac" class="mac" style="display:none;"><img th:src="@{/img/loading4.gif}">正在发送请求</div>
+										<div id="creating-mac" class="mac" style="display:none;margin-top: 6px;">创建中…先预习一下实验指导书吧！</div>
+									
+								
+								<div id="queue" class="mac" style="display: none;margin-top: 21px;">
+									
+										
+										
+											<img th:src="@{/images/queue.png}">分配环境的人数过多，感谢您的耐心等待！当前排第<font style="color: red;font-size: 26px;">3</font>位
+										
+									
+								</div>
+							
+							
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="expbelowpart">
+				<div class="main">
+					<div class="expLeftList" data-name="实验左侧列表">
+						<div class="exp_menu_list">
+								<ul >
+								        <li id="guidancebook" >实验文档</li>
+										<li id="answer" >实验测题<span></span></li>
+										<li id="summary" >实验总结<span></span></li>
+										<li id="evaluate" >实验评价<span>（<span>2</span>）</span></li>
+								</ul>
+							
+							<div class="hr"><span id="span_hr"></span></div>
+						</div>
+						<div class="main_list" id="tab_list">
+							<div id="guidancebook_list" class="exp" data-name="实验文档">
+								<div class="guidancebook">
+									<div class="exptaskdiv">
+										<div class="fullscreen" data-name="全屏" title="全屏"></div>
+										<div class="unfold" data-name="展开/收起" title="展开/收起"></div>
+									</div>
+									<div class="guidancebookList">
+
+									</div>
+								</div>
+							</div>
+							<div id="evaluate_list" class="exp" data-name="实验评价">
+								<div class="evaluate">
+									<div class="addevaluatediv" style="display: block !important;">
+										<div class="head_img"><img th:src="@{/images/head/default.jpg}"/></div>
+										<div class="evaluate_editor">
+
+											<textarea id="evaluate_editor_text" rows="" cols=""></textarea>
+													<div class="addevaluate_btn" style="width:80px;height:28px;line-height:28px;text-align:center;background-color:#0f7afe;color:#fff;font-size:12px;float:right;margin-top:6px;border-radius:3px;cursor:pointer;">发表评价</div>
+											<p class="error-message"></p>
+										</div>
+									</div>
+									<div class="evaluateList">
+
+									</div>
+									<div id="evaluate_page" class="M-box"></div>
+								</div>
+							</div>
+							<div id="summary_list" class="exp" data-name="实验总结">
+								<div class="notes">
+									<div class="addnotesdiv" data-name="实验总结">
+										<div class="notes_editor">
+											<span>[[${experiment.summary}]]</span>
+												<p class="error-message"></p>
+										</div>
+									</div>
+									<div id="notes_page" class="M-box"></div>
+								</div>
+							</div>
+							<div id="answer_list" class="exp" data-name="实验测题">
+								<div id="questionsContent" class="questionsbegin" style="display:none;" data-name="开始答题">
+							  		<div class="questionsbegin-div">
+							  			<p class="exp_name">课后习题</p>
+							  			<p class="topicNumber">总计<span>3</span>道题，有机会获得大量合氏币！</p>
+							  			<div class="questionsbeginBtn">开始答题</div>
+							  		</div>
+							  	</div>
+							  	<div id="questionsContent1" class="questionscontinue" style="display:none;" data-name="继续答题">
+							  		<div class="questionscontinue-div">
+							  			<p class="exp_name">课后习题</p>
+							  			<p class="topichint"></p>
+							  			<div class="questionscontinueBtn">继续答题</div>
+							  		</div>
+							  	</div>
+							  	<div id="questionsContent2" class="questionsList" style="display:none;" data-name="答题进行中">
+						  	</div>
+						</div>
+						</div>
+					</div>
+					<div class="expRiList" data-name="实验右侧列表">
+						<div class="recommend" data-name="相关推荐">
+							
+								
+								
+									<div class="recommend_name">相关推荐</div>
+								
+							
+							<div class="hr"><span></span></div>
+							<div class="recommendList">
+								<ul>
+									
+								</ul>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+
+	<!-- Footer -->
+
+	<footer class="footer">
+		<div class="container">
+			
+			<!-- Newsletter -->
+
+		
+
+			<!-- Footer Content -->
+
+			<div class="footer_content">
+				<div class="row">
+
+					<!-- Footer Column - About -->
+					<div class="col-lg-3 footer_col">
+
+						<!-- Logo -->
+						<div class="logo_container">
+							<div class="logo">
+								<img th:src="@{/images/logo.png}" alt="">
+								<span>course</span>
+							</div>
+						</div>
+
+						<p class="footer_about_text">In aliquam, augue a gravida rutrum, ante nisl fermentum nulla, vitae tempor nisl ligula vel nunc. Proin quis mi malesuada, finibus tortor fermentum, tempor lacus.</p>
+
+					</div>
+
+					<!-- Footer Column - Menu -->
+
+					<div class="col-lg-3 footer_col">
+						<div class="footer_column_title">Menu</div>
+						<div class="footer_column_content">
+							<ul>
+								<li class="footer_list_item"><a href="index.html">Home</a></li>
+								<li class="footer_list_item"><a href="#">About Us</a></li>
+								<li class="footer_list_item"><a href="#">Courses</a></li>
+								<li class="footer_list_item"><a href="news.html">News</a></li>
+								<li class="footer_list_item"><a href="contact.html">Contact</a></li>
+							</ul>
+						</div>
+					</div>
+
+					<!-- Footer Column - Usefull Links -->
+
+					<div class="col-lg-3 footer_col">
+						<div class="footer_column_title">Usefull Links</div>
+						<div class="footer_column_content">
+							<ul>
+								<li class="footer_list_item"><a href="#">Testimonials</a></li>
+								<li class="footer_list_item"><a href="#">FAQ</a></li>
+								<li class="footer_list_item"><a href="#">Community</a></li>
+								<li class="footer_list_item"><a href="#">Campus Pictures</a></li>
+								<li class="footer_list_item"><a href="#">Tuitions</a></li>
+							</ul>
+						</div>
+					</div>
+
+					<!-- Footer Column - Contact -->
+
+					<div class="col-lg-3 footer_col">
+						<div class="footer_column_title">Contact</div>
+						<div class="footer_column_content">
+							<ul>
+								<li class="footer_contact_item">
+									<div class="footer_contact_icon">
+										<img th:src="@{/images/placeholder.svg}" alt="">
+									</div>
+									Blvd Libertad, 34 m05200 Arévalo
+								</li>
+								<li class="footer_contact_item">
+									<div class="footer_contact_icon">
+										<img th:src="@{/images/smartphone.svg}" alt="">
+									</div>
+									0034 37483 2445 322
+								</li>
+								<li class="footer_contact_item">
+									<div class="footer_contact_icon">
+										<img th:src="@{/images/envelope.svg}" alt="">
+									</div>hello@company.com
+								</li>
+							</ul>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			<!-- Footer Copyright -->
+
+			<div class="footer_bar d-flex flex-column flex-sm-row align-items-center">
+				<div class="footer_copyright">
+					<span>
+Copyright &copy; 2018.Company name All rights reserved.<a target="_blank" href="http://sc.chinaz.com/moban/">&#x7F51;&#x9875;&#x6A21;&#x677F;</a>
+</span>
+				</div>
+				<div class="footer_social ml-sm-auto">
+					<ul class="menu_social">
+						<li class="menu_social_item"><a href="#"><i class="fab fa-pinterest"></i></a></li>
+						<li class="menu_social_item"><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+						<li class="menu_social_item"><a href="#"><i class="fab fa-instagram"></i></a></li>
+						<li class="menu_social_item"><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+						<li class="menu_social_item"><a href="#"><i class="fab fa-twitter"></i></a></li>
+					</ul>
+				</div>
+			</div>
+
+		</div>
+	</footer>
+
+</div>
+
+<script th:src="@{/js/jquery-3.2.1.min.js}"></script>
+<script th:src="@{/js/experimentPage.js}"></script>
+<script th:src="@{/js/experiment_env.js}"></script>
+<script th:src="@{/js/page.js}"></script>
+<script th:src="@{/js/jquery-1.7.2.min.js}"></script>
+<script th:src="@{/js/jquery.select-1.3.6.js}"></script>
+<script th:src="@{/js/custom/loading.js}"></script>
+<script th:src="@{/js/CommonUtil.js}"></script>
+
+<script th:src="@{/styles/bootstrap4/popper.js}"></script>
+<script th:src="@{/styles/bootstrap4/bootstrap.min.js}"></script>
+<script th:src="@{/plugins/greensock/TweenMax.min.js}"></script>
+<script th:src="@{/plugins/greensock/TimelineMax.min.js}"></script>
+<script th:src="@{/plugins/scrollmagic/ScrollMagic.min.js}"></script>
+<script th:src="@{/plugins/greensock/animation.gsap.min.js}"></script>
+<script th:src="@{/plugins/greensock/ScrollToPlugin.min.js}"></script>
+<script th:src="@{/plugins/scrollTo/jquery.scrollTo.min.js}"></script>
+<script th:src="@{/plugins/easing/easing.js}"></script>
+<script th:src="@{/js/courses_custom.js}"></script>
+
+<script>
+	function tab(pid){
+	    var tabs = document.getElementById("tab_list").children;
+	    for(var i = 0; i < tabs.length; i++){
+	        if(pid == tabs[i].id){
+	            document.getElementById(tabs[i].id).style.display="block";
+	            document.getElementById("span_hr").style.left=i*135;
+			}else{
+                document.getElementById(tabs[i].id).style.display="block";
+			}
+		}
+	}
+</script>
+
+</body>
+</html>
