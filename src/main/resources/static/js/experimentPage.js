@@ -32,7 +32,7 @@ $(document).ready(function(){
 	}
 });
 
-监听事件
+//监听事件
 function examTimeScroll(){
 	$(window).on("scroll",function(){
 		if($(window).scrollTop() > 418){
@@ -196,15 +196,13 @@ function experimentClick(){
 	
 	//添加评论点击事件
 	$(".addevaluate_btn").click(function(){
+		var exp_id = $("#experiment_id").val();
 		var text = $("#evaluate_editor_text").val();
-		if(checlogin()){
-			if(text == ""){
-				$("#evaluate_editor_text").parent().find(".error-message").html("评论内容不能为空！");
-			}else{
-				addExAss(text);
-			}
+		var createtime = new Date().format("yy-MM-dd hh:mm:ss");
+		if(text == ""){
+			$("#evaluate_editor_text").parent().find(".error-message").html("评论内容不能为空！");
 		}else{
-			window.open("/loginLab.do","_blank");
+			addExAss(exp_id,text,createtime);
 		}
 	})
 	
@@ -391,7 +389,7 @@ function expimentmenu(){
 		querySatisfied();
 		queryAssTime();
 		queryAssDiff();
-		getAssContent(ecid,1,true);
+		getAssContent(1,true);
 	})
 	
 	$(".exp_menu_list").find("#questions").live("click",function(){
@@ -523,7 +521,7 @@ function evaluate_pagination(){
 			count: 2,
 			callback:function(api){
 				window.scrollTo(0,418);
-				getAssContent(ecid,api.getCurrent(),false);
+				getAssContent(api.getCurrent(),false);
 			}
 		});
 	}else{
@@ -534,7 +532,7 @@ function evaluate_pagination(){
 			count: 2,
 			callback:function(api){
 				window.scrollTo(0,418);
-				getAssContent(ecid,api.getCurrent(),false);
+				getAssContent(api.getCurrent(),false);
 			}
 		});
 	}
@@ -1238,7 +1236,47 @@ function loadAllQue(obj){
  * 获取实验评价
  * @param ecid
  */
-function getAssContent(ecid,pageNum,flag){
+function getAssContent(pageNum,flag){
+    $(".evaluateList").empty();
+    $("#evaluate_page").hide()
+    Loading($(".evaluateList"),'evaluate');
+    $.ajax({
+		url:"/experiment/commentList",
+		data:{pageNum:pageNum},
+        type:"post",
+        dataType:"json",
+        complete:function(){
+            removeLoading('evaluate');
+        },
+        success : function(data){
+            if(data.code == 0){
+                //evaluatetotalPage = $(data).attr("totalpage");
+                if(mes != null){
+                    $(mes).each(function(){
+                        var createTime = $(this).attr("createtime");
+                        var content = $(this).attr("content");//内容
+                        var commentId = $(this).attr("com_id");
+                        var userName = $(this).attr("userName");
+                        var userId = $(this).attr("userId");
+                        var expId = $(this).attr("expfctf_id");
+                        getAssContentVray(createTime,expId,userId,content,commentId,userName);
+                    })
+                }else{
+                    if(languageFirst == "English"){
+                        $(".evaluateList").html(noDateshow("Sorry, there's no result!"));
+                    }else{
+                        $(".evaluateList").html(noDateshow("该实验下暂无实验评价呦！"));
+                    }
+                }
+				if(flag){evaluate_pagination();}
+                if(evaluatetotalPage>1){$("#evaluate_page").show()}
+            }else{
+                $(".evaluateList").html(noDateshow("数据异常，请稍后重试！"));
+            }
+		}
+	})
+}
+/*function getAssContent(pageNum,flag){
 	$(".evaluateList").empty();
 	$("#evaluate_page").hide()
 	Loading($(".evaluateList"),'evaluate');
@@ -1288,16 +1326,16 @@ function getAssContent(ecid,pageNum,flag){
 		}
 	})
 }
-
-function getAssContentVray(userPicture,createTime,ecid,assessmentId,userId,assessment,expName,risk,replyNum,userName,replyFlag){
-	var replyStr = "<div id="+assessmentId+" class=\"evaluatediv\">";
-	replyStr += "<div class=\"head_img\"><a href=\"profile.do?u="+userId+"\" target=\"_blank\"><img onerror=\"noHeadImg(this)\" src=\""+userPicture+"\"></a></div>";
+*/
+function getAssContentVray(createTime,expId,userId,content,commentId,userName){
+	var replyStr = "<div id='"+commentId+"'  class=\"evaluatediv\">";
+	replyStr += "<div class=\"head_img\"><a href=\"profile.do?u="+userId+"\" target=\"_blank\"><img onerror=\"noHeadImg(this)\" src=\"/images/default.jpg\"></a></div>";
 	replyStr += "<div class=\"evaluate_name\">"+userName+"</div>";
 	replyStr += "<div class=\"evaluate_difficulty\">";
-	replyStr += "<i class=\"icon gray\"><i class=\"icon orange\" style=\"width:"+20*risk+"%;\"></i></i>";
-	replyStr +="（"+difficulty[risk-1]+"）";
+	replyStr += "<i class=\"icon gray\"><i class=\"icon orange\" style=\"width:"+20+"%;\"></i></i>";
+	replyStr +="（"+difficulty[10-1]+"）";
 	replyStr += "</div>";
-	replyStr += "<div class=\"evaluate_content\">"+assessment+"</div>";
+	replyStr += "<div class=\"evaluate_content\">"+content+"</div>";
 	replyStr += "<div class=\"evaluate_menu\">";
 	if(languageFirst == "English"){
 		replyStr += "<span class=\"evaluate_time\">Time："+sqlDate2Str(createTime)+"</span>&nbsp;&nbsp;";
@@ -1305,24 +1343,24 @@ function getAssContentVray(userPicture,createTime,ecid,assessmentId,userId,asses
 	}else{
 		replyStr += "<span class=\"evaluate_time\">时间："+dateStrTime(sqlDate2Str(createTime))+"</span>&nbsp;&nbsp;";
 		replyStr += "<span class=\"evaluate_source\" id=\""+ecid+"\">源自：<a href=\"expc.do?ec="+ecid+"\" target=\"_blank\">"+expName+"</a></span>";
-	}
-	if(replyNum == 0){
-		replyStr += "<span class=\"questions-s\" data-num="+replyNum+"><img src=\"/img/coursePage/reply-icon.png\" style=\"cursor:default;\">"+replyNum+"</span>";
-	}else{
-		replyStr += "<span class=\"questions-s\" data-num="+replyNum+"><img src=\"/img/coursePage/reply-icon.png\" title=\"点击展开回复列表\">"+replyNum+"</span>";
-	}
-	if(replyFlag){
-		if(languageFirst == "English"){
-			replyStr += "<span class=\"reply-btn\">Reply</span>";
-		}else{
-			replyStr += "<span class=\"reply-btn\">回复</span>";
-		}
-	}
+	 }
+	// if(replyNum == 0){
+	// 	replyStr += "<span class=\"questions-s\" data-num="+replyNum+"><img src=\"/img/coursePage/reply-icon.png\" style=\"cursor:default;\">"+replyNum+"</span>";
+	// }else{
+	// 	replyStr += "<span class=\"questions-s\" data-num="+replyNum+"><img src=\"/img/coursePage/reply-icon.png\" title=\"点击展开回复列表\">"+replyNum+"</span>";
+	// }
+	// if(replyFlag){
+	// 	if(languageFirst == "English"){
+	// 		replyStr += "<span class=\"reply-btn\">Reply</span>";
+	// 	}else{
+	// 		replyStr += "<span class=\"reply-btn\">回复</span>";
+	// 	}
+	// }
 	replyStr += "</div>";
 	replyStr += "<div class=\"clear\"></div>";
 	replyStr += "</div>";
 	$(".evaluateList").append(replyStr);
-	$(".evaluateList").find("#"+assessmentId).find(".questions-s img").trigger("click");
+	//$(".evaluateList").find("#"+commentId).find(".questions-s img").trigger("click");
 }
 
 
@@ -1514,50 +1552,27 @@ function insertReply(assmentId,replyContent,ecid,obj){
  * @param completion
  * @param risk
  */
-function addExAss(assessmentTemp){
+function addExAss(exp_id,text,createtime){
 	$.ajax({
-		url:"courseExp!addExAss.action",
+		url:"/experiment/comment",
 		data:{
-			userId:$("#sessionuuid").val(),
-			assessment:assessmentTemp,
+            expfctf_id:exp_id,
+			content:text,
+            createtime:createtime,
 		},
 		type:"post",
 		dataType:"json",
 		async : true,
 		success : function(data){
-			var mes = $(data).attr("message");
-			var info = $(data).attr("info");
-			clearDate();
-			if($(data).attr("result") == "success"){
-				var cont = parseInt($(".exp_menu_list #evaluate span span").text());
-				$(".exp_menu_list #evaluate span span").text(cont+1);
-				//$(".addevaluatediv").hide();
-				$("#popup_cancel").trigger('click');
-				getAssContent(ecid,1,true)
-			}else if($(data).attr("result") == "needCode"){
-				jCode("", "", function(val){
-					$("#evaluate_editor_text").data("isNeed",val);
-					addExAss(ceid,assessmentTemp,difficulty,completion,risk);
-				}, null, 0, getPh());
-			}else if($(data).attr("result") == "codefail"){
-				jCode("", "", function(val){
-					$("#evaluate_editor_text").data("isNeed",val);
-					addExAss(ceid,assessmentTemp,difficulty,completion,risk);
-				}, null, 0, getPh());
-				var str = '<p id="codeErrorMsg" class="errorMsg codeMsg_z prompt" style="clear: both; position: absolute; font-size: 12px; color: rgb(254, 115, 1); margin-top: -4px;">';
-				str = str + '<img src="img/ico_warn_yellow.png" style="">';
-				str = str + '<span>验证码有误哦！</span></p>';
-				$("#popup_prompt").parent().append(str);
-			}else{
-				if(info == "two"){
-					$(".addevaluate_btn").parent().find(".error-message").html("请勿重复评论！")
-				}else{
-					$(".addevaluate_btn").parent().find(".error-message").html("添加失败！，请稍后重试！")
-				}
+			if(data.code==0){
+				//刷新评论区
+			}else if(data.code==500210){
+                window.location.href="/login";
+			} else{
+				layer.msg(data.msg);
 			}
-		},
-		error : function(){
-			
+		},error : function(){
+			layer.closeAll();
 		}
 	})
 }

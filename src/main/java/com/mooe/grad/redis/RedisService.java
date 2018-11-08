@@ -47,7 +47,7 @@ public class RedisService {
 			 if(str == null || str.length() <= 0) {
 				 return false;
 			 }
-			//生成真正的key
+			//生成真正的key，注意这里的prefix是类名+传进来的prefix
 			 String realKey  = prefix.getPrefix() + key;
 			 int seconds =  prefix.expireSeconds();
 			 //redis中也会存些不过期的东西

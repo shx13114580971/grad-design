@@ -1,6 +1,7 @@
 package com.mooe.grad.controller;
 
 import com.mooe.grad.domain.Fctf;
+import com.mooe.grad.domain.User;
 import com.mooe.grad.result.Result;
 import com.mooe.grad.service.FctfService;
 import com.mooe.grad.vo.FctfVo;
@@ -19,16 +20,18 @@ public class FctfController {
     private FctfService fctfService;
 
     @RequestMapping("/fctf_profile")
-    public String listAll(Model model){
+    public String listAll(User user, Model model){
         List<FctfVo> list = fctfService.listAll();
         model.addAttribute("fctfList",list);
+        model.addAttribute("user", user);
         return "fctf_profile";
     }
 
     @RequestMapping("/fctf/{fctf_id}")
-    public String fctfPage(@PathVariable("fctf_id") int fctf_id, Model model){
+    public String fctfPage(@PathVariable("fctf_id") int fctf_id, User user, Model model){
         Fctf fctf = fctfService.findById(fctf_id);
         model.addAttribute("fctf",fctf);
+        model.addAttribute("user", user);
         return "fctf";
     }
 }

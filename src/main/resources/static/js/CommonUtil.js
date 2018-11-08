@@ -2355,20 +2355,7 @@ function checkVmsStatus(userId,exptId,role){
 
 function checlogin(){
 	var voll = false;
-	$.ajax({
-		url: "publicLogin!checklogin.action",
-		dataType: "json",
-		type: "post",
-		data: {rtnJson:true},
-		async : false,
-		success: function(data){
-			if(data.result=="success" && data.state != 0){
-				voll = true;
-			}
-		},error:function(){
-			
-		}
-	});
+	var user
 	return voll;
 }
 function checkLoginDetail(){

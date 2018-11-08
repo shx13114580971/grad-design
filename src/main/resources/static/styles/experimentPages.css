@@ -103,6 +103,18 @@ padding-left: 36px;height: 40px;line-height: 40px;width:100%;font-size: 16px;mar
 .evaluatediv .head_img img{width:40px;height:40px;overflow:hidden;}
 .evaluatediv .evaluate_name{width:750px;height:16px;overflow:hidden;float:right;font-size:16px;color:#333333;line-height:16px;}
 .evaluatediv .evaluate_difficulty{width:750px;height:16px;overflow:hidden;float:right;font-size:14px;color:#666666;line-height:16px;margin-top:5px;}
+.evaluatediv .evaluate_menu {
+  width: 750px;
+  overflow: hidden;
+  float: right;
+  margin-top: 8px;
+  font-size: 12px;
+  color: #999999;
+}
+.evaluatediv .evaluate_menu .questions-s {
+  float: right;
+  margin-right: 3px;
+}
 .evaluate_difficulty .icon{height: 14px;display: inline-block;margin-right: 3px;line-height: 0;}
 .evaluate_difficulty .gray{background: url(../images/onlineExperiment/start-gray.png);width: 70px;overflow: hidden;position:relative;}
 .evaluate_difficulty .orange{background: url(../images/onlineExperiment/start-orange.png);position:absolute;left:0;top:0;}

@@ -281,7 +281,7 @@ section
 
 .header
 {
-	position: fixed;
+	position: absolute;
 	top: 45px;
 	left: 50%;
 	-webkit-transform: translateX(-50%);

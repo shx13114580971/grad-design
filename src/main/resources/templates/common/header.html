@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+</head>
+<body>
+    <div th:fragment="navi" id="navi_id" class="header_content d-flex flex-row align-items-center">
+        <!-- Logo -->
+        <div class="logo_container">
+            <div class="logo">
+                <img src="images/logo.png" alt="">
+                <span>course</span>
+            </div>
+        </div>
+
+        <!-- Main Navigation -->
+        <nav class="main_nav_container">
+            <div class="main_nav">
+                <ul class="main_nav_list">
+                    <li class="main_nav_item"><a th:href="@{/}">主页</a></li>
+                    <li class="main_nav_item"><a th:href="@{/exp_profile}">理论实验</a></li>
+                    <li class="main_nav_item"><a th:href="@{/fctf_profile}">实操题目</a></li>
+                    <li class="main_nav_item"><a th:href="@{/test}">测评</a></li>
+                    <li class="main_nav_item"><a th:href="@{/myhome}">我的主页</a></li>
+                </ul>
+            </div>
+        </nav>
+
+    </div>
+
+    <div th:fragment="login" id="login">
+
+        <li class="main_nav_side"><a th:href="@{/login}">退出登录</a></li>
+    </div>
+    <div th:fragment="unlogin" id="unlogin">
+        <li class="main_nav_side"><a th:href="@{/login}">登录</a></li>
+        <li class="main_nav_side"><div style="color:#000000">/</div></li>
+        <li class="main_nav_side"><a th:href="@{/register}">注册 </a></li>
+    </div>
+
+<header th:fragment="search" id="search_id" class="search">
+    <div class="search_content">
+        <div class="row">
+            <div class="col text-center">
+                <div class="newsletter_form_container mx-auto">
+                    <form action="post">
+                        <div class="newsletter_form d-flex flex-md-row flex-column flex-xs-column align-items-center justify-content-center">
+                            <input id="newsletter_email" class="newsletter_email" type="email" placeholder="请输入实验名或题目名" required="required" data-error="Valid email is required.">
+                            <button id="newsletter_submit" type="submit" class="newsletter_submit_btn trans_300" value="Submit">Search</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- Menu -->
+<div class="menu_container menu_mm">
+
+    <!-- Menu Close Button -->
+    <div class="menu_close_container">
+        <div class="menu_close"></div>
+    </div>
+
+    <!-- Menu Items -->
+    <div class="menu_inner menu_mm">
+        <div class="menu menu_mm">
+            <ul class="menu_list menu_mm">
+                <li class="menu_item menu_mm"><a href="#">Home</a></li>
+                <li class="menu_item menu_mm"><a href="#">About us</a></li>
+                <li class="menu_item menu_mm"><a href="courses.html">Courses</a></li>
+                <li class="menu_item menu_mm"><a href="fctf_profile.html">Elements</a></li>
+                <li class="menu_item menu_mm"><a href="news.html">News</a></li>
+                <li class="menu_item menu_mm"><a href="contact.html">Contact</a></li>
+            </ul>
+
+            <!-- Menu Social -->
+
+            <div class="menu_social_container menu_mm">
+                <ul class="menu_social menu_mm">
+                    <li class="menu_social_item menu_mm"><a href="#"><i class="fab fa-pinterest"></i></a></li>
+                    <li class="menu_social_item menu_mm"><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+                    <li class="menu_social_item menu_mm"><a href="#"><i class="fab fa-instagram"></i></a></li>
+                    <li class="menu_social_item menu_mm"><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                    <li class="menu_social_item menu_mm"><a href="#"><i class="fab fa-twitter"></i></a></li>
+                </ul>
+            </div>
+
+            <div class="menu_copyright menu_mm">Colorlib All rights reserved</div>
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>
+<!-- Header -->
+

@@ -13,6 +13,7 @@ import com.sun.deploy.net.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -46,10 +47,12 @@ public class UserService implements Serializable{
         return token;
     }
 
+    //将用户token放入cookie，并注入response中
     private void addCookie(HttpServletResponse response, String token, User user){
         redisService.set(UserKey.token, token, user);
         Cookie cookie = new Cookie(COOKI_NAME_TOKEN, token);
         cookie.setMaxAge(UserKey.token.expireSeconds());
+        //避免跨域的问题
         cookie.setPath("/");
         response.addCookie(cookie);
     }
@@ -73,5 +76,17 @@ public class UserService implements Serializable{
         User user = userDao.getByMobile(mobile);
         if(user != null)return true;
         else return false;
+    }
+
+    public Object getByToken(HttpServletResponse response, String token) {
+        if(StringUtils.isEmpty(token)) {
+            return null;
+        }
+        User user = redisService.get(UserKey.token,token,User.class);
+        //延长有效期
+        if(user != null){
+            addCookie(response, token, user);
+        }
+        return user;
     }
 }

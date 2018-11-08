@@ -8,6 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" type="text/css" href="styles/bootstrap4/bootstrap.min.css">
 <link href="plugins/fontawesome-free-5.0.1/css/fontawesome-all.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" th:href="@{/styles/main_styles.css}">
 <link rel="stylesheet" type="text/css" href="styles/myhome_styles.css">
 <link rel="stylesheet" type="text/css" href="styles/myhome_responsive.css">
 </head>
@@ -18,34 +19,14 @@
 	<!-- Header -->
 
 	<header class="header d-flex flex-row">
-		<div class="header_content d-flex flex-row align-items-center">
-			<!-- Logo -->
-			<div class="logo_container">
-				<div class="logo">
-					<img src="images/logo.png" alt="">
-					<span>course</span>
-				</div>
-			</div>
+		<div th:replace="/common/header :: navi">
 
-			<!-- Main Navigation -->
-			<nav class="main_nav_container">
-				<div class="main_nav">
-					<ul class="main_nav_list">
-						<li class="main_nav_item"><a th:href="@{/}">主页</a></li>
-						<li class="main_nav_item"><a th:href="@{/exp_profile}">理论实验</a></li>
-						<li class="main_nav_item"><a th:href="@{/fctf_profile}">实操题目</a></li>
-						<li class="main_nav_item"><a th:href="@{/test}">测评</a></li>
-						<li class="main_nav_item"><a th:href="@{/myhome}">我的主页</a></li>
-					</ul>
-				</div>
-			</nav>
-			
 		</div>
-		<div class="header_side d-flex flex-row justify-content-center align-items-center">
+		<div th:include="/common/header :: login" th:if="${user != null}" id="login" class="header_side d-flex flex-row justify-content-center align-items-center">
 
-			<li class="main_nav_side"><a th:href="@{/login}">登录</a></li>
-			<li class="main_nav_side"><div style="color:#000000">/</div></li>
-			<li class="main_nav_side"><a th:href="@{/register}">注册 </a></li>
+		</div>
+		<div th:include="/common/header :: unlogin" th:if="${user == null}" id="unlogin" class="header_side d-flex flex-row justify-content-center align-items-center">
+
 		</div>
 		<!-- Hamburger -->
 		<div class="hamburger_container">
@@ -53,46 +34,9 @@
 		</div>
 
 	</header>
-	
+
 	<!-- Menu -->
-	<div class="menu_container menu_mm">
 
-		<!-- Menu Close Button -->
-		<div class="menu_close_container">
-			<div class="menu_close"></div>
-		</div>
-
-		<!-- Menu Items -->
-		<div class="menu_inner menu_mm">
-			<div class="menu menu_mm">
-				<ul class="menu_list menu_mm">
-					<li class="menu_item menu_mm"><a href="index.html">Home</a></li>
-					<li class="menu_item menu_mm"><a href="#">About us</a></li>
-					<li class="menu_item menu_mm"><a href="courses.html">Courses</a></li>
-					<li class="menu_item menu_mm"><a href="fctf_profile.html">Elements</a></li>
-					<li class="menu_item menu_mm"><a href="news.html">News</a></li>
-					<li class="menu_item menu_mm"><a href="#">Contact</a></li>
-				</ul>
-
-				<!-- Menu Social -->
-				
-				<div class="menu_social_container menu_mm">
-					<ul class="menu_social menu_mm">
-						<li class="menu_social_item menu_mm"><a href="#"><i class="fab fa-pinterest"></i></a></li>
-						<li class="menu_social_item menu_mm"><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
-						<li class="menu_social_item menu_mm"><a href="#"><i class="fab fa-instagram"></i></a></li>
-						<li class="menu_social_item menu_mm"><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-						<li class="menu_social_item menu_mm"><a href="#"><i class="fab fa-twitter"></i></a></li>
-					</ul>
-				</div>
-
-				<div class="menu_copyright menu_mm">Colorlib All rights reserved</div>
-			</div>
-
-		</div>
-
-	</div>
-	
 	<!-- Home -->
 
 	<div class="home">
@@ -173,113 +117,7 @@
 
 	<!-- Footer -->
 
-	<footer class="footer">
-		<div class="container">
-			
-			<!-- Newsletter -->
-
-			
-
-			<!-- Footer Content -->
-
-			<div class="footer_content">
-				<div class="row">
-
-					<!-- Footer Column - About -->
-					<div class="col-lg-3 footer_col">
-
-						<!-- Logo -->
-						<div class="logo_container">
-							<div class="logo">
-								<img src="images/logo.png" alt="">
-								<span>course</span>
-							</div>
-						</div>
-
-						<p class="footer_about_text">In aliquam, augue a gravida rutrum, ante nisl fermentum nulla, vitae tempor nisl ligula vel nunc. Proin quis mi malesuada, finibus tortor fermentum, tempor lacus.</p>
-
-					</div>
-
-					<!-- Footer Column - Menu -->
-
-					<div class="col-lg-3 footer_col">
-						<div class="footer_column_title">Menu</div>
-						<div class="footer_column_content">
-							<ul>
-								<li class="footer_list_item"><a href="index.html">Home</a></li>
-								<li class="footer_list_item"><a href="#">About Us</a></li>
-								<li class="footer_list_item"><a href="courses.html">Courses</a></li>
-								<li class="footer_list_item"><a href="news.html">News</a></li>
-								<li class="footer_list_item"><a href="#">Contact</a></li>
-							</ul>
-						</div>
-					</div>
-
-					<!-- Footer Column - Usefull Links -->
-
-					<div class="col-lg-3 footer_col">
-						<div class="footer_column_title">Usefull Links</div>
-						<div class="footer_column_content">
-							<ul>
-								<li class="footer_list_item"><a href="#">Testimonials</a></li>
-								<li class="footer_list_item"><a href="#">FAQ</a></li>
-								<li class="footer_list_item"><a href="#">Community</a></li>
-								<li class="footer_list_item"><a href="#">Campus Pictures</a></li>
-								<li class="footer_list_item"><a href="#">Tuitions</a></li>
-							</ul>
-						</div>
-					</div>
-
-					<!-- Footer Column - Contact -->
-
-					<div class="col-lg-3 footer_col">
-						<div class="footer_column_title">Contact</div>
-						<div class="footer_column_content">
-							<ul>
-								<li class="footer_contact_item">
-									<div class="footer_contact_icon">
-										<img src="images/placeholder.svg" alt="">
-									</div>
-									Blvd Libertad, 34 m05200 Arévalo
-								</li>
-								<li class="footer_contact_item">
-									<div class="footer_contact_icon">
-										<img src="images/smartphone.svg" alt="">
-									</div>
-									0034 37483 2445 322
-								</li>
-								<li class="footer_contact_item">
-									<div class="footer_contact_icon">
-										<img src="images/envelope.svg" alt="">
-									</div>hello@company.com
-								</li>
-							</ul>
-						</div>
-					</div>
-
-				</div>
-			</div>
-
-			<!-- Footer Copyright -->
-
-			<div class="footer_bar d-flex flex-column flex-sm-row align-items-center">
-				<div class="footer_copyright">
-					<span>
-Copyright &copy; 2018.Company name All rights reserved.<a target="_blank" href="http://sc.chinaz.com/moban/">&#x7F51;&#x9875;&#x6A21;&#x677F;</a>
-</span>
-				</div>
-				<div class="footer_social ml-sm-auto">
-					<ul class="menu_social">
-						<li class="menu_social_item"><a href="#"><i class="fab fa-pinterest"></i></a></li>
-						<li class="menu_social_item"><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
-						<li class="menu_social_item"><a href="#"><i class="fab fa-instagram"></i></a></li>
-						<li class="menu_social_item"><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-						<li class="menu_social_item"><a href="#"><i class="fab fa-twitter"></i></a></li>
-					</ul>
-				</div>
-			</div>
-
-		</div>
+	<footer th:replace="/common/footer :: footer">
 	</footer>
 
 </div>

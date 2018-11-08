@@ -1,6 +1,8 @@
 package com.mooe.grad.dao;
 
 import com.mooe.grad.domain.Experiment;
+import com.mooe.grad.domain.ExperimentComment;
+import com.mooe.grad.vo.CommemtVo;
 import com.mooe.grad.vo.ExperimentVo;
 import org.apache.ibatis.annotations.*;
 
@@ -23,4 +25,11 @@ public interface ExperimentDao {
             "exp_name = #{exp_name},class1 = #{class1},class2 = #{class2},degree = #{degree}, brief_intro = #{brief_intro}, date = #{date}, " +
             " question = #{question}, document = #{document}, summary = #{summary}, remark = #{remark} where exp_id = #{exp_id}")
     public int updateExp(Experiment experiment);
+
+    @Insert("insert into experiment_comment(exp_id, user_id, content, createtime) value(#{exp_id}, #{user_id}, #{content},#{createtime})")
+    public void addComment(ExperimentComment experimentComment);
+
+    @Select("select user.username,com.com_id,com.content,com.createtime from experiment_comment com ,user ,experiment_info exp " +
+            "where com.user_id = user.user_id and com.exp_id = exp.exp_id;")
+    public List<CommemtVo> listComments();
 }

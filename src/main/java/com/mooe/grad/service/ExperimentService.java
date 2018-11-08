@@ -2,6 +2,9 @@ package com.mooe.grad.service;
 
 import com.mooe.grad.dao.ExperimentDao;
 import com.mooe.grad.domain.Experiment;
+import com.mooe.grad.domain.ExperimentComment;
+import com.mooe.grad.domain.User;
+import com.mooe.grad.vo.CommemtVo;
 import com.mooe.grad.vo.ExperimentVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,5 +33,19 @@ public class ExperimentService {
 
     public List<ExperimentVo> listAll(){
         return experimentDao.listAll();
+    }
+
+    public void addComment(User user, CommemtVo commemtVo) {
+        ExperimentComment experimentComment = new ExperimentComment();
+        experimentComment.setExp_id(commemtVo.getExpfctf_id());
+        experimentComment.setUser_id(user.getUser_id());
+        experimentComment.setContent(commemtVo.getContent());
+        experimentComment.setCreatetime(commemtVo.getCreatetime());
+        experimentDao.addComment(experimentComment);
+    }
+
+    public List<CommemtVo> listComments() {
+        List<CommemtVo> list = experimentDao.listComments();
+        return list;
     }
 }
