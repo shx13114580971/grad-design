@@ -49,8 +49,18 @@ public class ExperimentController {
 
     @RequestMapping("/experiment/commentList")
     @ResponseBody
-    public Result<List<CommemtVo>> commentList(Model model){
+    public Result<List<CommemtVo>> commentList(int pageNum){
         List<CommemtVo> list = experimentService.listComments();
-        return Result.success(list);
+        int commentCount = list.size();
+        Result<List<CommemtVo>> result;
+        if(pageNum < Math.ceil(commentCount/10)){
+            result = Result.success(list.subList((pageNum-1)*10,(pageNum-1)*10+10));
+        }else{
+            result = Result.success(list.subList((pageNum-1)*10,commentCount));
+        }
+
+        //借用了一下msg来存储评论数量，反正这里也用不到msg ，。，
+        result.setMsg(String.valueOf(commentCount));
+        return result;
     }
 }

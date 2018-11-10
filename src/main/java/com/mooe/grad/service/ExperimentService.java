@@ -41,11 +41,13 @@ public class ExperimentService {
         experimentComment.setUser_id(user.getUser_id());
         experimentComment.setContent(commemtVo.getContent());
         experimentComment.setCreatetime(commemtVo.getCreatetime());
+        experimentComment.setScore(commemtVo.getScore());
         experimentDao.addComment(experimentComment);
     }
 
     public List<CommemtVo> listComments() {
         List<CommemtVo> list = experimentDao.listComments();
+        int pageCount = list.size();
         return list;
     }
 }

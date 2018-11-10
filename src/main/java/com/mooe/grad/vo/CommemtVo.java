@@ -6,6 +6,7 @@ public class CommemtVo {
     private int expfctf_id;
     private int com_id;
     private String userName;
+    private int score;
     private String content;
     private String createtime;
 
@@ -33,6 +34,14 @@ public class CommemtVo {
         this.userName = userName;
     }
 
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
     public String getContent() {
         return content;
     }
@@ -48,4 +57,6 @@ public class CommemtVo {
     public void setCreatetime(String createtime) {
         this.createtime = createtime;
     }
+
+
 }

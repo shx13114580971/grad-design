@@ -30,7 +30,23 @@
 
     <div th:fragment="login" id="login">
 
-        <li class="main_nav_side"><a th:href="@{/login}">退出登录</a></li>
+        <li class="main_nav_side"><a id="logout" href="javascript:;"  onclick="javascript:$.ajax({
+            url: '/login/do_logout',
+            type: 'POST',
+            data:{},
+            success:function(data){
+            //layer.closeAll();
+            if(data.code == 0){
+            //layer.msg('已退出账户');
+            window.location.href = window.location.pathname;
+            }else{
+            //layer.msg(data.msg);
+            }
+            },
+            error:function(){
+            //layer.closeAll();
+            }
+            });">退出登录</a></li>
     </div>
     <div th:fragment="unlogin" id="unlogin">
         <li class="main_nav_side"><a th:href="@{/login}">登录</a></li>
@@ -93,6 +109,7 @@
 
 </div>
 </body>
+
 </html>
 <!-- Header -->
 

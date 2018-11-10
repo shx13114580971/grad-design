@@ -17,6 +17,7 @@ import org.springframework.util.StringUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.Serializable;
 
 @Service
@@ -45,6 +46,15 @@ public class UserService implements Serializable{
         String token = UUIDUtil.uuid();
         addCookie(response,token,user);
         return token;
+    }
+
+    public void logout(HttpServletResponse response, String token, User user) {
+        redisService.delete(UserKey.token, token);
+        Cookie cookie = new Cookie(COOKI_NAME_TOKEN, "");
+        cookie.setMaxAge(0);
+        //避免跨域的问题
+        cookie.setPath("/");
+        response.addCookie(cookie);
     }
 
     //将用户token放入cookie，并注入response中
@@ -89,4 +99,5 @@ public class UserService implements Serializable{
         }
         return user;
     }
+
 }

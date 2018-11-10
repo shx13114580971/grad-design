@@ -26,10 +26,10 @@ public interface ExperimentDao {
             " question = #{question}, document = #{document}, summary = #{summary}, remark = #{remark} where exp_id = #{exp_id}")
     public int updateExp(Experiment experiment);
 
-    @Insert("insert into experiment_comment(exp_id, user_id, content, createtime) value(#{exp_id}, #{user_id}, #{content},#{createtime})")
+    @Insert("insert into experiment_comment(exp_id, user_id, content, createtime,score) value(#{exp_id}, #{user_id}, #{content},#{createtime},#{score})")
     public void addComment(ExperimentComment experimentComment);
 
-    @Select("select user.username,com.com_id,com.content,com.createtime from experiment_comment com ,user ,experiment_info exp " +
-            "where com.user_id = user.user_id and com.exp_id = exp.exp_id;")
+    @Select("select user.username,com.com_id,com.score,com.content,com.createtime from experiment_comment com ,user ,experiment_info exp " +
+            "where com.user_id = user.user_id and com.exp_id = exp.exp_id ORDER BY com.createtime DESC;")
     public List<CommemtVo> listComments();
 }
