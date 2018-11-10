@@ -1,7 +1,7 @@
 var ecid = $("#ecid").val();
 var ceid = $("#ceid").val();
 var stateCode = "";
-var difficulty = new Array();
+var difficulty = new Array("不满意","一般","较满意","很满意","完美");
 var evaluatetotalPage = 1;
 var notestotalPage = 1;
 var questionstotalPage = 1;
@@ -199,10 +199,11 @@ function experimentClick(){
 		var exp_id = $("#experiment_id").val();
 		var text = $("#evaluate_editor_text").val();
 		var createtime = new Date().format("yy-MM-dd hh:mm:ss");
+        var score = $('#evaluate-start').raty('score');
 		if(text == ""){
 			$("#evaluate_editor_text").parent().find(".error-message").html("评论内容不能为空！");
 		}else{
-			addExAss(exp_id,text,createtime);
+			addExAss(exp_id,text,createtime,score);
 		}
 	})
 	
@@ -525,7 +526,7 @@ function evaluate_pagination(){
 			}
 		});
 	}else{
-		$('#evaluate_page').pagination({
+		$("#evaluate_page").pagination({
 			pageCount: evaluatetotalPage,
 			isHide: true,
 			keepShowPN: true,
@@ -1238,8 +1239,8 @@ function loadAllQue(obj){
  */
 function getAssContent(pageNum,flag){
     $(".evaluateList").empty();
-    $("#evaluate_page").hide()
-    Loading($(".evaluateList"),'evaluate');
+    $("#evaluate_page").show()
+    //Loading($(".evaluateList"),'evaluate');
     $.ajax({
 		url:"/experiment/commentList",
 		data:{pageNum:pageNum},
@@ -1250,7 +1251,9 @@ function getAssContent(pageNum,flag){
         },
         success : function(data){
             if(data.code == 0){
-                //evaluatetotalPage = $(data).attr("totalpage");
+                mes = data.data;
+                evaluatetotalPage = Math.ceil(data.msg/10);
+                $("#evaluate").children("span").append("(<span>"+data.msg.toString()+"</span>)");
                 if(mes != null){
                     $(mes).each(function(){
                         var createTime = $(this).attr("createtime");
@@ -1259,7 +1262,8 @@ function getAssContent(pageNum,flag){
                         var userName = $(this).attr("userName");
                         var userId = $(this).attr("userId");
                         var expId = $(this).attr("expfctf_id");
-                        getAssContentVray(createTime,expId,userId,content,commentId,userName);
+                        var score = $(this).attr("score")
+                        getAssContentVray(createTime,expId,userId,content,commentId,userName,score);
                     })
                 }else{
                     if(languageFirst == "English"){
@@ -1269,7 +1273,7 @@ function getAssContent(pageNum,flag){
                     }
                 }
 				if(flag){evaluate_pagination();}
-                if(evaluatetotalPage>1){$("#evaluate_page").show()}
+                //if(evaluatetotalPage>1){$("#evaluate_page").show()}
             }else{
                 $(".evaluateList").html(noDateshow("数据异常，请稍后重试！"));
             }
@@ -1327,22 +1331,22 @@ function getAssContent(pageNum,flag){
 	})
 }
 */
-function getAssContentVray(createTime,expId,userId,content,commentId,userName){
+function getAssContentVray(createTime,expId,userId,content,commentId,userName,score){
 	var replyStr = "<div id='"+commentId+"'  class=\"evaluatediv\">";
 	replyStr += "<div class=\"head_img\"><a href=\"profile.do?u="+userId+"\" target=\"_blank\"><img onerror=\"noHeadImg(this)\" src=\"/images/default.jpg\"></a></div>";
 	replyStr += "<div class=\"evaluate_name\">"+userName+"</div>";
 	replyStr += "<div class=\"evaluate_difficulty\">";
-	replyStr += "<i class=\"icon gray\"><i class=\"icon orange\" style=\"width:"+20+"%;\"></i></i>";
-	replyStr +="（"+difficulty[10-1]+"）";
+	replyStr += "<i class=\"icon gray\"><i class=\"icon orange\" style=\"width:"+20*score+"%;\"></i></i>";
+	replyStr +="（"+difficulty[score-1]+"）";
 	replyStr += "</div>";
 	replyStr += "<div class=\"evaluate_content\">"+content+"</div>";
 	replyStr += "<div class=\"evaluate_menu\">";
 	if(languageFirst == "English"){
-		replyStr += "<span class=\"evaluate_time\">Time："+sqlDate2Str(createTime)+"</span>&nbsp;&nbsp;";
-		replyStr += "<span class=\"evaluate_source\" id=\""+ecid+"\">stem from：<a href=\"expc.do?ec="+ecid+"\" target=\"_blank\">"+expName+"</a></span>";
+		replyStr += "<span class=\"evaluate_time\">Time："+createTime+"</span>&nbsp;&nbsp;";
+		//replyStr += "<span class=\"evaluate_source\" id=\""+ecid+"\">stem from：<a href=\"expc.do?ec="+ecid+"\" target=\"_blank\">"+expName+"</a></span>";
 	}else{
-		replyStr += "<span class=\"evaluate_time\">时间："+dateStrTime(sqlDate2Str(createTime))+"</span>&nbsp;&nbsp;";
-		replyStr += "<span class=\"evaluate_source\" id=\""+ecid+"\">源自：<a href=\"expc.do?ec="+ecid+"\" target=\"_blank\">"+expName+"</a></span>";
+		replyStr += "<span class=\"evaluate_time\">时间："+createTime+"</span>&nbsp;&nbsp;";
+		//replyStr += "<span class=\"evaluate_source\" id=\""+ecid+"\">源自：<a href=\"expc.do?ec="+ecid+"\" target=\"_blank\">"+expName+"</a></span>";
 	 }
 	// if(replyNum == 0){
 	// 	replyStr += "<span class=\"questions-s\" data-num="+replyNum+"><img src=\"/img/coursePage/reply-icon.png\" style=\"cursor:default;\">"+replyNum+"</span>";
@@ -1552,13 +1556,14 @@ function insertReply(assmentId,replyContent,ecid,obj){
  * @param completion
  * @param risk
  */
-function addExAss(exp_id,text,createtime){
+function addExAss(exp_id,text,createtime,score){
 	$.ajax({
 		url:"/experiment/comment",
 		data:{
             expfctf_id:exp_id,
 			content:text,
             createtime:createtime,
+			score:score,
 		},
 		type:"post",
 		dataType:"json",
@@ -1566,6 +1571,9 @@ function addExAss(exp_id,text,createtime){
 		success : function(data){
 			if(data.code==0){
 				//刷新评论区
+				layer.msg("添加评论成功！");
+                $("#evaluate_editor_text").val("");
+                getAssContent(1,true);
 			}else if(data.code==500210){
                 window.location.href="/login";
 			} else{
