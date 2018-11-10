@@ -5,6 +5,7 @@ import java.util.Date;
 public class ExperimentComment {
     private int exp_id;
     private int user_id;
+    private int score;
     private String content;
     private String createtime;
 
@@ -23,6 +24,14 @@ public class ExperimentComment {
 
     public void setUser_id(int user_id) {
         this.user_id = user_id;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 
     public String getContent() {
