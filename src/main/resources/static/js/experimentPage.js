@@ -837,49 +837,49 @@ function delCollectionInfo(ecid){
  * 获取实验指导书所有任务点
  * 	@param ecid
  */
-function queryGuideId(ceid){
-	$(".guidancebookList").empty();
-	Loading($(".guidancebookList"),'guidancebook');
-	$.ajax({
-		url:"newExp!queryGuideByCeid.action",
-		data:{ceid:ceid,ecid:ecid},
-		type:"post",
-		dataType:"json",
-		async : true,
-		complete:function(){
-			removeLoading('guidancebook');
-		},
-		success : function(data){
-			if($(data).attr("result") == "success"){
-				var mes = $(data).attr("message");
-				if(mes != null){
-					$(mes).each(function(){
-						var sectionId = $(this).attr("sectionId");
-						var sectionName = $(this).attr("sectionName");
-						var sectionText = $(this).attr("sectionText");
-						queryGuideIdVray(sectionId,sectionName,sectionText);
-					})
-					PostbirdImgGlass.init({
-					    domSelector:".guidancebookcontent img",
-					    animation:true,
-					});
-					$(".guidancebookList img").css("height","auto");
-				}else{
-					$(".guidancebookList").html(noDateshow("指导书内容为空！"))
-				}
-			}else{
-				if(languageFirst == "English"){
-					$(".guidancebookList").html(noDateshow("Sorry, there's no result!"))
-				}else{
-					$(".guidancebookList").html(noDateshow("获取指导书失败，请稍后重试！"))
-				}
-			}
-		},
-		error : function(){
-			$(".guidancebookList").html(noDateshow("获取指导书失败，请稍后重试！"))
-		}
-	})
-}
+// function queryGuideId(ceid){
+// 	$(".guidancebookList").empty();
+// 	Loading($(".guidancebookList"),'guidancebook');
+// 	$.ajax({
+// 		url:"newExp!queryGuideByCeid.action",
+// 		data:{ceid:ceid,ecid:ecid},
+// 		type:"post",
+// 		dataType:"json",
+// 		async : true,
+// 		complete:function(){
+// 			removeLoading('guidancebook');
+// 		},
+// 		success : function(data){
+// 			if($(data).attr("result") == "success"){
+// 				var mes = $(data).attr("message");
+// 				if(mes != null){
+// 					$(mes).each(function(){
+// 						var sectionId = $(this).attr("sectionId");
+// 						var sectionName = $(this).attr("sectionName");
+// 						var sectionText = $(this).attr("sectionText");
+// 						queryGuideIdVray(sectionId,sectionName,sectionText);
+// 					})
+// 					PostbirdImgGlass.init({
+// 					    domSelector:".guidancebookcontent img",
+// 					    animation:true,
+// 					});
+// 					$(".guidancebookList img").css("height","auto");
+// 				}else{
+// 					$(".guidancebookList").html(noDateshow("指导书内容为空！"))
+// 				}
+// 			}else{
+// 				if(languageFirst == "English"){
+// 					$(".guidancebookList").html(noDateshow("Sorry, there's no result!"))
+// 				}else{
+// 					$(".guidancebookList").html(noDateshow("获取指导书失败，请稍后重试！"))
+// 				}
+// 			}
+// 		},
+// 		error : function(){
+// 			$(".guidancebookList").html(noDateshow("获取指导书失败，请稍后重试！"))
+// 		}
+// 	})
+// }
 
 //数据渲染
 function queryGuideIdVray(sectionId,sectionName,sectionText){

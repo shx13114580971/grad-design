@@ -261,7 +261,6 @@ function deleteTimer(){
 								<ul >
 								        <li id="guidancebook" >实验文档</li>
 										<li id="answer" >实验测题<span></span></li>
-										<li id="summary" >实验总结<span></span></li>
 										<li id="evaluate" >实验评价<span></span></li>
 								</ul>
 							
@@ -270,11 +269,31 @@ function deleteTimer(){
 						<div class="main_list" id="tab_list">
 							<div id="guidancebook_list" class="exp" data-name="实验文档">
 								<div class="guidancebook">
-									<div class="exptaskdiv">
-										<div class="fullscreen" data-name="全屏" title="全屏"></div>
-										<div class="unfold" data-name="展开/收起" title="展开/收起"></div>
-									</div>
+
+										<!--<div class="fullscreen" data-name="全屏" title="全屏"></div>
+										<div class="unfold" data-name="展开/收起" title="展开/收起"></div>-->
+
 									<div class="guidancebookList">
+										<div class="exptaskdiv"><h3>内容背景</h3></div>
+										<div id="content" class="guidancebookdiv">
+											<pre>[[${experiment.content}]]</pre>
+										</div>
+										<div class="exptaskdiv"><h3>实验目的</h3></div>
+										<div id="purpose" class="guidancebookdiv">
+											<pre>[[${experiment.purpose}]]</pre>
+										</div>
+										<div class="exptaskdiv"><h3>实验环境</h3></div>
+										<div id="environment" class="guidancebookdiv">
+											<pre>[[${experiment.environment}]]</pre>
+										</div>
+										<div class="exptaskdiv"><h3>实验步骤</h3></div>
+										<div id="step" class="guidancebookdiv">
+											<pre></pre>
+										</div>
+										<div class="exptaskdiv"><h3>总结与扩展</h3></div>
+										<div id="summary" class="guidancebookdiv">
+											<pre>[[${experiment.summary}]]</pre>
+										</div>
 
 									</div>
 								</div>
@@ -301,17 +320,6 @@ function deleteTimer(){
 									</div>
 									<div id="evaluate_page" class="P-box"></div>
 
-								</div>
-							</div>
-							<div id="summary_list" class="exp" data-name="实验总结">
-								<div class="notes">
-									<div class="addnotesdiv" data-name="实验总结">
-										<div class="notes_editor">
-											<span>[[${experiment.summary}]]</span>
-												<p class="error-message"></p>
-										</div>
-									</div>
-									<div id="notes_page" class="M-box"></div>
 								</div>
 							</div>
 							<div id="answer_list" class="exp" data-name="实验测题">

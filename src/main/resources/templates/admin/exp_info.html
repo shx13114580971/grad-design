@@ -287,31 +287,32 @@
                  <div class="row">
                 <div class="col-md-12">
                     <!-- Advanced Tables -->
+                    <div id="fade" class="black_overlay"></div>
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             实验信息
                         </div>
                         <div class="panel-body">
                             <div class="table-responsive">
-                                <form id="exp-info" name="exp-info" method="post">
+                                <form enctype="multipart/form-data" id="exp-info" name="exp-info" method="post">
                                     <p >
-                                        <span>实验名：</span>
+                                        <span style="font-size: 16px;font-weight: 600;color: #63686e;">实验名：</span>
                                         <input type="text" id="exp_name" name="exp_name" placeholder="请输入内容">
-                                        <span style="margin-left: 70px">环境名：</span>
+                                        <span style="margin-left: 70px;font-size: 16px;font-weight: 600;color: #63686e;">环境名：</span>
                                         <input type="text" id="envir_name" name="envir_name" placeholder="请输入内容">
                                     </p>
                                     <p >
-                                        <span>主机IP：</span>
+                                        <span style="font-size: 16px;font-weight: 600;color: #63686e;">主机IP：</span>
                                         <input type="text" id="host_ip" name="host_ip" placeholder="请输入内容">
-                                        <span style="margin-left: 55px">虚拟机IP：</span>
+                                        <span style="margin-left: 55px;font-size: 16px;font-weight: 600;color: #63686e;">虚拟机IP：</span>
                                         <input type="text" id="kvm_ip" name="kvm_ip" placeholder="请输入内容">
                                     </p>
                                     <p >
-                                        <span>方向：</span>
+                                        <span style="font-size: 16px;font-weight: 600;color: #63686e;">方向：</span>
                                         <input type="text" id="class1" name="class1" placeholder="请输入内容"  style="margin-left: 10px">
-                                        <span style="margin-left: 70px">类别：</span>
+                                        <span style="margin-left: 70px;font-size: 16px;font-weight: 600;color: #63686e;">类别：</span>
                                         <input type="text" id="class2" name="class2" placeholder="请输入内容">
-                                        <span style="margin-left: 70px">难度：</span>
+                                        <span style="margin-left: 70px;font-size: 16px;font-weight: 600;color: #63686e;">难度：</span>
                                         <input type="hidden" name='degree-val'>
                                         <label><input  type="radio" name="degree" value="0"/>高</label>
                                         <label><input  type="radio" name="degree" value="1"/>中</label>
@@ -323,23 +324,62 @@
                                         <textarea id="brief_intro" name="brief_intro" placeholder="请输入内容"
                                                   class="textarea" style="min-height: 32.9886px; z-index: auto; position: relative; line-height: 21px; font-size: 14px; transition: none 0s ease 0s; background: transparent !important;"></textarea>
                                     </p>
-                                    <p class="kiss">
+                                    <div class="kiss">
                                         <span>实验文档：</span>
-                                        <input type="file" id="document" name="document" placeholder="请输入内容" accept=".doc,.docs,.pdf">
-                                    </p>
+                                        <a id="btn_document" name="btn_document" href="javascript:;" style="line-height: 35px;font-size: 16px" onclick="openDocDiv()">输入文档内容</a>
+                                        <div id="document" class="white_content">
+
+                                            This is the lightbox content.
+                                            <p class="kiss">
+                                                <span>内容背景：</span>
+                                                <textarea id="introduce" name="introduce" placeholder="请输入内容" class="textarea"
+                                                          style="min-height: 32.9886px; z-index: auto; position: relative; line-height: 21px; font-size: 14px; transition: none 0s ease 0s; background: transparent !important;"></textarea>
+                                            </p>
+                                            <p class="kiss">
+                                                <span>实验环境：</span>
+                                                <textarea id="environment" name="environment" placeholder="请输入内容" class="textarea"
+                                                          style="min-height: 32.9886px; z-index: auto; position: relative; line-height: 21px; font-size: 14px; transition: none 0s ease 0s; background: transparent !important;"></textarea>
+                                            </p>
+                                            <p class="kiss">
+                                                <span>实验目的：</span>
+                                                <textarea id="purpose" name="purpose" placeholder="请输入内容" class="textarea"
+                                                          style="min-height: 32.9886px; z-index: auto; position: relative; line-height: 21px; font-size: 14px; transition: none 0s ease 0s; background: transparent !important;"></textarea>
+                                            </p>
+                                            <p class="kiss">
+                                                <span>操作步骤：</span>
+                                                <input id="step" name="step" type="file" class="textarea" accept="application/pdf"
+                                                          style="min-height: 32.9886px; z-index: auto; position: relative; line-height: 21px; font-size: 14px; transition: none 0s ease 0s; background: transparent !important;"></input>
+                                            </p>
+                                            <p class="kiss">
+                                                <span>总结与扩展：</span>
+                                                <textarea id="summary" name="summary" placeholder="请输入内容" class="textarea"
+                                                          style="min-height: 32.9886px; z-index: auto; position: relative; line-height: 21px; font-size: 14px; transition: none 0s ease 0s; background: transparent !important;"></textarea>
+                                            </p>
+                                            <a href="javascript:void(0)" onclick="two()">Close</a>
+                                        </div>
+
+                                    </div>
                                     <p class="kiss">
                                         <span>实验图片：</span>
-                                        <input type="file" id="image" name="image" placeholder="请输入内容" accept=".jpg,.png,.jpeg">
+                                        <input type="file" id="image" name="image" class="textarea" placeholder="浏览" accept=".jpg,.png,.jpeg">
+                                    </p>
+                                    <p class="kiss">
+                                        <span>实验视频：</span>
+                                        <input type="file" id="video" name="video" class="textarea" placeholder="浏览" accept="application/mp4">
                                     </p>
                                     <p class="kiss">
                                         <span>实验测题：</span>
-                                        <textarea id="question" name="question" placeholder="请输入内容" class="textarea"
+
+                                        <textarea id="question-statement" name="question-statement" placeholder="请输入题干" class="textarea"
                                                   style="min-height: 32.9886px; z-index: auto; position: relative; line-height: 21px; font-size: 14px; transition: none 0s ease 0s; background: transparent !important;"></textarea>
-                                    </p>
-                                    <p class="kiss">
-                                        <span>实验总结：</span>
-                                        <textarea id="summary" name="summary" placeholder="请输入内容" class="textarea"
-                                                  style="min-height: 32.9886px; z-index: auto; position: relative; line-height: 21px; font-size: 14px; transition: none 0s ease 0s; background: transparent !important;"></textarea>
+
+                                        <div style="padding-bottom: 10px">
+                                            <input type="text" class="question-items" placeholder="添加选项内容" id="question-items" ><a href="javascript:" class="item-operation" onclick="addItem(new Date().getTime())">添加选项</a>
+                                        </div>
+                                        <div id="addItem" style="padding-bottom: 6px">
+
+                                        </div>
+                                        
                                     </p>
                                     <p class="kiss">
                                         <span>备注：</span>
@@ -383,6 +423,14 @@
         $(document).ready(function () {
             $('#dataTables-example').dataTable();
         });
+        function openDocDiv(){
+            document.getElementById('document').style.display='block';
+            document.getElementById('fade').style.display='block'
+        }
+        function two(){
+            document.getElementById('document').style.display='none';
+            document.getElementById('fade').style.display='none'
+        }
     </script>
          <!-- Custom Js -->
     <script th:src="@{/js/custom-scripts.js}"></script>
@@ -398,29 +446,60 @@
             }
             function doAdd(){
                 g_showLoading();
+                //构造测题的json数据
+                var question = "";
+                var items = "";
+                var answer = "";
+                if($("#question-statement").val()){
+                    //先构造测题选项的json数据
+                    for(var i = 0; i < $("#addItem").children("div").length; i++){
+                        //key是div子radio元素的value，value是div的文本内容
+                        var divId = $("#addItem").children("div")[i].id;
+                        var key = $("#"+divId).children("input").val().trim();
+                        var value = $("#"+divId).contents().filter(function (index, content) {
+                            //console.log(content)
+                            return content.nodeType === 3;
+                        }).text().trim();
+                        //{key:value,key:value}
+                        items = items + "{\"" +key + "\":\"" + value +"\"}";
+                        if(i < $("#addItem").children("div").length-1)
+                            items = items + ",";
+                    }
+                    //再同题干与答案结合起来
+                    //"question-statement":$("#question").val(),
+                    //"answer":$("#degree").val(),
+                    //"items":[items]
+                    answer = $("input[type=radio][name=question-item]:checked").val();
+                    question = "{\"questionStatement\":\""+$("#question-statement").val().trim()+"\",\"answer\":\""+answer+"\",\"items\":["+items+"]}";
+                }
                 $.ajax({
                     url: "/admin/exp_add",
                     type: "POST",
+                    enctype:"multipart/form-data",
                     data:{
                         envir_name:$("#envir_name").val(),
                         exp_name:$("#exp_name").val(),
                         remark:$("#remark").val(),
                         class1:$("#class1").val(),
                         class2:$("#class2").val(),
-                        degree:$("#degree").val(),
+                        degree:$("input[type=radio][name=degree]:checked").val(),
                         image:$("#image").val(),
+                        video:$("#video").val(),
                         brief_intro:$("#brief_intro").val(),
                         host_ip:$("#host_ip").val(),
                         kvm_ip:$("#kvm_ip").val(),
-                        question:$("#question").val(),
-                        document:$("#document").val(),
+                        question:question,
+                        content:$("#content").val(),
+                        step:$("#step").val(),
+                        purpose:$("#purpose").val(),
+                        environment:$("#environment").val(),
                         summary:$("#summary").val()
                     },
                     success:function(data){
                         layer.closeAll();
                         if(data.code == 0){
                             layer.msg("成功");
-                            window.location.href="/admin/fctf_list";
+                            window.location.href="/admin/exp_list";
                         }else{
                             layer.msg(data.msg);
                             //layer.msg("成功");
@@ -431,6 +510,17 @@
                         layer.closeAll();
                     }
                 });
+            }
+            function addItem(itemCount) {
+            //<label><input  type="radio" name="degree" value="0"/>高</label>
+                var itemContent = $("#question-items").val();
+                itemStr = "<div id='item"+ itemCount +"' style='padding-left: 10px;font-size: 15px'><input type='radio' id='question-item' name='question-item' style='padding-left: 5px' value='"+itemCount+"'>&nbsp;"+itemContent+"<a href='javascript:' class='item-operation' onclick='deleteItem(\"item"+ itemCount +"\")'>删除选项</a></div>"
+                itemCount = itemCount+1;
+                $("#addItem").append(itemStr);
+                $("#question-items").val("");
+            }
+            function deleteItem(divId){
+                $("#"+divId).remove();
             }
         </script>
 
