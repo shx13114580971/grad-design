@@ -1,5 +1,7 @@
 package com.mooe.grad.service;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.mooe.grad.dao.ExperimentDao;
 import com.mooe.grad.domain.Experiment;
 import com.mooe.grad.domain.ExperimentComment;
@@ -8,6 +10,7 @@ import com.mooe.grad.vo.CommemtVo;
 import com.mooe.grad.vo.ExperimentVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -22,11 +25,17 @@ public class ExperimentService {
     }
 
     public String updateExp(Experiment experiment){
+        //String contentType = file.getContentType();   //文件类型
+        //String fileName = file.getOriginalFilename();  //文件名字
+        String path = "C:\\\\Users\\\\Administrator\\\\Desktop\\\\vue-manage-system-master\\\\static\\\\uploadimg\\\\";
         experimentDao.updateExp(experiment);
         return "success";
     }
 
     public String addExp(Experiment experiment){
+//        String question = experiment.getQuestion();
+//        JSONObject jsonQues = JSONObject.parseObject(question);
+//        experiment.setQuestion(jsonQues.toString());
         experimentDao.addExp(experiment);
         return "success";
     }

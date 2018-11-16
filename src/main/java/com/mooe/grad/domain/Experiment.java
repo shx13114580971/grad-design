@@ -17,8 +17,13 @@ public class Experiment {
     private Date date;
     private int user_count;
     private String image;
+    private String video;
     private String question;
-    private String document;
+    private String content;
+    private String step;
+    private String introduce;
+    private String purpose;
+    private String environment;
     private String summary;
     private String remark;
 
@@ -126,12 +131,52 @@ public class Experiment {
         this.question = question;
     }
 
-    public String getDocument() {
-        return document;
+    public String getVideo() {
+        return video;
     }
 
-    public void setDocument(String document) {
-        this.document = document;
+    public void setVideo(String video) {
+        this.video = video;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getStep() {
+        return step;
+    }
+
+    public void setStep(String step) {
+        this.step = step;
+    }
+
+    public String getIntroduce() {
+        return introduce;
+    }
+
+    public void setIntroduce(String introduce) {
+        this.introduce = introduce;
+    }
+
+    public String getPurpose() {
+        return purpose;
+    }
+
+    public void setPurpose(String purpose) {
+        this.purpose = purpose;
+    }
+
+    public String getEnvironment() {
+        return environment;
+    }
+
+    public void setEnvironment(String environment) {
+        this.environment = environment;
     }
 
     public String getSummary() {
