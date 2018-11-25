@@ -64,14 +64,14 @@ white-space:nowrap;text-overflow:ellipsis;-o-text-overflow:ellipsis;color: #3582
 .expLeftList .hr{width:100%;height:3px;background-color:#dbdbdb;overflow:hidden;position:relative;}
 .expLeftList .hr span{width:135px;height:3px;background-color:#ffb606;overflow:hidden;display:block;position:absolute;}
 .main_list{width:100%;overflow:hidden;}
-.main_list .exp{width:100%;overflow:hidden;display:none;}
+.main_list .exp{width:100%;height: 100%;overflow:hidden;display:none;}
 /*鎸囧涔﹀垪琛�*/
 .main_list .exp .guidancebook{width:804px;overflow:hidden;margin:30px 0 0 33px;position:relative;min-height:98px;}
 .main_list .exp .guidancebook .guidancebookList .exptaskdiv{width:100%;height:45px;overflow:hidden;background-color:#F8F8F8;border-bottom:1px solid #ddd;line-height:45px;padding:0 0 0 15px;box-sizing: border-box;}
 .main_list .exp .guidancebook .guidancebookList .exptaskdiv div{float:right;margin-left:10px;margin-top:9px;cursor:pointer;}
 .main_list .exp .guidancebook .guidancebookList .exptaskdiv h3{line-height:50px}
 .main_list .exp .guidancebook .guidancebookList{width:100%;overflow:hidden;margin-top:10px;position:relative;min-height:98px;}
-.main_list .exp .guidancebook .guidancebookList .guidancebookdiv{padding-left: 5px;padding-top:3px;width:100%;}
+.main_list .exp .guidancebook .guidancebookList .guidancebookdiv{padding-left: 5px;padding-top:15px;padding-bottom:15px;width:100%;}
 .main_list .exp .guidancebook .guidancebookList .guidancebookdiv pre{line-height: 24px;text-align: justify;font-size: 14px;color: #545454 !important;all:initial; white-space:pre-line; }
 .main_list .exp .guidancebook .guidancebookList .guidancebookdiv .guidancebooktitle{background: #D2D3D5 url(../../img/common/packup.png) no-repeat 10px center;
 padding-left: 36px;height: 40px;line-height: 40px;width:100%;font-size: 16px;margin-bottom: 10px;color: #333;}
@@ -175,7 +175,41 @@ padding-left: 36px;height: 40px;line-height: 40px;width:100%;font-size: 16px;mar
 .notes .notesList .notesdiv .notes_menu{width:750px;overflow:hidden;float:right;margin-top:8px;font-size: 12px;color:#999999;}
 /*绛旈*/
 #answer_list #questionsContent{margin: 30px auto 0;}
-#answer_list .questionsbegin{width:100%;height:100%;}
+.questionStatement{
+  font-size: 20px;
+  line-height: 1.5em;
+  margin: 20px 10px;
+  text-align: center;
+  font-weight: 400;
+  color: #111111;
+}
+
+.questionItem_correct{
+  font-size: 15px;
+  margin-left: 4%;
+  color: #222222;
+  height: 35px;
+}
+.questionItem_incorrect{
+  font-size: 15px;
+  margin-left: 4%;
+  color: #222222;
+  height: 35px;
+}
+#answer_list .questionsbegin{
+  display: block;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  top: 25%;
+  left: 5%;
+  width: 90%;
+  height: 50%;
+  padding: 16px;
+  box-shadow: 2px 1px 16px rgba(89, 89, 89, 0.2);
+  background-color: rgba(211, 233, 233, 0.11);
+  z-index: 1002;
+  overflow: auto;
+}
 #answer_list .questionsbegin-div{width:289px;height:155px;background-color:#f6f6f6;border:1px solid #d4dae3;margin:0 auto;padding-top:30px;}
 #answer_list .questionsbegin-div .exp_name{font-size:18px;}
 .cursorimg{cursor: pointer;}
@@ -205,7 +239,21 @@ padding-left: 36px;height: 40px;line-height: 40px;width:100%;font-size: 16px;mar
 #answer_list .questionsList .questionsdiv .answerlist .checkbox_li span label{cursor:pointer;display:inline-block;width:10px;height: 10px;background: url("/img/expanipulator/checkedbtn-icon.png") no-repeat;box-sizing:border-box;overflow: hidden;margin-right:5px;margin-bottom:0;}
 #answer_list .questionsList .questionsdiv .answerlist .checkbox_li span input[type=checkbox]:checked + label{background-image: url("/img/expanipulator/checkedlvbtn-icon.png");}
 #answer_list .bluetext{color:#0f7afe;}
-#answer_list .questionsList .submitanswerBtn{width:94px;height:40px;line-height:40px;text-align:center;font-size:14px;color:#fff;background-color:#0f7afe;float:right;margin-right:5%;margin-top:20px;cursor:pointer;border-radius:3px;}
+#answer_list .submitanswerBtn{width:94px;
+  height:40px;
+  line-height:40px;
+  text-align:center;
+  font-size:14px;
+  color: #5f5f5f;
+  background-color: #bcf4fe;
+  float:right;
+  margin-right:5%;
+  margin-top:20px;
+  cursor:pointer;
+  border-radius:8px;
+  border:none;
+  box-shadow: 2px 1px 16px rgba(17, 17, 17, 0.20);
+}
 /*鍐呮祴璇勪环*/
 .main_list .exp .evaluateBeta{width:804px;overflow:hidden;margin:30px 0 0 33px;}
 .main_list .exp .evaluateBeta .addevaluateBetasdiv{width:100%;height:285px;overflow:hidden;}

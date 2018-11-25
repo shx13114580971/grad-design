@@ -54,8 +54,8 @@ public class ExperimentService {
         experimentDao.addComment(experimentComment);
     }
 
-    public List<CommemtVo> listComments() {
-        List<CommemtVo> list = experimentDao.listComments();
+    public List<CommemtVo> listComments(int exp_id) {
+        List<CommemtVo> list = experimentDao.listComments(exp_id);
         int pageCount = list.size();
         return list;
     }

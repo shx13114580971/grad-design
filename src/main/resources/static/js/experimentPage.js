@@ -16,6 +16,7 @@ $(document).ready(function(){
 	experimentClick();
 	expimentmenu();
 	isVedeoHover();
+	listQuestion();
 	$(".head_img img").attr("src",$(".siLg-img img").attr("src"))
 	queryCollectionById(ecid);
 	$("#select-satisfactiondiv").sSelect();
@@ -31,6 +32,50 @@ $(document).ready(function(){
 		$(".exp_introduce_list").addClass("long");
 	}
 });
+
+//列出测题
+function listQuestion() {
+    var count =0;
+    var questionHtml = "";
+    var questionJson = $("#questionJson").val();
+    var questionList = JSON.parse(questionJson);
+    for(var i=0;i<questionList.length;i++){
+        var question = questionList[i];
+
+        questionHtml += "<div id=\"question"+ count +"\" class=\"questionsbegin\">";
+        questionHtml += "<h3 class=\"questionStatement\">"+ question.questionStatement +"<input type='hidden' id='answer"+ count +"' value='"+ question.answer +"'></h3>";
+        var items = question.items[0];
+        for(var item in items){
+        	if(item == question.answer){
+                questionHtml += "<div id=\"item"+ item +"\" class=\"questionItem_correct\" ><input type='radio'  name='question-item"+ count +"' style='padding-left: 5px' value=\""+ item +"\">&nbsp;"+ items[item] +"</div>";
+			}else{
+                questionHtml += "<div id=\"item"+ item +"\" class=\"questionItem_incorrect\" ><input type='radio'  name='question-item"+ count +"' style='padding-left: 5px' value=\""+ item +"\">&nbsp;"+ items[item] +"</div>";
+			}
+        }
+        questionHtml += "</div>";
+        count++;
+    }
+    $("#questionList").append(questionHtml);
+}
+//测题答案判断
+function iscorrect(){
+    var count = $("#questionList").children("div").length;
+    $(".questionItem_correct").css("color","green");
+    $(".questionItem_correct").css("font-size","18px");
+    $(".questionItem_correct").css("font-weight","bold");
+    for(var i = 0; i < count; i++){
+    	var answer = $("#answer"+i).val();
+    	var checked = $("input[type=radio][name=question-item"+ i +"]:checked");
+    	if(answer == checked.val()){
+
+		}else{
+            checked.parent("div").css("color","red");
+            checked.parent("div").css("font-size","18px");
+            checked.parent("div").css("font-weight","bold");
+		}
+	}
+}
+
 
 //监听事件
 function examTimeScroll(){
@@ -228,34 +273,6 @@ function experimentClick(){
 		}
 		
 	})
-	
-	//内测实验评价切换点击事件
-	$(".evaluateBeta_editordiv_top").find("li").click(function(){
-		$(this).parent().find("li").css("color","");
-		$(this).css("color","#0f7afe");
-		$(".evaluateBeta_editordiv").find("textarea").hide();
-		$(".evaluateBeta_editordiv").find("#evaluateBeta_editor_"+$(this).attr("id")).show();
-	})
-	
-	//发表内测实验评价
-	$(".addevaluateBeta_btn").click(function(){
-		saveBateFeedBackInfo(ceid,ecid);
-	})
-	
-	//查询内测评价下的回复
-	$(".replyBetaNum img").live("click",function(){
-		var num = $(this).parent().attr("data-num");
-		if(num > 0){
-			getBetaReplyInfoByBid($(this).parents(".evaluateBetadiv").attr("id"),this);
-		}
-	})
-	
-	//展示内测实验回复框点击事件
-	$(".replyBetaBtn").live("click",function(){
-		$(this).parent().find(".replybeta-editor").remove();
-		replybetaEditorVray(this,$(this).parent().parent().find(".evaluateBeta_name").html());
-	})
-	
 	//内测实验回复点击事件
 	$(".replybetaeditor-btn").live("click",function(){
 		var replyContent = $("#replybeta_editor_text").val();
@@ -282,7 +299,8 @@ function experimentClick(){
 			}
 		}
 	})
-	
+
+
 	//创建考试点击事件
 	$(".questionsbeginBtn").click(function(){
 		createStuExam();
@@ -400,10 +418,7 @@ function expimentmenu(){
 	$(".exp_menu_list").find("#notes").live("click",function(){
 		queryNotesByEcid(ecid,1,true);
 	})
-	
-	$(".exp_menu_list").find("#answer").live("click",function(){
-		queryExpExamInfo();
-	})
+
 	
 	$(".exp_menu_list").find("#evaluateBeta").live("click",function(){
 		if(expBetaAssShow(ceid) == "1"){
@@ -896,90 +911,90 @@ var stateCode = $("#stateCode").val();
  * 获取考试状态 查看是否有考试实例
  * @param ceid
  */
-function queryExpExamInfo(){
-	$.ajax({
-		url:"newStudyPageAction!queryExpExamInfo.action",
-		data:{ceid:ceid},
-		type:"post",
-		dataType:"json",
-		async : true,
-		success:function(data){
-			//下面进行数据渲染
-			if($(data).attr("result") == "success"){
-				var expStatus = $(data).attr("expState");
-				var mes = $(data).attr("message");
-				if(expStatus == 0){ //实验未开放
-					if(mes == "noInstance"){
-						$("#answer_list").children("div").hide();
-						$("#answer_list").children(".questionsList").show();
-						$("#answer_list").find(".questionsList").html(noDateshow("实验暂未开放！"))
-					}else if(mes == "examFinish"){
-						var info = $(data).attr("info");
-						loadAllQue(info);
-					}
-				}else if(expStatus == 1 || expStatus == 2){//实验进行中或已完成
-					if(mes == "noInstance"){
-						//没有实例 询问是否需要答题
-						if(testNum > 0){
-							showIsStartQue();
-						}else{
-							$("#answer_list").children("div").hide();
-							$("#answer_list").children(".questionsList").show();
-							$("#answer_list").find(".questionsList").html(noDateshow("该实验暂无试题！"));
-						}
-					}else if(mes == "needWarn"){
-						//需要警告是否继续答题
-						var info = $(data).attr("info");
-						var queNo = info.questionNo;
-						showIsContinueQue(queNo);
-					}else if(mes == "showQue"){
-						//直接展示试题
-						var info = $(data).attr("info");
-						showQuestionContent(info);
-					}else if(mes == "examFinish"){
-						//直接展示试题
-						var info = $(data).attr("info");
-						loadAllQue(info);
-					}
-				}
-			}else{
-				$("#answer_list").children("div").hide();
-				$("#answer_list").children(".questionsList").show();
-				$("#answer_list").find(".questionsList").html(noDateshow("试题获取失败！"))
-			}
-		},
-		error:function() {
-			jAlert("服务器响应错误！", null, null, 5000, null,"error",null,getPh());
-		}
-	});
-}
+// function queryExpExamInfo(){
+// 	$.ajax({
+// 		url:"newStudyPageAction!queryExpExamInfo.action",
+// 		data:{ceid:ceid},
+// 		type:"post",
+// 		dataType:"json",
+// 		async : true,
+// 		success:function(data){
+// 			//下面进行数据渲染
+// 			if($(data).attr("result") == "success"){
+// 				var expStatus = $(data).attr("expState");
+// 				var mes = $(data).attr("message");
+// 				if(expStatus == 0){ //实验未开放
+// 					if(mes == "noInstance"){
+// 						$("#answer_list").children("div").hide();
+// 						$("#answer_list").children(".questionsList").show();
+// 						$("#answer_list").find(".questionsList").html(noDateshow("实验暂未开放！"))
+// 					}else if(mes == "examFinish"){
+// 						var info = $(data).attr("info");
+// 						loadAllQue(info);
+// 					}
+// 				}else if(expStatus == 1 || expStatus == 2){//实验进行中或已完成
+// 					if(mes == "noInstance"){
+// 						//没有实例 询问是否需要答题
+// 						if(testNum > 0){
+// 							showIsStartQue();
+// 						}else{
+// 							$("#answer_list").children("div").hide();
+// 							$("#answer_list").children(".questionsList").show();
+// 							$("#answer_list").find(".questionsList").html(noDateshow("该实验暂无试题！"));
+// 						}
+// 					}else if(mes == "needWarn"){
+// 						//需要警告是否继续答题
+// 						var info = $(data).attr("info");
+// 						var queNo = info.questionNo;
+// 						showIsContinueQue(queNo);
+// 					}else if(mes == "showQue"){
+// 						//直接展示试题
+// 						var info = $(data).attr("info");
+// 						showQuestionContent(info);
+// 					}else if(mes == "examFinish"){
+// 						//直接展示试题
+// 						var info = $(data).attr("info");
+// 						loadAllQue(info);
+// 					}
+// 				}
+// 			}else{
+// 				$("#answer_list").children("div").hide();
+// 				$("#answer_list").children(".questionsList").show();
+// 				$("#answer_list").find(".questionsList").html(noDateshow("试题获取失败！"))
+// 			}
+// 		},
+// 		error:function() {
+// 			jAlert("服务器响应错误！", null, null, 5000, null,"error",null,getPh());
+// 		}
+// 	});
+// }
 
 /**
  * 创建试题场次
  */
-function createStuExam(){
-	$.ajax({
-		url:"newStudyPageAction!createStuExptExam.action",
-		data:{ceid:ceid},
-		type:"post",
-		dataType:"json",
-		async : true,
-		success:function(data){
-			//下面进行数据渲染
-			if($(data).attr("result") == "success"){
-				queryExpExamInfo();
-			}else{
-				$("#answer_list").children("div").hide();
-				$("#answer_list").children(".questionsList").show();
-				$("#answer_list").find(".questionsList").html(noDateshow("创建试题场次失败！"));
-			}
-		},
-		error:function() {
-			//系统响应错误
-			jAlert("服务器响应错误！", null, null, 5000, null,"error",null,getPh());
-		}
-	});
-}
+// function createStuExam(){
+// 	$.ajax({
+// 		url:"newStudyPageAction!createStuExptExam.action",
+// 		data:{ceid:ceid},
+// 		type:"post",
+// 		dataType:"json",
+// 		async : true,
+// 		success:function(data){
+// 			//下面进行数据渲染
+// 			if($(data).attr("result") == "success"){
+// 				queryExpExamInfo();
+// 			}else{
+// 				$("#answer_list").children("div").hide();
+// 				$("#answer_list").children(".questions").show();
+// 				//$("#answer_list").find(".questionsList").html(noDateshow("创建试题场次失败！"));
+// 			}
+// 		},
+// 		error:function() {
+// 			//系统响应错误
+// 			jAlert("服务器响应错误！", null, null, 5000, null,"error",null,getPh());
+// 		}
+// 	});
+// }
 
 /**
  * 继续答题
@@ -1085,151 +1100,151 @@ function submitQue(instanceId,examtype){
 }
 
 //询问是否开始答题
-function showIsStartQue(){
-	$("#answer_list").children("div").hide();
-	$("#answer_list").find(".questionsbegin").show();
-}
-
-//询问是否继续答题
-function showIsContinueQue(queNo){
-	$("#answer_list").children("div").hide();
-	$("#answer_list").find(".questionscontinue").show();
-	$("#answer_list").find(".topichint").html("您上次回答道第"+queNo+"题，是否继续？");
-}
+// function showIsStartQue(){
+// 	$("#answer_list").children("div").hide();
+// 	$("#answer_list").find(".questionsbegin").show();
+// }
+//
+// //询问是否继续答题
+// function showIsContinueQue(queNo){
+// 	$("#answer_list").children("div").hide();
+// 	$("#answer_list").find(".questionscontinue").show();
+// 	$("#answer_list").find(".topichint").html("您上次回答道第"+queNo+"题，是否继续？");
+// }
 
 //渲染当前试题
-function showQuestionContent(objData){
-	var totalCount = objData.totalCount;//总数量
-	var queNo = objData.orderNo;//当前题
-	var examInstanceId = objData.questionInstanceId;//试题实例id
-	var queContent = objData.questionContent;//试题内容
-	var type = objData.type;//类型 0-单选  1--多选 2--填空
-	var optionList = objData.list;
-	var orderNo = objData.orderNo;//序号
-	//下面进行试题渲染
-	if(type == 0){
-		var str = "<div class=\"questionsdiv\">";
-		str += "<p class=\"issuecontent\"><span>"+orderNo+"、<img class=\"issueType\" src=\"../../img/expanipulator/radio-icon.png\"/></span>"+queContent+"</p>";
-		str += "<ul class=\"answerlist\">";
-		$(optionList).each(function(i){
-			str += "<li class=\"radio_li\" name=\""+$(this).attr("oid")+"\"><span><input id=\"radio_"+i+"\" type=\"radio\" name=\"radio\"/><label for=\"radio_"+i+"\"></label>"+pArr[i]+"、</span>"+$(this).attr("content")+"</li>";
-		});
-		str += "</ul>";
-		str += "</div>";
-	}else if(type == 1){
-		var str = "<div class=\"questionsdiv\">";
-		str += "<p class=\"issuecontent\"><span>"+orderNo+"、<img class=\"issueType\" src=\"../../img/expanipulator/multiple-icon.png\"/></span>"+queContent+"</p>";
-		str += "<ul class=\"answerlist\">";
-		$(optionList).each(function(i){
-			str += "<li class=\"checkbox_li\" name=\""+$(this).attr("oid")+"\"><span><input id=\"checkbox_"+i+"\" type=\"checkbox\" name=\"checkbox\"/><label for=\"checkbox_"+i+"\"></label>"+pArr[i]+"：</span>"+$(this).attr("content")+"</li>";
-		});
-		str += "</ul>";
-		str += "</div>";
-	}else if(type == 2){
-		var str = "<div class=\"questionsdiv\">";
-		str += "<p class=\"issuecontent\"><span>"+orderNo+"、<img class=\"issueType\" src=\"../../img/expanipulator/filling-icon.png\"/></span>"+queContent+"</p>";
-		str += "<div class=\"fill-box\"><input type=\"text\" placeholder=\"请在此处添加答案\"/></div>";
-		str += "</div>";
-	}
-	if(orderNo == totalCount){
-		str += "<div examInstanceId=\""+examInstanceId+"\" examtype=\""+type+"\" class=\"submitanswerBtn\">提交</div>";
-	}else{
-		str += "<div examInstanceId=\""+examInstanceId+"\" examtype=\""+type+"\" class=\"submitanswerBtn\">下一题</div>";
-	}
-	$("#answer_list").find(".questionsList").html(str);
-	$("#answer_list").children("div").hide();
-	$("#answer_list").find(".questionsList").show();
-}
+// function showQuestionContent(objData){
+// 	var totalCount = objData.totalCount;//总数量
+// 	var queNo = objData.orderNo;//当前题
+// 	var examInstanceId = objData.questionInstanceId;//试题实例id
+// 	var queContent = objData.questionContent;//试题内容
+// 	var type = objData.type;//类型 0-单选  1--多选 2--填空
+// 	var optionList = objData.list;
+// 	var orderNo = objData.orderNo;//序号
+// 	//下面进行试题渲染
+// 	if(type == 0){
+// 		var str = "<div class=\"questionsdiv\">";
+// 		str += "<p class=\"issuecontent\"><span>"+orderNo+"、<img class=\"issueType\" src=\"../../img/expanipulator/radio-icon.png\"/></span>"+queContent+"</p>";
+// 		str += "<ul class=\"answerlist\">";
+// 		$(optionList).each(function(i){
+// 			str += "<li class=\"radio_li\" name=\""+$(this).attr("oid")+"\"><span><input id=\"radio_"+i+"\" type=\"radio\" name=\"radio\"/><label for=\"radio_"+i+"\"></label>"+pArr[i]+"、</span>"+$(this).attr("content")+"</li>";
+// 		});
+// 		str += "</ul>";
+// 		str += "</div>";
+// 	}else if(type == 1){
+// 		var str = "<div class=\"questionsdiv\">";
+// 		str += "<p class=\"issuecontent\"><span>"+orderNo+"、<img class=\"issueType\" src=\"../../img/expanipulator/multiple-icon.png\"/></span>"+queContent+"</p>";
+// 		str += "<ul class=\"answerlist\">";
+// 		$(optionList).each(function(i){
+// 			str += "<li class=\"checkbox_li\" name=\""+$(this).attr("oid")+"\"><span><input id=\"checkbox_"+i+"\" type=\"checkbox\" name=\"checkbox\"/><label for=\"checkbox_"+i+"\"></label>"+pArr[i]+"：</span>"+$(this).attr("content")+"</li>";
+// 		});
+// 		str += "</ul>";
+// 		str += "</div>";
+// 	}else if(type == 2){
+// 		var str = "<div class=\"questionsdiv\">";
+// 		str += "<p class=\"issuecontent\"><span>"+orderNo+"、<img class=\"issueType\" src=\"../../img/expanipulator/filling-icon.png\"/></span>"+queContent+"</p>";
+// 		str += "<div class=\"fill-box\"><input type=\"text\" placeholder=\"请在此处添加答案\"/></div>";
+// 		str += "</div>";
+// 	}
+// 	if(orderNo == totalCount){
+// 		str += "<div examInstanceId=\""+examInstanceId+"\" examtype=\""+type+"\" class=\"submitanswerBtn\">提交</div>";
+// 	}else{
+// 		str += "<div examInstanceId=\""+examInstanceId+"\" examtype=\""+type+"\" class=\"submitanswerBtn\">下一题</div>";
+// 	}
+// 	$("#answer_list").find(".questionsList").html(str);
+// 	$("#answer_list").children("div").hide();
+// 	$("#answer_list").find(".questionsList").show();
+// }
 
 //渲染全部试题
-function loadAllQue(obj){
-	if(obj != null && obj != ""){
-		$("#answer_list").find(".questionsList").empty();
-		var qlist = $(obj).attr("slist");
-		var str = "<div class=\"questionscontinue-div\">";
-		str += "<p class=\"exp_name\">课后习题</p>";
-		str += "<p class=\"topichint\"></p>";
-		str += "<div class=\"questionsagainBtn\">重新答题</div>";
-		str += "</div>";
-		$("#answer_list").find(".questionsList").append(str);
-		$(qlist).each(function(){
-			//试题进行渲染
-			var questionId = $(this).attr("questionId");
-			var orderNo = $(this).attr("orderNo");
-			var content = $(this).attr("questionContent");
-			var right = $(this).attr("rightState");
-			var type = $(this).attr("type");
-			var str = "<div class=\"questionsdiv\">";
-			//渲染题目
-			if(type == 0){
-				str += "<p class=\"issuecontent\"><span>"+orderNo+"、<img class=\"issueType\" src=\"../../img/expanipulator/radio-icon.png\"/></span>"+content+"</p>";
-			}else if(type == 1){
-				str += "<p class=\"issuecontent\"><span>"+orderNo+"、<img class=\"issueType\" src=\"../../img/expanipulator/multiple-icon.png\"/></span>"+content+"</p>";
-			}else if(type == 2){
-				str += "<p class=\"issuecontent\"><span>"+orderNo+"、<img class=\"issueType\" src=\"../../img/expanipulator/filling-icon.png\"/></span>"+content+"</p>";
-			}
-			//渲染是否正确
-			if(right == 1){
-				str += "<img class=\"rightIcon\" src=\"../../img/expanipulator/right.png\"/>";
-			}
-			if(type != 2){ //非填空题
-				//渲染答案
-				var optionList = $(this).attr("olist");
-				str += "<ul class=\"answerlist\">";
-				$(optionList).each(function(i){
-					var oid = $(this).attr("oid");
-					var ocontent = $(this).attr("content");
-					str += "<li name=\""+oid+"\" style=\"padding-left:25px;\"><span>"+pArr[i]+"：</span>"+ocontent+"</li>";
-				})
-				str += "</ul>";
-				str += "</div>";
-				$("#answer_list").find(".questionsList").append(str);
-				
-				//下面进行自己答的试题渲染
-				var objs = $("#answer_list").find(".questionsList").children().last();
-				var ownAnswer = $(this).attr("ownAnswer");
-				$(ownAnswer).each(function(){
-					objs.find("li[name='"+$(this)[0]+"']").addClass("bluetext");
-				});
-				
-				//下面渲染正确的答案
-				/*var rightAnswer = $(this).attr("rightAnswer");
-				var astr = "<div class=\"right_answer\">本题正确答案为";
-				$(rightAnswer).each(function(){
-					$(this)[0];
-					var i = objs.find("li").index(objs.find("li[name='"+$(this)[0]+"']"));
-					astr += " "+pArr[i];
-				});
-				astr += "</div>";
-				objs.append(astr);*/
-			}else{ //填空题
-				
-				//渲染我的答案
-				var ownAnswer = $(this).attr("ownAnswer");
-				var rightAnswer = $(this).attr("rightAnswer");
-				str += "<div class=\"fill-box bluetext\" style=\"height:25px\">"+$(ownAnswer).get(0)+"</div>";
-				$("#answer_list").find(".questionsList").append(str);
-				
-				/*var objs = $("#answer_list").find(".questionsList").children().last();
-				//下面渲染正确的答案
-				var astr = "<div class=\"right_answer\">本题正确答案为   "
-				$(rightAnswer).each(function(i){
-					if(i == 0){
-						astr+= ""+$(this).get()+" ";
-					}else{
-						astr+= "或   "+$(this).get()+" ";
-					}
-				})
-				astr+= "</div>";
-				objs.append(astr);*/
-				
-			}
-			
-		});
-		$("#answer_list").children("div").hide();
-		$("#answer_list").find(".questionsList").show();
-	}
-}
+// function loadAllQue(obj){
+// 	if(obj != null && obj != ""){
+// 		$("#answer_list").find(".questionsList").empty();
+// 		var qlist = $(obj).attr("slist");
+// 		var str = "<div class=\"questionscontinue-div\">";
+// 		str += "<p class=\"exp_name\">课后习题</p>";
+// 		str += "<p class=\"topichint\"></p>";
+// 		str += "<div class=\"questionsagainBtn\">重新答题</div>";
+// 		str += "</div>";
+// 		$("#answer_list").find(".questionsList").append(str);
+// 		$(qlist).each(function(){
+// 			//试题进行渲染
+// 			var questionId = $(this).attr("questionId");
+// 			var orderNo = $(this).attr("orderNo");
+// 			var content = $(this).attr("questionContent");
+// 			var right = $(this).attr("rightState");
+// 			var type = $(this).attr("type");
+// 			var str = "<div class=\"questionsdiv\">";
+// 			//渲染题目
+// 			if(type == 0){
+// 				str += "<p class=\"issuecontent\"><span>"+orderNo+"、<img class=\"issueType\" src=\"../../img/expanipulator/radio-icon.png\"/></span>"+content+"</p>";
+// 			}else if(type == 1){
+// 				str += "<p class=\"issuecontent\"><span>"+orderNo+"、<img class=\"issueType\" src=\"../../img/expanipulator/multiple-icon.png\"/></span>"+content+"</p>";
+// 			}else if(type == 2){
+// 				str += "<p class=\"issuecontent\"><span>"+orderNo+"、<img class=\"issueType\" src=\"../../img/expanipulator/filling-icon.png\"/></span>"+content+"</p>";
+// 			}
+// 			//渲染是否正确
+// 			if(right == 1){
+// 				str += "<img class=\"rightIcon\" src=\"../../img/expanipulator/right.png\"/>";
+// 			}
+// 			if(type != 2){ //非填空题
+// 				//渲染答案
+// 				var optionList = $(this).attr("olist");
+// 				str += "<ul class=\"answerlist\">";
+// 				$(optionList).each(function(i){
+// 					var oid = $(this).attr("oid");
+// 					var ocontent = $(this).attr("content");
+// 					str += "<li name=\""+oid+"\" style=\"padding-left:25px;\"><span>"+pArr[i]+"：</span>"+ocontent+"</li>";
+// 				})
+// 				str += "</ul>";
+// 				str += "</div>";
+// 				$("#answer_list").find(".questionsList").append(str);
+//
+// 				//下面进行自己答的试题渲染
+// 				var objs = $("#answer_list").find(".questionsList").children().last();
+// 				var ownAnswer = $(this).attr("ownAnswer");
+// 				$(ownAnswer).each(function(){
+// 					objs.find("li[name='"+$(this)[0]+"']").addClass("bluetext");
+// 				});
+//
+// 				//下面渲染正确的答案
+// 				/*var rightAnswer = $(this).attr("rightAnswer");
+// 				var astr = "<div class=\"right_answer\">本题正确答案为";
+// 				$(rightAnswer).each(function(){
+// 					$(this)[0];
+// 					var i = objs.find("li").index(objs.find("li[name='"+$(this)[0]+"']"));
+// 					astr += " "+pArr[i];
+// 				});
+// 				astr += "</div>";
+// 				objs.append(astr);*/
+// 			}else{ //填空题
+//
+// 				//渲染我的答案
+// 				var ownAnswer = $(this).attr("ownAnswer");
+// 				var rightAnswer = $(this).attr("rightAnswer");
+// 				str += "<div class=\"fill-box bluetext\" style=\"height:25px\">"+$(ownAnswer).get(0)+"</div>";
+// 				$("#answer_list").find(".questionsList").append(str);
+//
+// 				/*var objs = $("#answer_list").find(".questionsList").children().last();
+// 				//下面渲染正确的答案
+// 				var astr = "<div class=\"right_answer\">本题正确答案为   "
+// 				$(rightAnswer).each(function(i){
+// 					if(i == 0){
+// 						astr+= ""+$(this).get()+" ";
+// 					}else{
+// 						astr+= "或   "+$(this).get()+" ";
+// 					}
+// 				})
+// 				astr+= "</div>";
+// 				objs.append(astr);*/
+//
+// 			}
+//
+// 		});
+// 		$("#answer_list").children("div").hide();
+// 		$("#answer_list").find(".questionsList").show();
+// 	}
+// }
 
 
 /**************************************************************实验评价******************************************************/
@@ -1242,7 +1257,7 @@ function getAssContent(pageNum,flag){
     $("#evaluate_page").show()
     //Loading($(".evaluateList"),'evaluate');
     $.ajax({
-		url:"/experiment/commentList",
+		url:"/experiment/commentList/"+$("#experiment_id").val(),
 		data:{pageNum:pageNum},
         type:"post",
         dataType:"json",
@@ -1805,105 +1820,6 @@ function queryBetaByCeidAndUserId(ceid){
 	});
 }
 
-/**
- * 查询其他人的内测评价
- * @param ecid
- */
-function queryBetaByEcid(ecid,pageNum,flag){
-	var userId = $("#sessionuuid").val();
-	Loading($("#otherBetaList"),'evaluateBeta');
-	$("#evaluateBeta_page").hide();
-	$.ajax({
-		url:"betaAction!queryBetaByEcid.action",
-		dataType:"json",
-		type: "post",
-		data: {ecid:ecid,UserId:userId,page:pageNum},
-		async : true,
-		complete:function(){
-			removeLoading('evaluateBeta');
-		},
-		success:function(data){
-			$("#otherBetaList").empty();
-			if($(data).attr("result") == "success") {
-				var mes = $(data).attr("betaByExp");
-				var evaluateBetatotalPage = $(data).attr("size");
-				if(mes != "" && mes != null){
-					$(mes).each(function(){
-						var createTime = sqlDate2Str($(this).attr("createTime"));
-						var headImg = $(this).attr("headImg");
-						var userName = $(this).attr("userName");
-						var userId = $(this).attr("userId");
-						var allEvaluation = $(this).attr("allEvaluation");
-						var billId = $(this).attr("billId");
-						var countReply = $(this).attr("countReply");
-						var str = BetaVray(createTime,headImg,userName,userId,allEvaluation,billId,countReply);
-						$("#otherBetaList").append(str);
-						$(".evaluateBetaList").find(".replyBetaNum img").trigger("click");
-					})
-				}else{
-					if(languageFirst == "English"){
-						$("#otherBetaList").html(noDateshow("Sorry, there's no result!"));
-					}else{
-						$("#otherBetaList").html(noDateshow("该实验下暂无内测评价！"));
-					}
-					
-				}
-				if(flag){evaluateBeta_pagination();}
-				if(evaluateBetatotalPage>1){$("#evaluateBeta_page").show()}
-			}else{
-				$("#otherBetaList").html(noDateshow("该实验下暂无内测评价！"));
-			}
-		},
-	});
-}
-
-//渲染内测评价数据
-function BetaVray(createTime,headImg,userName,userId,allEvaluation,billId,countReply){
-	var str = "<div id=\""+billId+"\" class=\"evaluateBetadiv\">";
-	str += "<div class=\"head_img\"><a href=\"profile.do?u="+userId+"\" target=\"_blank\"><img onerror=\"noHeadImg(this)\" src=\"headImg.action?img="+headImg+"\"></a></div>";
-	str += "<div class=\"evaluateBeta_name\">"+userName+"</div>";
-	str += "<a href=\"/pages/experimentBetaEnv.html?billId="+billId+"\" target=\"_blank\" ><div class=\"evaluateBeta_content\">"+allEvaluation+"</div></a>";
-	str += "<div class=\"evaluateBeta_menu\">";
-	str += "<span>时间："+createTime+"</span>";
-	str += "<span class=\"replyBetaNum\" data-num="+countReply+"><img src=\"/img/coursePage/reply-icon.png\" title=\"点击展开回复列表\">"+countReply+"</span>";
-	if(showBetarepyly){
-		if(languageFirst == "English"){
-			str += "<span class=\"replyBetaBtn\">reply</span>";
-		}else{
-			str += "<span class=\"replyBetaBtn\">回复</span>";
-		}
-	}
-	str += "</div>";
-	str += "<div class=\"clear\"></div>";
-	str += "</div>";
-	return str;
-}
-
-/**
- * 根据内测实验的评价id查询对应的回复
- * @param billId
- */
-function getBetaReplyInfoByBid(billId,obj){
-	
-	$.ajax({
-		url:"betaAction!getBetaReplyInfoByBid.action",
-		data:{billId:billId},
-		type:"post",
-		dataType:"json",
-		async : true,
-		success : function(data){
-			if($(data).attr("result") == "success") {
-				var mes = $(data).attr("message");
-				$(obj).parent().parent().find(".replybetaList").remove();
-				if(mes != null && mes != ""){
-					getBetaReplyInfoByBidVray(mes,obj);
-				}
-			}
-		},
-		error : function(){
-		}
-	})
-}
 
 //数据渲染
 function getBetaReplyInfoByBidVray(mes,obj){

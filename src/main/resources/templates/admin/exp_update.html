@@ -323,7 +323,7 @@
                                     <p class="kiss">
                                         <span>实验简介：</span>
                                         <textarea id="brief_intro" name="brief_intro" placeholder="请输入内容"
-                                                  class="textarea" style="min-height: 32.9886px; z-index: auto; position: relative; line-height: 21px; font-size: 14px; transition: none 0s ease 0s; background: transparent !important;"></textarea>
+                                                  class="textarea" style="min-height: 32.9886px; z-index: auto; position: relative; line-height: 21px; font-size: 14px; transition: none 0s ease 0s; background: transparent !important;">[[${experiment.brief_intro}]]</textarea>
                                     </p>
                                     <div class="kiss">
                                         <span>实验文档：</span>
@@ -500,7 +500,7 @@
                             return content.nodeType === 3;
                         }).text().trim();
                         //{key:value,key:value}
-                        items = items + "{\"" + key + "\":\"" + value +"\"}";
+                        items = items + "\"" + key + "\":\"" + value +"\"";
                         if(i < $("#addItem").children("div").length-1)
                             items = items + ",";
                     }
@@ -509,7 +509,7 @@
                     //"answer":$("#degree").val(),
                     //"items":[items]
                     answer = $("input[type=radio][name=question-item]:checked").val().trim();
-                    question = "{\"questionStatement\":\""+$("#question-statement").val().trim()+"\",\"answer\":\""+answer+"\",\"items\":["+items+"]}";
+                    question = "[{\"questionStatement\":\""+$("#question-statement").val().trim()+"\",\"answer\":\""+answer+"\",\"items\":[{"+items+"}]}]";
                 }
 
                 $.ajax({

@@ -47,10 +47,10 @@ public class ExperimentController {
         return Result.success("");
     }
 
-    @RequestMapping("/experiment/commentList")
+    @RequestMapping("/experiment/commentList/{exp_id}")
     @ResponseBody
-    public Result<List<CommemtVo>> commentList(int pageNum){
-        List<CommemtVo> list = experimentService.listComments();
+    public Result<List<CommemtVo>> commentList(@PathVariable("exp_id") int exp_id, int pageNum){
+        List<CommemtVo> list = experimentService.listComments(exp_id);
         int commentCount = list.size();
         Result<List<CommemtVo>> result;
         if(pageNum < Math.ceil(commentCount/10)){

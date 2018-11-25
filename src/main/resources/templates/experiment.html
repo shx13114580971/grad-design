@@ -323,21 +323,14 @@ function deleteTimer(){
 								</div>
 							</div>
 							<div id="answer_list" class="exp" data-name="实验测题">
-								<div id="questionsContent" class="questionsbegin" style="display:none;" data-name="开始答题">
-							  		<div class="questionsbegin-div">
-							  			<p class="exp_name">课后习题</p>
-							  			<p class="topicNumber">总计<span>3</span>道题，有机会获得大量合氏币！</p>
-							  			<div class="questionsbeginBtn">开始答题</div>
-							  		</div>
-							  	</div>
-							  	<div id="questionsContent1" class="questionscontinue" style="display:none;" data-name="继续答题">
-							  		<div class="questionscontinue-div">
-							  			<p class="exp_name">课后习题</p>
-							  			<p class="topichint"></p>
-							  			<div class="questionscontinueBtn">继续答题</div>
-							  		</div>
-							  	</div>
-							  	<div id="questionsContent2" class="questionsList" style="display:none;" data-name="答题进行中">
+								<div style="height: 30px"></div>
+								<div id="questionList">
+
+								</div>
+
+							  	<input type="hidden" id="questionJson" th:value="${experiment.question}">
+
+								<input type="button" id="submitAnswer" onclick="iscorrect()" class="submitanswerBtn" value="提交">
 						  	</div>
 						</div>
 						</div>
@@ -401,6 +394,11 @@ function deleteTimer(){
 
 </script>
 <script>
+         /*
+        * <h3 id="statement1" class="questionStatement">这是第一道题</h3>
+		<div id="items1" class="questionItem" ><span style="width: 5px"></span><input type='radio'  name='question-item' style='padding-left: 5px' value="123">选项1</div>
+        * */
+
 	function tab(pid){
 	    var tabs = document.getElementById("tab_list").children;
 	    for(var i = 0; i < tabs.length; i++){

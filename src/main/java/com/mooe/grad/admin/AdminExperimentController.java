@@ -45,6 +45,7 @@ public class AdminExperimentController {
     @ResponseBody
     @RequestMapping("/exp_update")
     public Result<String> exp_info(@RequestParam(name="file",required=false) MultipartFile file, Experiment experiment){
+
         String result = experimentSeivice.updateExp(experiment);
         return Result.success(result);
     }

@@ -333,7 +333,7 @@
                                             <p class="kiss">
                                                 <span>内容背景：</span>
                                                 <textarea id="introduce" name="introduce" placeholder="请输入内容" class="textarea"
-                                                          style="min-height: 32.9886px; z-index: auto; position: relative; line-height: 21px; font-size: 14px; transition: none 0s ease 0s; background: transparent !important;"></textarea>
+                                                          style="min-height: 32.9886px; z-index: auto; position: relative; line-height: 21px; font-size: 14px; transition: none 0s ease 0s; background: transparent !important;">[[${experiment.content}]]</textarea>
                                             </p>
                                             <p class="kiss">
                                                 <span>实验环境：</span>
@@ -368,10 +368,11 @@
                                         <input type="file" id="video" name="video" class="textarea" placeholder="浏览" accept="application/mp4">
                                     </p>
                                     <p class="kiss">
-                                        <span>实验测题：</span>
+                                        <span>实验测题：</span><a href="javascript:" class="item-operation" onclick="addQues()">添加测题</a>
+                                        <div id="addQues" style="padding-bottom: 6px">
+                                            <textarea id="question-statement" name="question-statement" placeholder="请输入题干" class="textarea"></textarea>
+                                        </div>
 
-                                        <textarea id="question-statement" name="question-statement" placeholder="请输入题干" class="textarea"
-                                                  style="min-height: 32.9886px; z-index: auto; position: relative; line-height: 21px; font-size: 14px; transition: none 0s ease 0s; background: transparent !important;"></textarea>
 
                                         <div style="padding-bottom: 10px">
                                             <input type="text" class="question-items" placeholder="添加选项内容" id="question-items" ><a href="javascript:" class="item-operation" onclick="addItem(new Date().getTime())">添加选项</a>
@@ -448,6 +449,7 @@
                 g_showLoading();
                 //构造测题的json数据
                 var question = "";
+                var questionList = "";
                 var items = "";
                 var answer = "";
                 if($("#question-statement").val()){
@@ -461,7 +463,7 @@
                             return content.nodeType === 3;
                         }).text().trim();
                         //{key:value,key:value}
-                        items = items + "{\"" +key + "\":\"" + value +"\"}";
+                        items = items + "\"" +key + "\":\"" + value +"\"";
                         if(i < $("#addItem").children("div").length-1)
                             items = items + ",";
                     }
@@ -470,7 +472,7 @@
                     //"answer":$("#degree").val(),
                     //"items":[items]
                     answer = $("input[type=radio][name=question-item]:checked").val();
-                    question = "{\"questionStatement\":\""+$("#question-statement").val().trim()+"\",\"answer\":\""+answer+"\",\"items\":["+items+"]}";
+                    question = "[{\"questionStatement\":\""+$("#question-statement").val().trim()+"\",\"answer\":\""+answer+"\",\"items\":[{"+items+"}]}]";
                 }
                 $.ajax({
                     url: "/admin/exp_add",
@@ -515,7 +517,6 @@
             //<label><input  type="radio" name="degree" value="0"/>高</label>
                 var itemContent = $("#question-items").val();
                 itemStr = "<div id='item"+ itemCount +"' style='padding-left: 10px;font-size: 15px'><input type='radio' id='question-item' name='question-item' style='padding-left: 5px' value='"+itemCount+"'>&nbsp;"+itemContent+"<a href='javascript:' class='item-operation' onclick='deleteItem(\"item"+ itemCount +"\")'>删除选项</a></div>"
-                itemCount = itemCount+1;
                 $("#addItem").append(itemStr);
                 $("#question-items").val("");
             }
