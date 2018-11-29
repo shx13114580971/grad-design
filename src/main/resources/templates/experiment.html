@@ -171,7 +171,7 @@ function deleteTimer(){
 </audio>
 	
 		<div class="colockbox" id="clockbox" style="background: rgba(0, 0, 0, 0) url('images/common/colockbg.png') no-repeat scroll 0 0;">
-					<font class="clockname">实验机销毁倒计时：</font>
+					< font class="clockname">实验机销毁倒计时：</font>
 					<span class="hour">&nbsp;</span> 
 					<span class="minute">&nbsp;</span> 
 					<span class="second">&nbsp;</span> </div>
@@ -224,11 +224,11 @@ function deleteTimer(){
 								
 									<div class="exp_introduce_list" title="伪静态：伪静态通俗点说就是假的静态页面，也就是通过各种技术手段，让动态页面的URL看上去和静态页面的一样。实验中主要讲了识别伪静态页面，学会在伪静态页面中寻找注入点。">[[${experiment.brief_intro}]]</div>
 							<div class="hr"></div>		
-										<span class="infoSpan">实验过程中，如果虚拟机环境存在问题，请联系qq：1212121212</span>
-									
-										<button class="exp_begin_btn" id="addexp-button" style="display:block;border:none">
-											创建虚拟机
-										</button>
+							<span class="infoSpan">实验过程中，如果虚拟机环境存在问题，请联系qq：1212121212</span>
+							<input type="hidden" id="envir_name" th:value="${experiment.envir_name}">
+							<button class="exp_begin_btn" onclick="getExp()" id="addexp-button" style="display:block;border:none">
+								进入实验
+							</button>
 								
 								<div id="create-mac" class="mac" style="display:none;font-size:12px;left:120px;margin-top:8px;">
 								</div>
@@ -365,6 +365,7 @@ function deleteTimer(){
 <!--<script th:src="@{/js/jquery-3.2.1.min.js}"></script>-->
 
 <script th:src="@{/js/jquery-1.7.2.min.js}"></script>
+
 <script th:src="@{/js/jquery.select-1.3.6.js}"></script>
 <script th:src="@{/js/jquery/jquery.raty.js}"></script>
 <script th:src="@{/js/loading.js}"></script>
@@ -409,6 +410,26 @@ function deleteTimer(){
                 document.getElementById(tabs[i].id).style.display="block";
 			}
 		}
+	}
+
+	function getExp(){
+	    var envir_name = $("#envir_name").val();
+        $.ajax({
+            url: "/experiment/getExp/"+envir_name+"?exp_id="+parseInt($("#experiment_id").val()),
+            type: "POST",
+            success:function(data){
+                if(data.code == 0){
+                    window.open(data.data);
+                }else if(data.code==500210){
+                    window.location.href="/login";
+                } else{
+                    layer.msg(data.msg);
+                }
+            },
+            error:function(){
+                layer.closeAll();
+            }
+        });
 	}
 </script>
 

@@ -369,19 +369,12 @@
                                         <span>实验视频：</span>
                                         <input type="file" id="video" name="video" class="textarea" placeholder="浏览" accept="application/mp4">
                                     </p>
-                                    <p class="kiss">
-                                        <input type="hidden" name='question-json' th:value="${experiment.question}">
-                                        <span>实验测题：</span>
+                                    <p class="kiss" id="add-question">
+                                        <input type="hidden" id='question-json' th:value="${experiment.question}">
+                                        <span>实验测题：</span><a href="javascript:" class="item-operation" onclick="addQues()">添加题目</a>
 
-                                        <textarea id="question-statement" name="question-statement" placeholder="请输入题干" class="textarea"
-                                                  style="min-height: 32.9886px; z-index: auto; position: relative; line-height: 21px; font-size: 14px; transition: none 0s ease 0s; background: transparent !important;"></textarea>
 
-                                    <div style="padding-bottom: 10px">
-                                        <input type="text" class="question-items" placeholder="添加选项内容" id="question-items" ><a href="javascript:" onclick="addItem(new Date().getTime(),$('#question-items').val())">添加选项</a>
-                                    </div>
-                                    <div id="addItem" style="padding-bottom: 6px">
 
-                                    </div>
 
                                     </p>
                                     <p class="kiss">
@@ -430,33 +423,18 @@
                     degree[i].checked = true;
                 }
             }
-        })
-        $(document).ready(function () {
-            //取出从后台传过来的测题的json字符串，document取出来的是一个数组
-            var jsonStr = document.getElementsByName("question-json");
-            //解析json内容
-            if(jsonStr[0].value){
-                var json = JSON.parse(jsonStr[0].value);
-                var questionStatement = json.questionStatement;
-                var answer = json.answer;
-                var items = json.items;
-                $("#question-statement").val(questionStatement);
-                for(var i = 0; i < items.length;i++){
-                    for(var itemKey in items[i])
-                        //将解析结果显示到页面
-                        addItem(itemKey,items[i][itemKey]);
-                }
-                var questionItem = document.getElementsByName("question-item");
-                for(var i = 0; i < questionItem.length; i++){
-                    if(questionItem[i].value == answer){
-                        questionItem[i].checked = true;
-                    }
-                }
+            var questionHtml = "";
+            var questionJson = $("#question-json").val();
+            var questionList = JSON.parse(questionJson);
+            var count_ques = questionList.length;
+            for(var i=0;i<count_ques;i++) {
+                var question = JSON.stringify(questionList[i]);
+                var placeholder = "{\"questionStatement\": \"\",\"answer\": \"item1\",\"items\": [{\"item1\": \"\",\"item2\": \"\",\"item3\": \"\",\"item4\": \"\"}]}";
+                str = "<textarea id=\"question-content"+i+"\" name=\"question-content\" placeholder="+placeholder+" class=\"textarea\">"+question+"</textarea><a href='javascript:' class='item-operation' onclick='deleteques(this,\"question-content"+ i +"\")'>删除题目</a>";
+                $("#add-question").append(str);
             }
-
-
-
         })
+
     </script>
     <script>
         $(document).ready(function () {
@@ -476,6 +454,18 @@
 
 
         <script>
+            function deleteques(this_a,textId){
+                $("#"+textId).remove();
+                $(this_a).remove();
+            }
+
+            function addQues(){
+                var count_ques = $("#add-question").children("textarea").length;
+                var placeholder = "{\"questionStatement\": \"\",\"answer\": \"item1\",\"items\": [{\"item1\": \"\",\"item2\": \"\",\"item3\": \"\",\"item4\": \"\"}]}";
+                str = "<textarea id=\"question-content"+count_ques+"\" name=\"question-content\" placeholder="+placeholder+" class=\"textarea\">"+placeholder+"</textarea><a href='javascript:' class='item-operation' onclick='deleteques(this,\"question-content"+ count_ques +"\")'>删除题目</a>";
+                count_ques += 1;
+                $("#add-question").append(str);
+            }
             function addExp(){
                 $("#exp-info").validate({
                     submitHandler:function(form){
@@ -483,35 +473,25 @@
                     }
                 });
             }
+
             function doAdd(){
                 g_showLoading();
                 //构造测题的json数据
                 var question = "";
-                var items = "";
-                var answer = "";
-                if($("#question-statement").val().trim()){
                     //先构造测题选项的json数据
-                    for(var i = 0; i < $("#addItem").children("div").length; i++){
-                        //key是div子radio元素的value，value是div的文本内容
-                        var divId = $("#addItem").children("div")[i].id;
-                        var key = $("#"+divId).children("input").val().trim();
-                        var value = $("#"+divId).contents().filter(function (index, content) {
-                            //console.log(content)
-                            return content.nodeType === 3;
-                        }).text().trim();
-                        //{key:value,key:value}
-                        items = items + "\"" + key + "\":\"" + value +"\"";
-                        if(i < $("#addItem").children("div").length-1)
-                            items = items + ",";
-                    }
-                    //再同题干与答案结合起来
-                    //"question-statement":$("#question").val(),
-                    //"answer":$("#degree").val(),
-                    //"items":[items]
-                    answer = $("input[type=radio][name=question-item]:checked").val().trim();
-                    question = "[{\"questionStatement\":\""+$("#question-statement").val().trim()+"\",\"answer\":\""+answer+"\",\"items\":[{"+items+"}]}]";
+                for(var i = 0; i < $("#add-question").children("textarea").length; i++){
+                    //key是div子radio元素的value，value是div的文本内容
+                    // var value = $("#"+divId).contents().filter(function (index, content) {
+                    //     //console.log(content)
+                    //     return content.nodeType === 3;
+                    // }).text().trim();
+                    //{key:value,key:value}
+                    question = question + $("#question-content"+i).val();
+                    if(i < $("#add-question").children("textarea").length-1)
+                        question = question + ",";
                 }
-
+                //answer = $("input[type=radio][name=question-item]:checked").val().trim();
+                question = "["+question+"]";
                 $.ajax({
                     url: "/admin/exp_update",
                     enctype:"multipart/form-data",
@@ -553,17 +533,6 @@
                 });
             }
 
-            function addItem(itemCount,itemContent) {
-                //<label><input  type="radio" name="degree" value="0"/>高</label>
-                //var itemContent = $("#question-items").val();
-                itemStr = "<div id='item"+ itemCount +"' style='padding-left: 10px;font-size: 15px'><input type='radio' id='question-item' name='question-item' style='padding-left: 5px' value='"+itemCount+"'>&nbsp;"+itemContent+"<a href='javascript:' class='item-operation' onclick='deleteItem(\"item"+ itemCount +"\")'>删除选项</a></div>"
-                itemCount = itemCount+1;
-                $("#addItem").append(itemStr);
-                $("#question-items").val("");
-            }
-            function deleteItem(divId){
-                $("#"+divId).remove();
-            }
         </script>
 
 

@@ -5,6 +5,7 @@ import com.mooe.grad.domain.User;
 import com.mooe.grad.result.CodeMsg;
 import com.mooe.grad.result.Result;
 import com.mooe.grad.service.ExperimentService;
+import com.mooe.grad.service.UserService;
 import com.mooe.grad.vo.CommemtVo;
 import com.mooe.grad.vo.ExperimentVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -21,6 +23,9 @@ public class ExperimentController {
 
     @Autowired
     private ExperimentService experimentService;
+
+    @Autowired
+    private UserService userService;
 
 
     @RequestMapping("/exp_profile")
@@ -37,6 +42,16 @@ public class ExperimentController {
         //临时这么处理
         model.addAttribute("user", user);
         return "experiment";
+    }
+
+    @ResponseBody
+    @RequestMapping("/experiment/getExp/{envir_name}")
+    public Result<String> getExp(@PathVariable("envir_name") String envir_name, @RequestParam("exp_id") int exp_id, User user, Model model) throws Exception {
+        if(user == null)return Result.error(CodeMsg.SESSION_ERROR);
+        //添加到用户的记录
+        userService.addExp(user.getUser_id(), exp_id);
+        //String url = experimentService.getExp(envir_name);
+        return Result.success("");
     }
 
     @RequestMapping("/experiment/comment")

@@ -29,6 +29,7 @@ $(document).ready(function()
 	var ctrl = new ScrollMagic.Controller();
 
 	setHeader();
+    listQuestion()
 
 	$(window).on('resize', function()
 	{
@@ -180,3 +181,4 @@ $(document).ready(function()
 		}
 	}
 });
+

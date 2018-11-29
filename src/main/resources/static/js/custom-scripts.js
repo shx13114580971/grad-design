@@ -223,3 +223,6 @@
     });
 
 }(jQuery));
+$(document).ready(function () {
+    listQuestion();
+});

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Contact</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="description" content="Course Project">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="styles/bootstrap4/bootstrap.min.css">
+<link href="plugins/fontawesome-free-5.0.1/css/fontawesome-all.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" th:href="@{/styles/main_styles.css}">
+<link rel="stylesheet" type="text/css" href="styles/myhome_styles.css">
+<link rel="stylesheet" type="text/css" href="styles/myhome_responsive.css">
+</head>
+<body>
+
+<div class="super_container">
+
+	<!-- Header -->
+
+	<header class="header d-flex flex-row">
+		<div th:replace="/common/header :: navi">
+
+		</div>
+		<div th:include="/common/header :: login" th:if="${user != null}" id="login" class="header_side d-flex flex-row justify-content-center align-items-center">
+
+		</div>
+		<div th:include="/common/header :: unlogin" th:if="${user == null}" id="unlogin" class="header_side d-flex flex-row justify-content-center align-items-center">
+
+		</div>
+		<!-- Hamburger -->
+		<div class="hamburger_container">
+			<i class="fas fa-bars trans_200"></i>
+		</div>
+
+	</header>
+
+	<!-- Menu -->
+
+	<!-- Home -->
+
+	<div class="home">
+		<div class="home_background_container prlx_parent">
+			<div class="home_background prlx" style="background-image:url(images/contact_background.jpg)"></div>
+		</div>
+		
+	</div>
+
+	<!-- Contact -->
+
+	<div class="contact">
+		<div class="container">
+			
+			
+			<div class="main_con">
+				<div th:replace="/common/myhome_left :: myhome_left" class="con_left">
+				</div>
+				<div class="con_right">
+					<div class="popular page_section">
+						<div class="container">
+							<div class="row">
+								<div class="col">
+									<div>
+										<h2>基础知识实验</h2>
+									</div>
+								</div>
+							</div>
+
+							<div class="course_boxes">
+
+								<!-- Popular Course Item -->
+								<ul>
+									<li th:each="experiment:${experimentsList}" style="float: left;list-style: none;width: 280px">
+										<div class="col-lg-4 course_box">
+											<div class="card">
+												<a th:href="'/experiment/'+${experiment.exp_id}">
+													<img class="card-img-top" src="images/course_1.jpg" alt="https://unsplash.com/@kellybrito">
+													<div class="price_box d-flex flex-row align-items-center">
+														<div class="course_author_name" style="font-size: large">[[${experiment.exp_name}]]</div>
+														<div class="course_price d-flex flex-column align-items-center justify-content-center"><span>[[${experiment.degree}]]</span></div>
+													</div>
+												</a>
+											</div>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<!-- Footer -->
+
+	<footer th:replace="/common/footer :: footer">
+	</footer>
+
+</div>
+
+<script src="js/jquery-3.2.1.min.js"></script>
+<script src="styles/bootstrap4/popper.js"></script>
+<script src="styles/bootstrap4/bootstrap.min.js"></script>
+<script src="plugins/greensock/TweenMax.min.js"></script>
+<script src="plugins/greensock/TimelineMax.min.js"></script>
+<script src="plugins/scrollmagic/ScrollMagic.min.js"></script>
+<script src="plugins/greensock/animation.gsap.min.js"></script>
+<script src="plugins/greensock/ScrollToPlugin.min.js"></script>
+<script src="plugins/scrollTo/jquery.scrollTo.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyCIwF204lFZg1y4kPSIhKaHEXMLYxxuMhA"></script>
+<script src="plugins/easing/easing.js"></script>
+<script src="js/contact_custom.js"></script>
+
+
+</body>
+</html>

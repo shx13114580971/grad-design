@@ -369,17 +369,7 @@
                                     </p>
                                     <p class="kiss">
                                         <span>实验测题：</span><a href="javascript:" class="item-operation" onclick="addQues()">添加测题</a>
-                                        <div id="addQues" style="padding-bottom: 6px">
-                                            <textarea id="question-statement" name="question-statement" placeholder="请输入题干" class="textarea"></textarea>
-                                        </div>
 
-
-                                        <div style="padding-bottom: 10px">
-                                            <input type="text" class="question-items" placeholder="添加选项内容" id="question-items" ><a href="javascript:" class="item-operation" onclick="addItem(new Date().getTime())">添加选项</a>
-                                        </div>
-                                        <div id="addItem" style="padding-bottom: 6px">
-
-                                        </div>
                                         
                                     </p>
                                     <p class="kiss">
@@ -445,35 +435,39 @@
                     }
                 });
             }
+            var count_ques = 0;
+            function addQues(){
+                var placeholder = "{\"questionStatement\": \"\",\"answer\": \"item1\",\"items\": [{\"item1\": \"\",\"item2\": \"\",\"item3\": \"\",\"item4\": \"\"}]}";
+                str = "<textarea id=\"question-content"+count_ques+"\" name=\"question-content\" placeholder="+placeholder+" class=\"textarea\">"+placeholder+"</textarea><a href='javascript:' class='item-operation' onclick='deleteques(\"question-content"+ count_ques +"\")'>删除题目</a>";
+                count_ques += 1;
+                $("#add-question").append(str);
+            }
+            function addExp(){
+                $("#exp-info").validate({
+                    submitHandler:function(form){
+                        doAdd();
+                    }
+                });
+            }
+
             function doAdd(){
                 g_showLoading();
                 //构造测题的json数据
                 var question = "";
-                var questionList = "";
-                var items = "";
-                var answer = "";
-                if($("#question-statement").val()){
-                    //先构造测题选项的json数据
-                    for(var i = 0; i < $("#addItem").children("div").length; i++){
-                        //key是div子radio元素的value，value是div的文本内容
-                        var divId = $("#addItem").children("div")[i].id;
-                        var key = $("#"+divId).children("input").val().trim();
-                        var value = $("#"+divId).contents().filter(function (index, content) {
-                            //console.log(content)
-                            return content.nodeType === 3;
-                        }).text().trim();
-                        //{key:value,key:value}
-                        items = items + "\"" +key + "\":\"" + value +"\"";
-                        if(i < $("#addItem").children("div").length-1)
-                            items = items + ",";
-                    }
-                    //再同题干与答案结合起来
-                    //"question-statement":$("#question").val(),
-                    //"answer":$("#degree").val(),
-                    //"items":[items]
-                    answer = $("input[type=radio][name=question-item]:checked").val();
-                    question = "[{\"questionStatement\":\""+$("#question-statement").val().trim()+"\",\"answer\":\""+answer+"\",\"items\":[{"+items+"}]}]";
+                //先构造测题选项的json数据
+                for(var i = 0; i < $("#add-question").children("textarea").length; i++){
+                    //key是div子radio元素的value，value是div的文本内容
+                    // var value = $("#"+divId).contents().filter(function (index, content) {
+                    //     //console.log(content)
+                    //     return content.nodeType === 3;
+                    // }).text().trim();
+                    //{key:value,key:value}
+                    question = question + $("#question-content"+i).val();
+                    if(i < $("#add-question").children("textarea").length-1)
+                        question = question + ",";
                 }
+                //answer = $("input[type=radio][name=question-item]:checked").val().trim();
+                question = "["+question+"]";
                 $.ajax({
                     url: "/admin/exp_add",
                     type: "POST",
@@ -513,15 +507,9 @@
                     }
                 });
             }
-            function addItem(itemCount) {
-            //<label><input  type="radio" name="degree" value="0"/>高</label>
-                var itemContent = $("#question-items").val();
-                itemStr = "<div id='item"+ itemCount +"' style='padding-left: 10px;font-size: 15px'><input type='radio' id='question-item' name='question-item' style='padding-left: 5px' value='"+itemCount+"'>&nbsp;"+itemContent+"<a href='javascript:' class='item-operation' onclick='deleteItem(\"item"+ itemCount +"\")'>删除选项</a></div>"
-                $("#addItem").append(itemStr);
-                $("#question-items").val("");
-            }
-            function deleteItem(divId){
-                $("#"+divId).remove();
+
+            function deleteques(textId){
+                $("#"+textId).remove();
             }
         </script>
 

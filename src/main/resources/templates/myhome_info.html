@@ -53,28 +53,19 @@
 			
 			
 			<div class="main_con">
-				<div class="con_left">
-				<ul>
-					<li class="li_one"><a href="https://www.ichunqiu.com/personal/mycash"><span></span><p>账户信息</p><span class="eie"></span></a></li>
-					<li class="li_two"><a href="https://www.ichunqiu.com/personal/myMember"><span></span><p>我的测评</p><span class="eie"></span></a></li>
-					<li class="li_three"><a href="https://www.ichunqiu.com/personal/myGrade"><span></span><p>我的题目</p><span class="eie"></span></a></li>
-					<li class="li_four"><a href="https://www.ichunqiu.com/personal/myStudying"><span></span><p>我的实验</p><span class="eie"></span></a></li>
-					<li class="li_six"><a href="https://www.ichunqiu.com/personal/unused"><span></span><p>我的证书</p><span class="eie"></span></a></li>
-					<!--<li class="li_night"><a href="https://www.ichunqiu.com/personal/message"><span></span><p>消息中心</p><span class="eie"></span></a></li>
-					<li class="li_nine"><a href="https://www.ichunqiu.com/personal/index"><span></span><p>个人设置</p><span class="eie"></span></a></li>		-->
-				</ul>
+				<div th:replace="/common/myhome_left :: myhome_left" class="con_left">
 				</div>
 				<div class="con_right">
 					
 					<div class="commander commander_s">
 						<div class="jiben">
 							<p class="nickname">
-								<span>昵称：</span><span>踮脚瞻望的时光</span>
+								<span>昵称：</span><span>[[${user.username}]]</span>
 							</p>
-							<form action="" id="userFrm" method="post" class="regular">
+							<form action="/user/update" id="userFrm" method="post" class="regular">
 								<p class="kiss">
 									<span>姓名：</span>
-									<input type="text"  id="name" name="name" value="" placeholder="请输入您的真实姓名" />
+									<input type="text"  id="name" name="name" th:value="${user.name}" placeholder="请输入您的真实姓名" />
 								</p>
 								<p class="kiss">
 									<span>生日：</span>
@@ -95,13 +86,13 @@
 								</p>
 								<p class="kiss">
 									<span>邮箱：</span>
-									<input type="email" id="email" value="" readonly/>
-																			<a href="https://www.ichunqiu.com/personal/modifyEmail" class="xgyx">绑定邮箱</a>
+									<input type="email" id="email" th:value="${user.email}" readonly/>
+																			<a href="" class="xgyx">绑定邮箱</a>
 																	</p>
 								<p class="kiss">
 									<span>手机号：</span> 
-									<input type="text" id="phone" value="182******02" readonly/>
-																		<a href="https://www.ichunqiu.com/personal/bindPhone" class="ghsjh">更换手机号</a>
+									<input type="text" id="phone" th:value="${user.mobile}" readonly/>
+																		<a href="" class="ghsjh">更换手机号</a>
 																	</p>
 								<input id="token" name="token" type="hidden" value="44e6798f32dc7fb2ddee559e3914b978"/>
 								<input type="submit" value="保存" class="preservation" />

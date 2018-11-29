@@ -52,7 +52,7 @@ white-space:nowrap;text-overflow:ellipsis;-o-text-overflow:ellipsis;color: #3582
   padding:0 20px 1px 45px;
   background:url(/images/coursePage/ellipsis_bg.png) repeat-y;
 }
-.exp_right_list .exp_begin_btn{float:right;width:107px;height:39px;line-height:39px;text-align:center;background-color:#ff6f37;color:#fff;border-radius:3px;margin-top:20px;cursor:pointer;border:none}
+.exp_right_list .exp_begin_btn{float:left;width:147px;height:39px;line-height:39px;text-align:center;background-color:#ff6f37;color:#fff;border-radius:3px;margin-top:20px;cursor:pointer;border:none}
 /*璇剧▼涓嬪崐閮ㄥ垎*/
 .expbelowpart{width:100%;min-width:1200px;overflow:hidden;margin-bottom:40px;}
 /*璇剧▼宸︿晶*/
@@ -245,14 +245,14 @@ padding-left: 36px;height: 40px;line-height: 40px;width:100%;font-size: 16px;mar
   text-align:center;
   font-size:14px;
   color: #5f5f5f;
-  background-color: #bcf4fe;
+  background-color: #fed116;
   float:right;
   margin-right:5%;
   margin-top:20px;
   cursor:pointer;
-  border-radius:8px;
+  border-radius:5px;
   border:none;
-  box-shadow: 2px 1px 16px rgba(17, 17, 17, 0.20);
+  box-shadow: 2px 1px 6px rgba(17, 17, 17, 0.20);
 }
 /*鍐呮祴璇勪环*/
 .main_list .exp .evaluateBeta{width:804px;overflow:hidden;margin:30px 0 0 33px;}

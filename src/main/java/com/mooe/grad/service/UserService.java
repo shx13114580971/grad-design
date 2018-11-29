@@ -1,14 +1,17 @@
 package com.mooe.grad.service;
 
 import com.mooe.grad.dao.UserDao;
+import com.mooe.grad.domain.Experiment;
 import com.mooe.grad.domain.User;
 import com.mooe.grad.exception.GlobalException;
 import com.mooe.grad.redis.RedisService;
 import com.mooe.grad.redis.UserKey;
 import com.mooe.grad.result.CodeMsg;
 import com.mooe.grad.util.UUIDUtil;
+import com.mooe.grad.vo.ExperimentVo;
 import com.mooe.grad.vo.LoginVo;
 import com.mooe.grad.vo.RegisterVo;
+import com.mooe.grad.vo.UserExpVo;
 import com.sun.deploy.net.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,9 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class UserService implements Serializable{
@@ -100,4 +106,20 @@ public class UserService implements Serializable{
         return user;
     }
 
+    public void addExp(int user_id, int exp_id) {
+        List<UserExpVo> userExpVoList=userDao.getByUserIdAndExpId(user_id,exp_id);
+        if(userExpVoList.size() == 0){
+            Date createTime = new Date();
+            UserExpVo userExpVo = new UserExpVo();
+            userExpVo.setUser_id(user_id);
+            userExpVo.setExp_id(exp_id);
+            userExpVo.setCreate_time(createTime);
+            userDao.insertExp(userExpVo);
+        }
+
+    }
+
+    public List<ExperimentVo> listExp(int user_id) {
+        return userDao.listExperiment(user_id);
+    }
 }

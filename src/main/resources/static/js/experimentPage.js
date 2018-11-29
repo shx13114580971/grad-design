@@ -25,9 +25,9 @@ $(document).ready(function(){
 	$(".exp_menu_list li").eq(0).trigger("click");
 	queryRandExp(ecid);
 	getNewStudy(ecid);
-	$('#evaluate-start').raty({ 
-		score: 5,
-	});
+    $('#evaluate-start').raty({
+        score: 5,
+    });
 	if($(".exp_introduce_list").html().length > 145 ){
 		$(".exp_introduce_list").addClass("long");
 	}
@@ -396,7 +396,7 @@ function videoHide(){
 function expimentmenu(){
 	
 	$(".exp_menu_list").find("#guidancebook").live("click",function(){
-		queryGuideId(ceid);
+		//queryGuideId(ceid);
 	})
 	
 	$(".exp_menu_list").find("#evaluate").die("click").live("click",function(event){
