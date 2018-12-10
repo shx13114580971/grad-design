@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>[[${experiment.exp_name}]]</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="description" content="Course Project">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" th:href="@{/styles/bootstrap4/bootstrap.min.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/styles/main_styles.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/styles/experiment_styles.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/styles/expTestPage.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/styles/courses_responsive.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/styles/page.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/styles/video-js.min.css}">
+</head>
+<body>
+
+<div class="super_container">
+
+	<!-- Header -->
+
+	<header class="header d-flex flex-row">
+		<div th:replace="/common/header :: navi">
+
+		</div>
+		<div th:include="/common/header :: login" th:if="${user != null}" id="login" class="header_side d-flex flex-row justify-content-center align-items-center">
+
+		</div>
+		<div th:include="/common/header :: unlogin" th:if="${user == null}" id="unlogin" class="header_side d-flex flex-row justify-content-center align-items-center">
+
+		</div>
+
+		<!-- Hamburger -->
+		<div class="hamburger_container">
+			<i class="fas fa-bars trans_200"></i>
+		</div>
+
+	</header>
+
+	<header th:replace="/common/header :: search">
+
+	</header>
+	<!-- Menu -->
+
+	<!-- Home -->
+
+	<div class="home">
+		<div class="home_background_container prlx_parent">
+			<div class="home_background prlx" style="background-image:url(/images/courses_background.jpg)"></div>
+		</div>
+		<!-- 实验 -->
+		<input type="hidden" id="experiment_id" th:value="${experiment.exp_id}">
+		<input type="hidden" id="experiment" th:value="${experiment}">
+
+	</div>
+
+	<!-- Popular -->
+
+	<div class="exptoppart">
+		<div class="main">
+			<div class="expTopList" data-name="实验信息">
+				<div class="exp_left_list">
+					<div class="exp_name" title="">[[${experiment.exp_name}]]</div>
+					<div class="inerColl">
+						<i class="icon gray"><i class="icon orange" style="width:82.38%;"></i></i>
+						<span class="evaluateNum" style="margin-right:10px;">42人完成</span>
+						<div class="exp_menu" style="display: inline-block;">
+							<div class="personNum ri"><img th:src="@{/images/person-icon.png}"/>学习人数：208</div>
+							<div class="difficulty ri"><img th:src="@{/images/difficulty-icon.png}"/>难度：[[${experiment.degree}]]</div>
+
+						</div>
+						<div class="labnameDIv">标签：</div>
+						<div class="labasiDIv">
+
+							<span class="lablesp" id="class1" title="Web安全">[[${experiment.class1}]]</span>
+
+							<span class="lablesp" id="class2" title="SQL注入">[[${experiment.class2}]]</span>
+
+						</div>
+
+						<input type="hidden" id="envir_name" th:value="${experiment.envir_name}">
+
+					</div>
+					<div style="width: 400px">
+						<span class="infoSpan">实验过程中，如果虚拟机环境存在问题，请联系qq：1212121212</span>
+					</div>
+					<div class="affiliation ri" style="margin-left: 10px;">
+						<div class="affiliationlist">
+
+							<p title="SQL注入进阶"><a href="cour.do?w=1&c=C172.19.104.182014090911000400001" target="_blank">SQL注入进阶</a></p>
+
+						</div>
+
+					</div>
+
+					<div class="hr"></div>
+					<div class="exp_display" style="height: 300px">
+						<div class="exp_left" style="">
+							<div class="exp_content" title="">
+								<h2>内容背景</h2>
+								<pre>[[${experiment.content}]]</pre>
+							</div>
+							<div class="exp_purpose" title="">
+								<h2>实验目的</h2>
+								<pre>[[${experiment.purpose}]]</pre>
+							</div>
+						</div>
+
+					</div>
+
+					<div class="hr"></div>
+
+					<div id="create-mac" class="mac" style="display:none;font-size:12px;left:120px;margin-top:8px;">
+					</div>
+					<div id="end-mac" class="mac" style="display:none;margin-top: 6px;"><a href="javascript:void(0)">结束并释放实验机</a></div>
+					<div id="ending-mac" class="mac" style="display:none;"><img th:src="@{/img/loading4.gif}">正在发送请求</div>
+					<div id="creating-mac" class="mac" style="display:none;margin-top: 6px;">创建中…先预习一下实验指导书吧！</div>
+					<div id="queue" class="mac" style="display: none;margin-top: 21px;">
+						<img th:src="@{/images/queue.png}">分配环境的人数过多，感谢您的耐心等待！当前排第<font style="color: red;font-size: 26px;">3</font>位
+					</div>
+				</div>
+				<div class="exp_right_list">
+					<div style="width: 100%;height: 70px">
+						<button class="exp_begin_btn" onclick="getExp()" id="addexp-button" style="display:block;border:none">
+							开始测试
+						</button>
+					</div>
+
+					<h2>实验环境</h2>
+					<div class="exp_environment">
+						<pre>[[${experiment.environment}]]</pre>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="expbelowpart">
+		<div class="main">
+			<div class="expLeftList" data-name="实验左侧列表">
+				<div class="exp_menu_list">
+					<ul >
+						<li id="answer" >实验测题<span></span></li>
+					</ul>
+
+					<div class="hr"><span id="span_hr"></span></div>
+				</div>
+				<div class="main_list" id="tab_list">
+					<div id="answer_list" class="exp" data-name="实验测题">
+						<div style="height: 30px"></div>
+						<div id="questionList">
+
+						</div>
+
+						<input type="hidden" id="questionJson" th:value="${experiment.question}">
+
+						<input type="button" id="submitAnswer" onclick="isExpTestCorrect()" class="submitanswerBtn" value="提交">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="expRiList" data-name="实验右侧列表">
+			<div class="recommend" data-name="相关推荐">
+
+
+
+				<div class="recommend_name">相关推荐</div>
+
+
+				<div class="hr"><span></span></div>
+				<div class="recommendList">
+					<ul>
+
+					</ul>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<!-- Footer -->
+
+<footer th:replace="/common/footer :: footer">
+</footer>
+
+</div>
+
+<!--<script th:src="@{/js/jquery-3.2.1.min.js}"></script>-->
+
+<script th:src="@{/js/jquery-1.7.2.min.js}"></script>
+
+<script th:src="@{/js/jquery.select-1.3.6.js}"></script>
+<script th:src="@{/js/jquery/jquery.raty.js}"></script>
+<script th:src="@{/js/loading.js}"></script>
+<script th:src="@{/js/experimentPage.js}"></script>
+<script th:src="@{/js/experiment_env.js}"></script>
+<script th:src="@{/js/CommonUtil.js}"></script>
+<script th:src="@{/layer/layer.js}"></script>
+<script th:src="@{/styles/bootstrap4/popper.js}"></script>
+<script th:src="@{/styles/bootstrap4/bootstrap.min.js}"></script>
+<script th:src="@{/plugins/greensock/TweenMax.min.js}"></script>
+<script th:src="@{/plugins/greensock/TimelineMax.min.js}"></script>
+<script th:src="@{/plugins/scrollmagic/ScrollMagic.min.js}"></script>
+<script th:src="@{/plugins/greensock/animation.gsap.min.js}"></script>
+<script th:src="@{/plugins/greensock/ScrollToPlugin.min.js}"></script>
+<script th:src="@{/plugins/scrollTo/jquery.scrollTo.min.js}"></script>
+<script th:src="@{/plugins/easing/easing.js}"></script>
+<script th:src="@{/js/courses_custom.js}"></script>
+<script>
+    /*
+   * <h3 id="statement1" class="questionStatement">这是第一道题</h3>
+   <div id="items1" class="questionItem" ><span style="width: 5px"></span><input type='radio'  name='question-item' style='padding-left: 5px' value="123">选项1</div>
+   * */
+
+    function tab(pid){
+        var tabs = document.getElementById("tab_list").children;
+        for(var i = 0; i < tabs.length; i++){
+            if(pid == tabs[i].id){
+                document.getElementById(tabs[i].id).style.display="block";
+                document.getElementById("span_hr").style.left=i*135;
+            }else{
+                document.getElementById(tabs[i].id).style.display="block";
+            }
+        }
+    }
+
+    function getExp(){
+        var envir_name = $("#envir_name").val();
+        $.ajax({
+            url: "/experiment/getExp/"+envir_name+"?exp_id="+parseInt($("#experiment_id").val()),
+            type: "POST",
+            success:function(data){
+                if(data.code == 0){
+                    window.open(data.data);
+                }else if(data.code==500210){
+                    window.location.href="/login";
+                } else{
+                    layer.msg(data.msg);
+                }
+            },
+            error:function(){
+                layer.closeAll();
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

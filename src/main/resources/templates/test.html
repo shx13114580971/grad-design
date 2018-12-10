@@ -26,7 +26,7 @@
 		<div th:include="/common/header :: unlogin" th:if="${user == null}" id="unlogin" class="header_side d-flex flex-row justify-content-center align-items-center">
 
 		</div>
-
+		<input id="user" type="hidden" th:value="${user}">
 		<!-- Hamburger -->
 		<div class="hamburger_container">
 			<i class="fas fa-bars trans_200"></i>
@@ -43,7 +43,7 @@
 
 	<div class="home">
 		<div class="home_background_container prlx_parent">
-			<!-- <div class="home_background prlx" style="background-image:url(/images/news_background.jpg)"></div> -->
+			<div class="home_background prlx" style="background-image:url(/images/news_background.jpg)"></div>
 		</div>
 		
 	</div>
@@ -51,61 +51,65 @@
 	<!-- News -->
 
 	<div class="news">
-		<div class="container">
-			<div class="row">
+		<form id="startTest" action="/test/test_exp" method="post">
+			<div class="container">
+				<div class="row">
 
-				<!-- News Column -->
+					<!-- News Column -->
 
-				<div class="col-sm-6 col-md-4">
+					<div class="col-sm-6 col-md-4">
+						<a class="startTest" href="javascript:"value = "Web安全">
+							<div class="card rc_4">
 
-					<div class="card rc_4">
-						<a></a>
-						<div class="circle">
-							<div class="icon" data-reactid=".0.0.0.4.0.0.$card-skill-challenge.0.0.0">
-								<img alt="" th:src="@{/images/icon_selfguided.png}" class="img-responsive" data-reactid=".0.0.0.4.0.0.$card-skill-challenge.0.0.0.0">
+								<div class="circle">
+									<div class="icon" data-reactid=".0.0.0.4.0.0.$card-skill-challenge.0.0.0">
+										<img alt="" th:src="@{/images/icon_selfguided.png}" class="img-responsive" data-reactid=".0.0.0.4.0.0.$card-skill-challenge.0.0.0.0">
+									</div>
+								</div>
+								<h2>Web安全</h2>
 							</div>
-						</div>
-						<h2>Web安全</h2>
+						</a>
 					</div>
-				</div>
-				<div class="col-sm-6 col-md-4">
+					<div class="col-sm-6 col-md-4">
 
-					<div class="card rc_4">
-						<!-- News Post -->
-						<div class="circle">
-							<div class="icon" data-reactid=".0.0.0.4.0.0.$card-skill-challenge.0.0.0">
-								<img alt="" th:src="@{/images/icon_simulatedexam.png}" class="img-responsive" data-reactid=".0.0.0.4.0.0.$card-skill-challenge.0.0.0.0">
+						<div class="card rc_4">
+							<!-- News Post -->
+							<div class="circle">
+								<div class="icon" data-reactid=".0.0.0.4.0.0.$card-skill-challenge.0.0.0">
+									<img alt="" th:src="@{/images/icon_simulatedexam.png}" class="img-responsive" data-reactid=".0.0.0.4.0.0.$card-skill-challenge.0.0.0.0">
+								</div>
 							</div>
+							<h2>数据安全</h2>
 						</div>
-						<h2>数据安全</h2>
 					</div>
-				</div>
-				<div class="col-sm-6 col-md-4">
+					<div class="col-sm-6 col-md-4">
 
-					<div class="card rc_4">
-						<!-- News Post -->
-						<div class="circle">
-							<div class="icon" data-reactid=".0.0.0.4.0.0.$card-skill-challenge.0.0.0">
-								<img alt="" th:src="@{/images/icon_personalize.png}" class="img-responsive" data-reactid=".0.0.0.4.0.0.$card-skill-challenge.0.0.0.0">
+						<div class="card rc_4">
+							<!-- News Post -->
+							<div class="circle">
+								<div class="icon" data-reactid=".0.0.0.4.0.0.$card-skill-challenge.0.0.0">
+									<img alt="" th:src="@{/images/icon_personalize.png}" class="img-responsive" data-reactid=".0.0.0.4.0.0.$card-skill-challenge.0.0.0.0">
+								</div>
 							</div>
+							<h2>系统安全</h2>
 						</div>
-						<h2>系统安全</h2>
 					</div>
-				</div>
-				<div class="col-sm-6 col-md-4">
+					<div class="col-sm-6 col-md-4">
 
-					<div class="card rc_4">
-						<!-- News Post -->
-						<div class="circle">
-							<div class="icon" data-reactid=".0.0.0.4.0.0.$card-skill-challenge.0.0.0">
-								<img alt="" th:src="@{/images/icon_progressive.png}" class="img-responsive" data-reactid=".0.0.0.4.0.0.$card-skill-challenge.0.0.0.0">
+						<div class="card rc_4">
+							<!-- News Post -->
+							<div class="circle">
+								<div class="icon" data-reactid=".0.0.0.4.0.0.$card-skill-challenge.0.0.0">
+									<img alt="" th:src="@{/images/icon_progressive.png}" class="img-responsive" data-reactid=".0.0.0.4.0.0.$card-skill-challenge.0.0.0.0">
+								</div>
 							</div>
+							<h2>应用安全</h2>
 						</div>
-						<h2>应用安全</h2>
 					</div>
 				</div>
 			</div>
-		</div>
+		</form>
+
 	</div>
 
 	<!-- Footer -->
@@ -118,6 +122,7 @@
 <script src="js/jquery-3.2.1.min.js"></script>
 <script src="styles/bootstrap4/popper.js"></script>
 <script src="styles/bootstrap4/bootstrap.min.js"></script>
+<script th:src="@{/layer/layer.js}"></script>
 <script src="plugins/greensock/TweenMax.min.js"></script>
 <script src="plugins/greensock/TimelineMax.min.js"></script>
 <script src="plugins/scrollmagic/ScrollMagic.min.js"></script>
@@ -139,5 +144,32 @@
             }
         );
     });
+
+    $(".startTest").click(function (e) {
+        var testClass = $(this).attr("value");
+        $.ajax({
+            url: "/test/test_exp/?testClass="+testClass,
+            type: "POST",
+            success:function(data){
+                if(data.code == 0){
+                    document.location.href = "/test/test_exp?testClass="+testClass+"&testId="+data.data;
+                }else if(data.code==500210){
+                    layer.msg("请先登录");
+                } else{
+                    layer.msg(data.msg);
+                }
+            },
+            error:function(){
+                layer.closeAll();
+            }
+        });
+        // if(user == null || user == ""){
+        //     layer.msg("请先登录");
+        // }else {
+        //
+        //     document.location.href = "/test/test_exp?testClass="+$(this).attr("value");
+        // }
+    });
+
 </script>
 </html>

@@ -16,7 +16,8 @@ $(document).ready(function(){
 	experimentClick();
 	expimentmenu();
 	isVedeoHover();
-	listQuestion();
+	//listQuestion();
+    listTestQuestion();
 	$(".head_img img").attr("src",$(".siLg-img img").attr("src"))
 	queryCollectionById(ecid);
 	$("#select-satisfactiondiv").sSelect();
@@ -28,13 +29,13 @@ $(document).ready(function(){
     $('#evaluate-start').raty({
         score: 5,
     });
-	if($(".exp_introduce_list").html().length > 145 ){
-		$(".exp_introduce_list").addClass("long");
-	}
+	// if($(".exp_introduce_list").html().length > 145 ){
+	// 	$(".exp_introduce_list").addClass("long");
+	// }
 });
 
 //列出测题
-function listQuestion() {
+function listTestQuestion() {
     var count =0;
     var questionHtml = "";
     var questionJson = $("#questionJson").val();
@@ -46,19 +47,19 @@ function listQuestion() {
         questionHtml += "<h3 class=\"questionStatement\">"+ question.questionStatement +"<input type='hidden' id='answer"+ count +"' value='"+ question.answer +"'></h3>";
         var items = question.items[0];
         for(var item in items){
-        	if(item == question.answer){
+            if(item == question.answer){
                 questionHtml += "<div id=\"item"+ item +"\" class=\"questionItem_correct\" ><input type='radio'  name='question-item"+ count +"' style='padding-left: 5px' value=\""+ item +"\">&nbsp;"+ items[item] +"</div>";
-			}else{
+            }else{
                 questionHtml += "<div id=\"item"+ item +"\" class=\"questionItem_incorrect\" ><input type='radio'  name='question-item"+ count +"' style='padding-left: 5px' value=\""+ item +"\">&nbsp;"+ items[item] +"</div>";
-			}
+            }
         }
         questionHtml += "</div>";
         count++;
     }
     $("#questionList").append(questionHtml);
 }
-//测题答案判断
-function iscorrect(){
+//实验中的测题答案判断
+function isExpCorrect(){
     var count = $("#questionList").children("div").length;
     $(".questionItem_correct").css("color","green");
     $(".questionItem_correct").css("font-size","18px");
@@ -67,13 +68,54 @@ function iscorrect(){
     	var answer = $("#answer"+i).val();
     	var checked = $("input[type=radio][name=question-item"+ i +"]:checked");
     	if(answer == checked.val()){
-
+    		//回答正确应该把这道题发送给后台做记录，后台自动抽取下一道题
 		}else{
             checked.parent("div").css("color","red");
             checked.parent("div").css("font-size","18px");
             checked.parent("div").css("font-weight","bold");
 		}
 	}
+}
+
+//实验测评中的测题答案判断
+function isExpTestCorrect(){
+    var count = $("#questionList").children("div").length;
+    $(".questionItem_correct").css("color","green");
+    $(".questionItem_correct").css("font-size","18px");
+    $(".questionItem_correct").css("font-weight","bold");
+    for(var i = 0; i < count; i++){
+        var answer = $("#answer"+i).val();
+        var checked = $("input[type=radio][name=question-item"+ i +"]:checked");
+        if(answer == checked.val()){
+            //回答正确应该把这个实验发送给后台持久化，并放入缓存，避免下次重复选题，后台自动选取下一道题
+        }else{
+            checked.parent("div").css("color","red");
+            checked.parent("div").css("font-size","18px");
+            checked.parent("div").css("font-weight","bold");
+            //回答错误则将这个实验信息传至后台，然后推荐实验
+            $.ajax({
+                url: "/test/recommExp",
+                type: "POST",
+				data:{
+                	class1:$("#class1").text(),
+				},
+                success:function(data){
+                    if(data.code == 0){
+                    	var expNameList = data.data;
+                    	var thisExpName = $(".exp_name").text();
+                        alert("回答错误，推荐您学习以下实验："+expNameList+", "+thisExpName);
+                    }else if(data.code==500210){
+                        window.location.href="/login";
+                    } else{
+                        layer.msg(data.msg);
+                    }
+                },
+                error:function(){
+                    layer.closeAll();
+                }
+            });
+        }
+    }
 }
 
 
@@ -1058,7 +1100,7 @@ function submitQue(instanceId,examtype){
 	dataStr += '"instanceId":"'+instanceId+'"}';
 	if(examtype != 2){
 		if(i <= 0){
-			jAlert("未选择答案！", null, null, 5000, null,"error",null,getPh());
+			//jAlert("未选择答案！", null, null, 5000, null,"error",null,getPh());
 			return;
 		}
 	}
