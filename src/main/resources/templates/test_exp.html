@@ -8,8 +8,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" th:href="@{/styles/bootstrap4/bootstrap.min.css}">
 	<link rel="stylesheet" type="text/css" th:href="@{/styles/main_styles.css}">
-	<link rel="stylesheet" type="text/css" th:href="@{/styles/experiment_styles.css}">
 	<link rel="stylesheet" type="text/css" th:href="@{/styles/expTestPage.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/styles/experiment_styles.css}">
 	<link rel="stylesheet" type="text/css" th:href="@{/styles/courses_responsive.css}">
 	<link rel="stylesheet" type="text/css" th:href="@{/styles/page.css}">
 	<link rel="stylesheet" type="text/css" th:href="@{/styles/video-js.min.css}">
@@ -208,7 +208,7 @@
 <script th:src="@{/plugins/greensock/ScrollToPlugin.min.js}"></script>
 <script th:src="@{/plugins/scrollTo/jquery.scrollTo.min.js}"></script>
 <script th:src="@{/plugins/easing/easing.js}"></script>
-<script th:src="@{/js/courses_custom.js}"></script>
+<!--<script th:src="@{/js/courses_custom.js}"></script>-->
 <script>
     /*
    * <h3 id="statement1" class="questionStatement">这是第一道题</h3>
@@ -247,6 +247,8 @@
         });
     }
 </script>
-
+<div id="recommLayer">
+	<h3 class="recomm">回答错误，推荐您学习以下实验</h3>
+</div>
 </body>
 </html>

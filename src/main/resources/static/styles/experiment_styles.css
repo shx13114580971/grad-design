@@ -831,11 +831,7 @@ element.style {
     bottom: 0px;
     height: 60px;
 }
-.exp_right_list {
-    width: 633px;
-    float: left;
-    margin-top: 30px;
-}
+
 .exp_img_list .exp_video {
     position: absolute;
     left: 45%;
@@ -867,8 +863,6 @@ element.style {
   padding:0 20px 1px 45px;
   background:url(/img/coursePage/ellipsis_bg.png) repeat-y;
 }
-.exp_right_list .exp_begin_btn{float:right;width:107px;height:39px;line-height:39px;text-align:center;background-color:#ff6f37;color:#fff;border-radius:3px;margin-top:20px;cursor:pointer;border:none}
-.exp_right_list{width:633px;float:left;margin-top:30px;}
 .exp_right_list .exp_name{width:450px;font-size:20px;color:#333333;height:25px;line-height:24px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display: inline-block;vertical-align: top;}
 .exp_right_list .exp_evaluate{width:100%;margin-top:9px;}
 .exp_right_list .inerColl{display: inline-block;vertical-align: top;line-height: 30px;margin-left: 5px;}
@@ -907,8 +901,6 @@ white-space:nowrap;text-overflow:ellipsis;-o-text-overflow:ellipsis;color: #3582
     font-weight: bold;
     font-family: 微软雅黑；;
 }
-
-.exp_right_list .exp_begin_btn{float:right;width:107px;height:39px;line-height:39px;text-align:center;background-color:#ff6f37;color:#fff;border-radius:3px;margin-top:20px;cursor:pointer;border:none}
 
 /**************below**********/
 .expbelowpart{width:100%;min-width:1200px;overflow:hidden;margin-bottom:40px;}

@@ -797,6 +797,11 @@ section
 	transition: background-color .3s ease;
 }
 
+.layer-btn .layui-layer-btn a{
+	color: #FFFFFF;
+	background-color: #f6af03;
+}
+
 .card-over {
 	position: relative;
 	left: -10px;

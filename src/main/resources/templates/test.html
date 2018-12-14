@@ -152,7 +152,17 @@
             type: "POST",
             success:function(data){
                 if(data.code == 0){
-                    document.location.href = "/test/test_exp?testClass="+testClass+"&testId="+data.data;
+                    if(data.data == null) {
+						layer.confirm("您已通过所有实验测试，是否重新开始？",{ skin:"layer-btn", btn: ['确定', '取消']
+                        }, function(index, layero){
+                            //按钮【按钮一】的回调
+                        }, function(index){
+                            //按钮【按钮二】的回调
+                        });
+                    }else{
+                        document.location.href = "/test/test_exp?testClass="+testClass+"&testId="+data.data;
+					}
+
                 }else if(data.code==500210){
                     layer.msg("请先登录");
                 } else{
@@ -172,4 +182,7 @@
     });
 
 </script>
+<style>
+
+</style>
 </html>

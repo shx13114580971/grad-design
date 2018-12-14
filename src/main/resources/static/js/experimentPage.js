@@ -83,39 +83,85 @@ function isExpTestCorrect(){
     $(".questionItem_correct").css("color","green");
     $(".questionItem_correct").css("font-size","18px");
     $(".questionItem_correct").css("font-weight","bold");
+    //只有所有选择测题都正确，这道实验测试才算通过
+    var flag = true;
     for(var i = 0; i < count; i++){
         var answer = $("#answer"+i).val();
         var checked = $("input[type=radio][name=question-item"+ i +"]:checked");
-        if(answer == checked.val()){
-            //回答正确应该把这个实验发送给后台持久化，并放入缓存，避免下次重复选题，后台自动选取下一道题
-        }else{
+        if(answer != checked.val()){
             checked.parent("div").css("color","red");
             checked.parent("div").css("font-size","18px");
             checked.parent("div").css("font-weight","bold");
+            flag = false;
             //回答错误则将这个实验信息传至后台，然后推荐实验
-            $.ajax({
-                url: "/test/recommExp",
-                type: "POST",
-				data:{
-                	class1:$("#class1").text(),
-				},
-                success:function(data){
-                    if(data.code == 0){
-                    	var expNameList = data.data;
-                    	var thisExpName = $(".exp_name").text();
-                        alert("回答错误，推荐您学习以下实验："+expNameList+", "+thisExpName);
-                    }else if(data.code==500210){
-                        window.location.href="/login";
-                    } else{
-                        layer.msg(data.msg);
-                    }
-                },
-                error:function(){
-                    layer.closeAll();
-                }
-            });
         }
     }
+    if(flag == false){
+        $.ajax({
+            url: "/test/recommExp",
+            type: "POST",
+            data:{
+            	exp_id:$("#experiment_id").val(),
+                class1:$("#class1").text(),
+            },
+            success:function(data){
+                if(data.code == 0){
+                    var expList = data.data;
+                    var expLink = "";
+                    var thisExpId = $("#experiment_id").val();
+                    var thisExpName = $(".exp_name").text();
+                    for(var i = 0; i < expList.length; i++){
+                    	expLink = expLink + "<div class='recommLink'><a class='recommLink' href='/experiment/"+expList[i].exp_id+"'>"+expList[i].exp_name+"</a></div>";
+					}
+
+					expLink = expLink + "<div class='recommLink'><a href='/experiment/"+thisExpId+"'>"+thisExpName+"</a></div>"
+                    $("#recommLayer").append(expLink);
+                    layer.open({
+                        title:"实验推荐",
+                        type:1,
+                        content:$("#recommLayer"),
+                        area: ["500px", "250px"],
+                        skin:"layer-btn",
+                        btn: ["取消"],
+                    });
+                }else if(data.code==500210){
+                    window.location.href="/login";
+                } else{
+                    layer.msg(data.msg);
+                }
+            },
+            error:function(){
+                layer.closeAll();
+            }
+        });
+	}else {
+        //回答正确应该把这个实验发送给后台持久化，并放入缓存，避免下次重复选题，后台自动选取下一道题
+		var testClass = $("#class1").text();
+        $.ajax({
+            url: "/test/next_exp/"+$("#experiment_id").val()+"?class1="+testClass,
+            type: "POST",
+            success:function(data){
+                if(data.code == 0){
+                	if(data.data == null){
+                		alert("恭喜你，已经通过此类型下所有实验测试");
+
+					}else{
+                        if(confirm("通过本实验测试，是否进行下一道？")){
+                            document.location.href = "/test/test_exp?testClass="+testClass+"&testId="+data.data;
+                        }
+					}
+                }else if(data.code==500210){
+                    layer.msg("请先登录");
+                } else{
+                    layer.msg(data.msg);
+                }
+            },
+            error:function(){
+                layer.closeAll();
+            }
+        });
+	}
+
 }
 
 

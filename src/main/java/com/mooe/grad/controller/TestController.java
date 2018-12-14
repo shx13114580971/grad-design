@@ -39,14 +39,23 @@ public class TestController {
     @ResponseBody
     @RequestMapping("/recommExp")
     public Result<List> recommExp(ExperimentVo experimentVo, User user){
-
-        List<String> expNameList = testService.getRecommExp(experimentVo, user.getUser_id());
+        List<ExperimentVo> expNameList = testService.getRecommExp(experimentVo, user.getUser_id());
         return Result.success(expNameList);
+    }
+
+    //将测试通过的实验添加到数据库，并选取下一个实验进行测试，返回实验id
+    @ResponseBody
+    @RequestMapping("/next_exp/{exp_id}")
+    public Result<String> insertThisAndGetNext(@PathVariable("exp_id")int exp_id,
+                                               @RequestParam("class1")String class1, User user){
+        if (user == null)return Result.error(CodeMsg.SESSION_ERROR);
+        String testId = testService.insertThisAndGetNextExp(exp_id, user.getUser_id(), class1);
+        return Result.success(testId);
     }
 
     @ResponseBody
     @RequestMapping("/test_exp/")
-    public Result<String> getTestExpId(@RequestParam("testClass") String class1, User user, Model model){
+    public Result<String> getTestExpId(@RequestParam("testClass") String class1, User user){
         if (user == null)return Result.error(CodeMsg.SESSION_ERROR);
         String testId = testService.getStartTestExpId(class1, user.getUser_id());
         return Result.success(testId);

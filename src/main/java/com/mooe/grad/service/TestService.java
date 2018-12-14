@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @Service
 public class TestService {
@@ -26,16 +27,11 @@ public class TestService {
 
     public String getStartTestExpId(String class1, int user_id) {
         List<ExperimentVo> listExpClass1 = testDao.getExpByClass1(class1);
-        List<UserExpTest> listAll = testDao.listAll(user_id);
-        //排除掉已经学过的实验，学过的实验就不再测试了
-        for(ExperimentVo experiment : listExpClass1){
-            for(UserExpTest userExpTest : listAll){
-                if(experiment.getExp_id() == userExpTest.getExp_id()){
-                    listExpClass1.remove(experiment);
-                    listAll.remove(userExpTest);
-                }
-            }
-        }
+        Iterator<ExperimentVo> experimentVoIter = listExpClass1.iterator();
+        List<Integer> allPassedExpId = testDao.listAllPassedExpId(user_id, class1);
+        //排除掉已经测试通过的实验，通过的实验就不再测试了
+        removePassedOrLearnedExp(experimentVoIter, allPassedExpId);
+
 //        for(ExperimentVo experiment : listExpClass1){
 //        }
         if(listExpClass1.size() > 0){
@@ -45,32 +41,47 @@ public class TestService {
         return null;
     }
 
-    public List<String> getRecommExp(ExperimentVo experimentVo, int user_id) {
+
+
+    public List<ExperimentVo> getRecommExp(ExperimentVo experimentVo, int user_id) {
         //推荐这个实验，以及随机选取一道相同类型的实验，在此之前要先排除掉已经学过的实验
         //已经学过的实验
-        List<Integer> userExpIdList = testDao.getExpIdByUserId(user_id);
-        Iterator<Integer> userExpIdIter = userExpIdList.iterator();
-                //同类型的实验
+        List<Integer> userExpIdList = testDao.getExpIdByUserIdAndClass1(user_id,experimentVo.getClass1());
+        //现在做的这道实验测试一定是用户没学习过的，所以一定会被推荐，需要将这个实验排除掉
+        userExpIdList.add(experimentVo.getExp_id());
         List<ExperimentVo> experimentList = testDao.getExpByClass1(experimentVo.getClass1());
-        Iterator<ExperimentVo> experimentIter = experimentList.iterator();
+
+        Iterator<ExperimentVo> experimentVoIter = experimentList.iterator();
         //排除已经学过的实验
-        while (experimentIter.hasNext()){
-            while(userExpIdIter.hasNext()){
-                ExperimentVo exp  = experimentIter.next();
-                Integer userExpId = userExpIdIter.next();
-                if(exp.getExp_id() == userExpId){
-                    experimentIter.remove();
-                    userExpIdIter.remove();
-                }
-            }
-        }
-        experimentList = IteratorUtils.toList(experimentIter);
+        removePassedOrLearnedExp(experimentVoIter, userExpIdList);
+
         if(experimentList.size() > 0){
+            //随机选一个实验
             int index = (int)(Math.random()*experimentList.size());
-            List<String> expNameList = new ArrayList<>();
-            expNameList.add(experimentList.get(index).getExp_name());
+            List<ExperimentVo> expNameList = new ArrayList<>();
+            expNameList.add(experimentList.get(index));
             return expNameList;
         }
         return null;
+    }
+
+    public String insertThisAndGetNextExp(int exp_id, int user_id, String class1) {
+        List<Integer> userExpTestList = testDao.getExpByExpIdAndUserId(exp_id, user_id);
+        if(userExpTestList.size() == 0){
+            testDao.insertPassedExp(exp_id, user_id);
+        }
+        String testId = getStartTestExpId(class1, user_id);
+        return testId;
+    }
+    private void removePassedOrLearnedExp(Iterator<ExperimentVo> experimentVoIter,
+                                          List<Integer> allUnusedExpId) {
+        while (experimentVoIter.hasNext()){
+            ExperimentVo experimentVo = experimentVoIter.next();
+            for(Integer unusedExpId : allUnusedExpId){
+                if(experimentVo.getExp_id() == unusedExpId){
+                    experimentVoIter.remove();
+                }
+            }
+        }
     }
 }

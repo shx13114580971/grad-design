@@ -29,7 +29,7 @@ $(document).ready(function()
 	var ctrl = new ScrollMagic.Controller();
 
 	setHeader();
-    listQuestion()
+    //listTestQuestion()
 
 	$(window).on('resize', function()
 	{
