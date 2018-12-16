@@ -135,11 +135,11 @@
 				
 				<!-- Popular Course Item -->
 				<ul>
-				<li th:each="experiment:${experimentsList}" style="float: left;list-style: none;width: 280px">
+				<li th:each="experiment:${experimentsList}" class="exp-list-li" >
 					<div class="col-lg-4 course_box">
 						<div class="card">
 							<a th:href="'/experiment/'+${experiment.exp_id}">
-							<img class="card-img-top" src="images/course_1.jpg" alt="https://unsplash.com/@kellybrito">
+							<img class="card-img-top" th:src="${experiment.image}" alt="https://unsplash.com/@kellybrito">
 							<div class="price_box d-flex flex-row align-items-center">
 								<div class="course_author_name" style="font-size: large">[[${experiment.exp_name}]]</div>
 								<div class="course_price d-flex flex-column align-items-center justify-content-center"><span>[[${experiment.degree}]]</span></div>

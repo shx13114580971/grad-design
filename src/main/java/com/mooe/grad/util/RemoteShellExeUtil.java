@@ -16,6 +16,7 @@ public class RemoteShellExeUtil {
     private Connection conn;
     /** 远程机器IP */
     private String ip;
+    private int port;
     /** 用户名 */
     private String osUsername;
     /** 密码 */
@@ -30,10 +31,11 @@ public class RemoteShellExeUtil {
       * @param usr
      * @param pasword
      */
-    public RemoteShellExeUtil(String ip, String usr, String pasword) {
+    public RemoteShellExeUtil(String ip, String usr, String pasword, int port) {
         this.ip = ip;
         this.osUsername = usr;
         this.password = pasword;
+        this.port = port;
     }
 
 
@@ -43,7 +45,7 @@ public class RemoteShellExeUtil {
      * @throws IOException
      */
     private boolean login() throws IOException {
-        conn = new Connection(ip);
+        conn = new Connection(ip,port);
         conn.connect();
         return conn.authenticateWithPassword(osUsername, password);
     }

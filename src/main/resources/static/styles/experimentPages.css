@@ -19,8 +19,6 @@
 .exp_right_list .exp_evaluate{width:100%;margin-top:9px;}
 .exp_right_list .inerColl{display: inline-block;vertical-align: top;line-height: 30px;margin-left: 5px;}
 .exp_evaluate .icon{height: 14px;display: inline-block;margin-right:5px;line-height: 0;}
-.exp_evaluate .gray{background: url(../../img/onlineExperiment/start-gray.jpg);width: 90px;overflow: hidden;position:relative;margin-top:5px;}
-.exp_evaluate .orange{background: url(../../img/onlineExperiment/start-orange.jpg);position:absolute;top:0;left:0;}
 .exp_evaluate .collect{margin-left:20px;}
 .exp_evaluate .collect i{vertical-align:bottom;cursor:pointer;}
 .exp_menu{margin-top:9px;height:24px;display: inline-block;}
@@ -73,13 +71,13 @@ white-space:nowrap;text-overflow:ellipsis;-o-text-overflow:ellipsis;color: #3582
 .main_list .exp .guidancebook .guidancebookList{width:100%;overflow:hidden;margin-top:10px;position:relative;min-height:98px;}
 .main_list .exp .guidancebook .guidancebookList .guidancebookdiv{padding-left: 5px;padding-top:15px;padding-bottom:15px;width:100%;}
 .main_list .exp .guidancebook .guidancebookList .guidancebookdiv pre{line-height: 24px;text-align: justify;font-size: 14px;color: #545454 !important;all:initial; white-space:pre-line; }
-.main_list .exp .guidancebook .guidancebookList .guidancebookdiv .guidancebooktitle{background: #D2D3D5 url(../../img/common/packup.png) no-repeat 10px center;
+.main_list .exp .guidancebook .guidancebookList .guidancebookdiv .guidancebooktitle{background: #D2D3D5 url(../images/common/packup.png) no-repeat 10px center;
 padding-left: 36px;height: 40px;line-height: 40px;width:100%;font-size: 16px;margin-bottom: 10px;color: #333;}
-.main_list .exp .guidancebook .guidancebookList .exptaskdiv .fullscreen{width:28px;height:28px;background:url("../../img/big.png") no-repeat;}
-.main_list .exp .guidancebook .guidancebookList .exptaskdiv .fullscreen:hover{background:url("../../img/bigHover.png") no-repeat;}
-.main_list .exp .guidancebook .guidancebookList .exptaskdiv .unfold{width:28px;height:28px;background:url("../../img/Expand.png") no-repeat;}
-.main_list .exp .guidancebook .guidancebookList .exptaskdiv .unfold:hover{background:url("../../img/Expand_hover.png") no-repeat;}
-.main_list .exp .guidancebook .guidancebookList .guidancebookdiv .bgUnfold{background-image: url(../../img/common/Unfold.png);}
+.main_list .exp .guidancebook .guidancebookList .exptaskdiv .fullscreen{width:28px;height:28px;background:url("../images/big.png") no-repeat;}
+.main_list .exp .guidancebook .guidancebookList .exptaskdiv .fullscreen:hover{background:url("../images/bigHover.png") no-repeat;}
+.main_list .exp .guidancebook .guidancebookList .exptaskdiv .unfold{width:28px;height:28px;background:url("../images/Expand.png") no-repeat;}
+.main_list .exp .guidancebook .guidancebookList .exptaskdiv .unfold:hover{background:url("../images/Expand_hover.png") no-repeat;}
+.main_list .exp .guidancebook .guidancebookList .guidancebookdiv .bgUnfold{background-image: url(../images/common/Unfold.png);}
 .main_list .exp .guidancebook .guidancebookList .guidancebookdiv .guidancebookcontent{font-size: 14px;padding-left:25px;padding-bottom: 15px;}
 .main_list .exp .guidancebook .guidancebookList .guidancebookdiv .guidancebookcontent p{margin: 0 36px 8px 8px;line-height:25px;color: #555;}
 .main_list .exp .guidancebook .guidancebookList .guidancebookdiv .guidancebookcontent p img{max-width:100%;border:0;}
@@ -234,10 +232,10 @@ padding-left: 36px;height: 40px;line-height: 40px;width:100%;font-size: 16px;mar
 #answer_list .questionsList .questionsdiv .answerlist li{padding-left:45px;position:relative;margin-bottom:10px;cursor:pointer;}
 #answer_list .questionsList .questionsdiv .answerlist li span{position:absolute;left:0;}
 #answer_list .questionsList .questionsdiv .answerlist li span input{margin-right:5px;display:none;}
-#answer_list .questionsList .questionsdiv .answerlist .radio_li span label{cursor:pointer;display:inline-block;width:10px;height: 10px;background: url("/img/expanipulator/radiobtn-icon.png") no-repeat;box-sizing:border-box;overflow: hidden;margin-right:5px;margin-bottom:0;}
-#answer_list .questionsList .questionsdiv .answerlist .radio_li span input[type=radio]:checked + label{background-image: url("/img/expanipulator/radiolvbtn-icon.png");}
-#answer_list .questionsList .questionsdiv .answerlist .checkbox_li span label{cursor:pointer;display:inline-block;width:10px;height: 10px;background: url("/img/expanipulator/checkedbtn-icon.png") no-repeat;box-sizing:border-box;overflow: hidden;margin-right:5px;margin-bottom:0;}
-#answer_list .questionsList .questionsdiv .answerlist .checkbox_li span input[type=checkbox]:checked + label{background-image: url("/img/expanipulator/checkedlvbtn-icon.png");}
+#answer_list .questionsList .questionsdiv .answerlist .radio_li span label{cursor:pointer;display:inline-block;width:10px;height: 10px;background: url("../images/expanipulator/radiobtn-icon.png") no-repeat;box-sizing:border-box;overflow: hidden;margin-right:5px;margin-bottom:0;}
+#answer_list .questionsList .questionsdiv .answerlist .radio_li span input[type=radio]:checked + label{background-image: url("../images/expanipulator/radiolvbtn-icon.png");}
+#answer_list .questionsList .questionsdiv .answerlist .checkbox_li span label{cursor:pointer;display:inline-block;width:10px;height: 10px;background: url("../images/expanipulator/checkedbtn-icon.png") no-repeat;box-sizing:border-box;overflow: hidden;margin-right:5px;margin-bottom:0;}
+#answer_list .questionsList .questionsdiv .answerlist .checkbox_li span input[type=checkbox]:checked + label{background-image: url("../images/expanipulator/checkedlvbtn-icon.png");}
 #answer_list .bluetext{color:#0f7afe;}
 #answer_list .submitanswerBtn{width:94px;
   height:40px;
@@ -347,7 +345,7 @@ overflow: hidden;border-radius:5px;z-index:1000001;}
 .checkedDiv .coupon .coupontitle span{float:right;}
 .checkedDiv .coupon .coupontitle span img{margin-left:2px;vertical-align:calc;}
 .checkedDiv .coupon .couponList{width:91%;margin:10px auto;}
-.checkedDiv .coupon .couponList .couponSingle{width:90px;height:53px;line-height:53px;background:url("../../img/coursePage/couponmodel.png") no-repeat center;display:inline-block;}
+.checkedDiv .coupon .couponList .couponSingle{width:90px;height:53px;line-height:53px;background:url("../images/coursePage/couponmodel.png") no-repeat center;display:inline-block;}
 .checkedDiv .coupon .couponList .couponSingle .money{color:#fff;margin-left:12px;}
 .checkedDiv .coupon .couponList .couponSingle .money i{font-size:20px;}
 .checkedDiv .coupon .couponList .couponSingle .text{float: right;line-height: 15px;margin-top: 10px;margin-right: 5px;color:#fff;}

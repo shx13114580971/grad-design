@@ -71,7 +71,8 @@ public class ExperimentService {
     //获取实验环境，打开实验机
     public String getExp(String envir_name) throws Exception {
         RemoteShellExeUtil remoteShellExecutor =
-                new RemoteShellExeUtil(ServerInfoUtil.VmServerIp, ServerInfoUtil.VmServerUserName, ServerInfoUtil.VmServerPassword);
+                new RemoteShellExeUtil(ServerInfoUtil.VmServerIp, ServerInfoUtil.VmServerUserName,
+                        ServerInfoUtil.VmServerPassword, ServerInfoUtil.port);
         //redis中是否有实验机个数的缓存
         if(!redisService.exists(ExpKey.expVmNum, envir_name)){
             redisService.set(ExpKey.expVmNum, envir_name, 0);
@@ -92,6 +93,6 @@ public class ExperimentService {
         //例：bash ...../ssrf111.bash ssrf111_2 5901
         String cmd_createVm = "bash /home/sheeta/kvm/"+envir_name+".bash "+envir_name+" "+vmNum+" "+vncPortNum;
         System.out.println(remoteShellExecutor.exec(cmd_createVm));
-        return "http://192.168.20.99:"+(vncPortNum+3000)+"/vnc.html?path=?token="+envir_name+"_"+vmNum;
+        return "http://172.26.2.38:"+(vncPortNum+3000)+"/vnc.html?path=?token="+envir_name+"_"+vmNum;
     }
 }

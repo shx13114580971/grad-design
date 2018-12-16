@@ -50,8 +50,8 @@ public class ExperimentController {
         if(user == null)return Result.error(CodeMsg.SESSION_ERROR);
         //添加到用户的记录
         userService.addExp(user.getUser_id(), exp_id);
-        //String url = experimentService.getExp(envir_name);
-        return Result.success("");
+        String url = experimentService.getExp(envir_name);
+        return Result.success(url);
     }
 
     @RequestMapping("/experiment/comment")

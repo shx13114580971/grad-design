@@ -26,8 +26,6 @@
     padding-left: 20px;
 }
 .fctf_evaluate .icon{height: 14px;display: inline-block;margin-right:5px;line-height: 0;}
-.fctf_evaluate .gray{background: url(../../img/onlineExperiment/start-gray.jpg);width: 90px;overflow: hidden;position:relative;margin-top:5px;}
-.fctf_evaluate .orange{background: url(../../img/onlineExperiment/start-orange.jpg);position:absolute;top:0;left:0;}
 .fctf_evaluate .collect{margin-left:20px;}
 .fctf_evaluate .collect i{vertical-align:bottom;cursor:pointer;}
 .fctf_menu{margin-top:9px;height:34px;display: inline-block;background: #b9def0;width: 100%;text-align: center;border-radius: 4px}
@@ -57,7 +55,7 @@ white-space:nowrap;text-overflow:ellipsis;-o-text-overflow:ellipsis;color: #3582
   bottom:0;
   right:0;
   padding:0 20px 1px 45px;
-  background:url(/images/coursePage/ellipsis_bg.png) repeat-y;
+  /*background:url(../images/coursePage/ellipsis_bg.png) repeat-y;*/
 }
 .fctf_right_list .fctf_begin_btn{float:right;width:107px;height:39px;line-height:39px;text-align:center;background-color:#ff6f37;color:#fff;border-radius:3px;margin-top:0px;cursor:pointer;border:none}
 .fctf_right_list .fctf_create_btn{float:left;width:107px;height:39px;line-height:39px;text-align:center;background-color:#ff6f37;color:#fff;border-radius:3px;margin-top:0px;cursor:pointer;border:none}
@@ -96,8 +94,8 @@ white-space:nowrap;text-overflow:ellipsis;-o-text-overflow:ellipsis;color: #3582
 .evaluatediv .evaluate_name{width:750px;height:16px;overflow:hidden;float:right;font-size:16px;color:#333333;line-height:16px;}
 .evaluatediv .evaluate_difficulty{width:750px;height:16px;overflow:hidden;float:right;font-size:14px;color:#666666;line-height:16px;margin-top:5px;}
 .evaluate_difficulty .icon{height: 14px;display: inline-block;margin-right: 3px;line-height: 0;}
-.evaluate_difficulty .gray{background: url(../images/onlineExperiment/start-gray.png);width: 70px;overflow: hidden;position:relative;}
-.evaluate_difficulty .orange{background: url(../images/onlineExperiment/start-orange.png);position:absolute;left:0;top:0;}
+.evaluate_difficulty .gray{background: url(../images/start-gray.png);width: 70px;overflow: hidden;position:relative;}
+.evaluate_difficulty .orange{background: url(../images/start-orange.png);position:absolute;left:0;top:0;}
 .evaluatediv .evaluate_content{width:750px;overflow:hidden;float:right;height:35px;margin-top:5px;}
 .evaluatediv .evaluate_menu{width:750px;overflow:hidden;float:right;margin-top:8px;font-size: 12px;color:#999999;}
 .evaluatediv .evaluate_menu .reply-btn{float:right;margin-right:8px;cursor:pointer;}
@@ -138,9 +136,11 @@ white-space:nowrap;text-overflow:ellipsis;-o-text-overflow:ellipsis;color: #3582
 .bg-videodiv #videoMenu #learnbtn{float:right;margin-right:5px;height:25px;line-height:15px;}
 .bg-videodiv #playerDiv{width:770px;height:440px;position:relative;overflow:hidden;margin:0 auto;}
 .bg-videodiv .close{position: absolute;float: right;top: 33px;right: 15px;}
-.bg-plresoDiv{width:920px;height:300px;position:fixed;top:50%;left:50%;margin-left:-460px;margin-top:-150px;z-index:10001;display:none;}
+.bg-plresoDiv{
+    width:920px;
+    height:300px;position:fixed;top:50%;left:50%;margin-left:-460px;margin-top:-150px;z-index:10001;display:none;}
 /*璇剧▼鍙充晶*/
-.fctfRiList{width:315px;float:right;overflow:hidden;height:839px;}
+.fctfRiList{width:315px;float:right;overflow:hidden;height:839px;}
 .fctfRiList .recommend{width:100%;height:604px;background-color:#fff;overflow:hidden;}
 .fctfRiList .recommend .recommend_name{width:254px;height:50px;line-height:50px;margin:0 auto;font-size:20px;color:#555555;}
 .fctfRiList .study{width:100%;height:219px;margin-top:15px;overflow:hidden;background-color:#fff;}

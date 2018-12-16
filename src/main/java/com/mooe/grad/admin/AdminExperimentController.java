@@ -8,12 +8,13 @@ import com.mooe.grad.vo.ExperimentVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -43,9 +44,27 @@ public class AdminExperimentController {
     }
 
     @ResponseBody
-    @RequestMapping("/exp_update")
-    public Result<String> exp_info(@RequestParam(name="file",required=false) MultipartFile file, Experiment experiment){
+    @RequestMapping(value="/exp_update", method = RequestMethod.POST)
+    public Result<String> exp_info(@RequestParam(name="file",required=false) MultipartFile multipartFile,
+                                   Experiment experiment, HttpServletRequest request) throws IOException {
 
+        String path = request.getServletContext().getRealPath("/uploads");
+        //创建文件
+        File file = new File(path);
+        //判断是否存在
+        if (!file.exists()){
+            file.mkdirs();
+        }
+        //获得要上传的文件名
+        String filename = multipartFile.getOriginalFilename();
+        //生成随机数
+
+        //把文件名称设置成唯一值
+        filename = filename + "_" + new Date().getTime();
+        //开始上传文件
+        multipartFile.transferTo(new File(path,filename ));
+        //把文件名存在javaBean中
+        experiment.setImage(path+"\\"+filename);
         String result = experimentSeivice.updateExp(experiment);
         return Result.success(result);
     }

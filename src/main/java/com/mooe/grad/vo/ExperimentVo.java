@@ -10,6 +10,7 @@ public class ExperimentVo {
     private Date date;
     private String host_ip;
     private String kvm_ip;
+    private String image;
     private String class1;
     private String class2;
     private String degree;
@@ -61,6 +62,14 @@ public class ExperimentVo {
 
     public void setKvm_ip(String kvm_ip) {
         this.kvm_ip = kvm_ip;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getClass1() {

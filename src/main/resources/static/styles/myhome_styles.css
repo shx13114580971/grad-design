@@ -685,7 +685,7 @@ section
 
 .course_boxes
 {
-	margin-top: 68px;
+	margin-top: 38px;
 }
 .course_box
 {
@@ -695,16 +695,29 @@ section
 {
 	margin-bottom: 0px;
 }
+.exp-list-li{
+	float: left;
+	list-style: none;
+	width: 290px;
+	padding-top: 20px;
+	margin-left: 15px;
+}
+.row{
+	margin-left: 20px;
+}
 .card
 {
 	display: block;
 	background: #f8f9fb;
 	border: none;
+	box-shadow: 3px 3px 10px #bfbcbc;
+	border-radius: 3px;
 }
 .card-img-top
 {
 	border-top-left-radius: 0px;
 	border-top-right-radius: 0px;
+	height: 220px;
 }
 .card-body
 {
@@ -755,7 +768,7 @@ section
 	font-size: 14px;
 	font-weight: 500;
 	color: #1a1a1a;
-	padding-left: 20px;
+	padding-left: 0px;
 	margin-top: 7px;
 }
 .course_author_name span
@@ -785,7 +798,7 @@ section
 
 .page_section
 {
-	padding-top: 57px;
+	padding-top: 37px;
 	padding-bottom: 0px;
 }
 .section_title
@@ -1119,11 +1132,15 @@ form .preservation {
 a {
     text-decoration: none;
 }
-
+.con_right_info{
+	width: 796px;
+	float: right;
+	padding-top: 40px;
+}
 .con_right {
     width: 896px;
-    float: right;
-}
+    float: left;
+}x
 .con_right .states {
     width: 100%;
     height: 38px;
@@ -1251,7 +1268,7 @@ p.b_bottom {
 /*测评记录*/
 
 .container {
-	width: 960px;
+	width: 1200px;
 	margin: 0 auto;
 	overflow: hidden;
 }

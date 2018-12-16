@@ -803,6 +803,8 @@ Condition navigation
 	display: block;
 	background: #f8f9fb;
 	border: none;
+	box-shadow: 3px 3px 10px #bfbcbc;
+	border-radius: 3px;
 }
 .card-img-top
 {
