@@ -226,10 +226,12 @@ var timer ;
 							<div class="hr"></div>		
 							<span class="infoSpan">实验过程中，如果虚拟机环境存在问题，请联系qq：1212121212</span>
 							<input type="hidden" id="envir_name" th:value="${experiment.envir_name}">
-							<button class="exp_begin_btn" onclick="getExp()" id="addexp-button" style="display:block;border:none">
+							<button class="exp_begin_btn" onclick="getExp()" id="addexp-button" style="display:none;border:none">
 								进入实验
 							</button>
-								
+							<button class="exp_begin_btn" onclick="endExp()" id="endexp-button" style="display:none;border:none">
+								结束实验
+							</button>
 								<div id="create-mac" class="mac" style="display:none;font-size:12px;left:120px;margin-top:8px;">
 								</div>
 									
@@ -423,6 +425,20 @@ var timer ;
                 layer.closeAll();
             }
         });
+        vm_isRunning();
+	}
+	function endExp(){
+        var envir_name = $("#envir_name").val();
+	    $.ajax({
+            url : "/experiment/endExp/"+envir_name+"?exp_id="+parseInt($("#experiment_id").val()),
+            type : "post",
+            success : function(data) {
+                flag = true;
+            },
+            error : function(x, s, e) {
+            }
+        });
+	    vm_isRunning();
 	}
 </script>
 <script type="text/javascript">

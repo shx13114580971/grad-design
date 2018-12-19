@@ -27,4 +27,7 @@ public interface FctfDao {
 
     @Select("select * from fctf_info where fctf_id = #{fctf_id}")
     public Fctf findById(@Param("fctf_id") int id);
+
+    @Select("select flag from fctf_info where fctf_id = #{fctf_id}")
+    public String getFlag(int fctf_id);
 }

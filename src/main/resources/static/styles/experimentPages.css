@@ -8,7 +8,7 @@
 /*璇剧▼涓婇潰閮ㄥ垎*/
 .exptoppart{width:100%;min-width:1200px;height:500px;margin:43px 0 15px 0;}
 .expTopList{width:100%;height:100%;background-color:#fff;}
-.expTopList .exp_img_list{position:relative;width:700px;height:430px;overflow:hidden;margin-left:16px;margin-right:27px;padding-top:16px;box-sizing: border-box;float:left;}
+.expTopList .exp_img_list{position:relative;width:700px;height:450px;overflow:hidden;margin-left:16px;margin-right:27px;padding-top:16px;box-sizing: border-box;float:left;}
 .exp_img_list .video-js{width:700px;height:430px;overflow:hidden;border:1px solid #f2f2f2;}
 .exp_img_list .icon{position:absolute;top:15px;left:-4px;width:107px;height:94px;}
 .exp_img_list .exp_video{position: absolute;left:45%;top:45%;cursor:pointer;}

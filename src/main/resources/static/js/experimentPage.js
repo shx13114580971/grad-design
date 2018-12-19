@@ -16,7 +16,7 @@ $(document).ready(function(){
 	experimentClick();
 	expimentmenu();
 	isVedeoHover();
-	//listQuestion();
+	vm_isRunning();
     listTestQuestion();
 	$(".head_img img").attr("src",$(".siLg-img img").attr("src"))
 	queryCollectionById(ecid);
@@ -163,7 +163,31 @@ function isExpTestCorrect(){
 	}
 
 }
-
+//当前用户是否有正在运行的虚拟机
+function vm_isRunning() {
+    $.ajax({
+        url: "/experiment/vm_isRunning",
+        type: "POST",
+        success:function(data){
+            if(data.code == 0){
+            	if(data.data == 'true'){
+            		$("#addexp-button").hide();
+            		$("#endexp-button").show();
+				}else{
+                    $("#addexp-button").show();
+                    $("#endexp-button").hide();
+				}
+            }else if(data.code==500210){
+                //window.location.href="/login";
+            } else{
+                layer.msg(data.msg);
+            }
+        },
+        error:function(){
+            layer.closeAll();
+        }
+    });
+}
 
 //监听事件
 function examTimeScroll(){

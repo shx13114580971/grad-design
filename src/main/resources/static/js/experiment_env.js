@@ -881,23 +881,6 @@ function stopExpt(ceid, isRelease){
  	if(!Validate.isValid(isRelease)){
  		isRelease = "false";
  	}
- 	var flag = false;
- 	$.ajax({
-		url : "courseExp!stop.action",
-		type : "post",
-		data : ({
-			"ceid" : ceid,
-			"release" : isRelease
-			}),
-		dataType : "json",
-		async : false,
-		success : function(data) {
-			flag = true;
-		},
-		error : function(x, s, e) {
-		}
- 	});
- 	return flag;
  }
 
 function getcontDown(ceid){

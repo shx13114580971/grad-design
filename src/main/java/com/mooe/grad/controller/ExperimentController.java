@@ -50,7 +50,23 @@ public class ExperimentController {
         if(user == null)return Result.error(CodeMsg.SESSION_ERROR);
         //添加到用户的记录
         userService.addExp(user.getUser_id(), exp_id);
-        String url = experimentService.getExp(envir_name);
+        String url = experimentService.getExp(user.getUser_id(),envir_name);
+        return Result.success(url);
+    }
+
+    @ResponseBody
+    @RequestMapping("/experiment/vm_isRunning")
+    public Result<String> vm_isRunning(User user, Model model) throws Exception {
+        if(user == null)return Result.error(CodeMsg.SESSION_ERROR);
+        String flag = experimentService.isRunning(user.getUser_id());
+        return Result.success(flag);
+    }
+
+    @ResponseBody
+    @RequestMapping("/experiment/endExp/{envir_name}")
+    public Result<String> endExp(@PathVariable("envir_name") String envir_name, @RequestParam("exp_id") int exp_id, User user, Model model) throws Exception {
+        if(user == null)return Result.error(CodeMsg.SESSION_ERROR);
+        String url = experimentService.endExp(user.getUser_id(),envir_name);
         return Result.success(url);
     }
 

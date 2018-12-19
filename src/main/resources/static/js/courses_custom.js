@@ -26,7 +26,7 @@ $(document).ready(function()
 	var header = $('.header');
 	var hambActive = false;
 	var menuActive = false;
-	var ctrl = new ScrollMagic.Controller();
+	//var ctrl = new ScrollMagic.Controller();
 
 	setHeader();
     //listTestQuestion()
@@ -145,40 +145,40 @@ $(document).ready(function()
 
 	function initParallax()
 	{
-		// Add parallax effect to home slider
-		if($('.slider_prlx').length)
-		{
-			var homeBcg = $('.slider_prlx');
-
-			var homeBcgScene = new ScrollMagic.Scene({
-		        triggerElement: homeBcg,
-		        triggerHook: 1,
-		        duration: "100%"
-		    })
-		    .setTween(TweenMax.to(homeBcg, 1, {y: '15%', ease:Power0.easeNone}))
-		    .addTo(ctrl);
-		}
-
-		// Add parallax effect to every element with class prlx
-		// Add class prlx_parent to the parent of the element
-		if($('.prlx_parent').length && $('.prlx').length)
-		{
-			var elements = $('.prlx_parent');
-
-			elements.each(function()
-			{
-				var ele = this;
-				var bcg = $(ele).find('.prlx');
-
-				var slideParallaxScene = new ScrollMagic.Scene({
-			        triggerElement: ele,
-			        triggerHook: 1,
-			        duration: "200%"
-			    })
-			    .setTween(TweenMax.from(bcg, 1, {y: '-30%', ease:Power0.easeNone}))
-			    .addTo(ctrl);
-			});
-		}
+		// // Add parallax effect to home slider
+		// if($('.slider_prlx').length)
+		// {
+		// 	var homeBcg = $('.slider_prlx');
+        //
+		// 	var homeBcgScene = new ScrollMagic.Scene({
+		//         triggerElement: homeBcg,
+		//         triggerHook: 1,
+		//         duration: "100%"
+		//     })
+		//     .setTween(TweenMax.to(homeBcg, 1, {y: '15%', ease:Power0.easeNone}))
+		//     .addTo(ctrl);
+		// }
+        //
+		// // Add parallax effect to every element with class prlx
+		// // Add class prlx_parent to the parent of the element
+		// if($('.prlx_parent').length && $('.prlx').length)
+		// {
+		// 	var elements = $('.prlx_parent');
+        //
+		// 	elements.each(function()
+		// 	{
+		// 		var ele = this;
+		// 		var bcg = $(ele).find('.prlx');
+        //
+		// 		var slideParallaxScene = new ScrollMagic.Scene({
+		// 	        triggerElement: ele,
+		// 	        triggerHook: 1,
+		// 	        duration: "200%"
+		// 	    })
+		// 	    .setTween(TweenMax.from(bcg, 1, {y: '-30%', ease:Power0.easeNone}))
+		// 	    .addTo(ctrl);
+		// 	});
+		// }
 	}
 });
 

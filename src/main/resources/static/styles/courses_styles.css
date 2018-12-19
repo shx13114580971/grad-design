@@ -705,7 +705,7 @@ Condition navigation
 .conditionType-allvalue{float: left;height:24px;margin-top:15px;white-space: nowrap;line-height:24px;margin-right:40px;text-align:center;cursor:pointer;padding:0 5px;}
 .conditionType-value{overflow:hidden;width:950px;}
 #conditionType-valueList{float:left;overflow: hidden;position: relative;margin:0;color:#555555;margin-top:15px;}
-#conditionType-valueList li{float:left;font-size:14px;margin-right:40px;list-style: none;height:24px;line-height:24px;text-align:center;cursor:pointer;white-space: nowrap;margin-bottom:15px;padding: 0 5px;}
+#conditionType-value li{float:left;font-size:14px;margin-right:40px;list-style: none;height:24px;line-height:54px;text-align:center;cursor:pointer;white-space: nowrap;margin-bottom:15px;padding: 0 5px;}
 .conditionType-valueListHover{background-color:#ffb606;color:#fff;border-radius:3px;}
 .conditionType .slide{position:absolute;right:0;top:0;cursor:pointer;color:#0168e6;}
 .conditionType .up{display:none;}

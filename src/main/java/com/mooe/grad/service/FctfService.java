@@ -33,4 +33,8 @@ public class FctfService {
         fctfDao.addFctf(fctf);
         return "success";
     }
+
+    public String getFlag(int fctf_id) {
+        return fctfDao.getFlag(fctf_id);
+    }
 }

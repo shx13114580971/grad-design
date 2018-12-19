@@ -60,105 +60,103 @@
 				<link rel="stylesheet" src="/css/jquery.alerts.css}" type="text/css">
 				<script type="text/javascript" src="js/jquery/jquery.alerts.js?date=20160717141901}"></script>
 				<script>
-                    var timer ;
-                    $(document).ready(function(e) {
-                        // countDown(180,null,"#clockbox .hour","#clockbox .minute","#clockbox .second");
-                    });
-                    function isFirstClose(){
-                        var flag = false;
-                        var userId = $("#sessionuuid").val();
-                        $.ajax({
-                            url: "mes!queryIsFirstForFctf.action",
-                            dataType: "json",
-                            type: "post",
-                            data: {userId:userId,type:"10110014"},
-                            async : false,
-                            success: function(data){
-                                if($(data).attr("result") == "success" && $(data).attr("message") == "true") {
-                                    flag = true;
-                                }
-                            }
-                        });
-                        return flag;
-                    }
-                    /*倒计时部分*/
-                    var sys_second = 0;
-                    var end_time = 0;
-
-                    function countDown(scd, day_elem, hour_elem, minute_elem, second_elem,resource_jsp) {
-                        clearInterval(timer);
-                        if(isFirstClose()){
-                            $("#Bubble_time").css("display","none");
-                        }
-                        var closeBubble=0;
-                        end_time = new Date().getTime(); //月份是实际月份-1
-                        end_time += 1000 * scd;
-                        sys_second = (end_time - new Date().getTime()) / 1000;
-                        timer = setInterval(function() {
-                                if(closeBubble*1000===waitMillSecond){
-                                    $("#Bubble_time").css("display","none");
-                                }
-                                closeBubble += 1;
-
-                                if (sys_second > 0) {
-                                    if(sys_second==6){
-                                        if(resource_jsp=="rue"){
-                                            jAlert("对不起！资源时间已到，将在5秒后关掉！", "资源超时警告", null, 5000,null,"warn",-210,-40);
-                                        } else{
-                                            jAlert("对不起！资源时间已到，将在5秒后关掉！", "资源超时警告", null, 5000,null,"warn",null,null);
-                                        }
-
-                                        var mpsSrc = LocationUtil.getContextPath() + "sound/countdown.wav"
-                                        document.getElementById("mps").src= mpsSrc;
-                                        document.getElementById("mps").play();
-                                    }
-                                    sys_second -= 1;
-                                    var day = Math.floor((sys_second / 3600) / 24);
-                                    var hour = day * 24 + Math.floor((sys_second / 3600) % 24);
-                                    var minute = Math.floor((sys_second / 60) % 60);
-                                    var second = Math.floor(sys_second % 60);
-                                    day_elem && $(day_elem).text(day); //计算天
-                                    $(hour_elem).text(hour < 10 ? "0" + hour: hour); //计算小时
-                                    $(minute_elem).text(minute < 10 ? "0" + minute: minute); //计算分
-                                    $(second_elem).text(second < 10 ? "0" + second: second); // 计算秒
-                                } else {
-
-                                    clearInterval(timer);
-                                    $("#blackBg").css("display", "block");
-                                    $("#prompt_box").css("display", "block");
-                                    if(resource_jsp=="rum"){
-                                        window.open('','_parent','');
-                                        window.close();
-                                    }else {
-                                        if (stopFctft($("#ceid").val(), "true")) {
-                                            resetFctf();
-                                            stopsuccess();
-                                            //li_xlong 课程有题目加时钟
-                                            var leftr=parent.document.getElementById("rightFrame").contentWindow.document.body;
-                                            var couid=$(leftr).find("#courName-a").attr("href").split("=")[1];
-                                            var leftiframe=parent.document.getElementById("leftFrame").contentWindow.document.body;
-                                            var divEle = $(leftiframe).find("#courseList").find("#"+couid).find("div").eq(1);
-                                            $(divEle).empty();
-                                        } else {
-                                            jAlert("系统繁忙，销毁失败，请刷新页面，再手动销毁..！", null, function() {}, 5000);
-                                        }
-                                    }
-                                }
-                            },
-                            1000);
-                    }
-                    function deleteTimer(){
-                        clearInterval(timer);
-                    }
+                    // var timer ;
+                    // $(document).ready(function(e) {
+                    //     // countDown(180,null,"#clockbox .hour","#clockbox .minute","#clockbox .second");
+                    // });
+                    // function isFirstClose(){
+                    //     var flag = false;
+                    //     var userId = $("#sessionuuid").val();
+                    //     $.ajax({
+                    //         url: "mes!queryIsFirstForFctf.action",
+                    //         dataType: "json",
+                    //         type: "post",
+                    //         data: {userId:userId,type:"10110014"},
+                    //         async : false,
+                    //         success: function(data){
+                    //             if($(data).attr("result") == "success" && $(data).attr("message") == "true") {
+                    //                 flag = true;
+                    //             }
+                    //         }
+                    //     });
+                    //     return flag;
+                    // }
+                    // /*倒计时部分*/
+                    // var sys_second = 0;
+                    // var end_time = 0;
+                    //
+                    // function countDown(scd, day_elem, hour_elem, minute_elem, second_elem,resource_jsp) {
+                    //     clearInterval(timer);
+                    //     if(isFirstClose()){
+                    //         $("#Bubble_time").css("display","none");
+                    //     }
+                    //     var closeBubble=0;
+                    //     end_time = new Date().getTime(); //月份是实际月份-1
+                    //     end_time += 1000 * scd;
+                    //     sys_second = (end_time - new Date().getTime()) / 1000;
+                    //     timer = setInterval(function() {
+                    //             if(closeBubble*1000===waitMillSecond){
+                    //                 $("#Bubble_time").css("display","none");
+                    //             }
+                    //             closeBubble += 1;
+                    //
+                    //             if (sys_second > 0) {
+                    //                 if(sys_second==6){
+                    //                     if(resource_jsp=="rue"){
+                    //                         jAlert("对不起！资源时间已到，将在5秒后关掉！", "资源超时警告", null, 5000,null,"warn",-210,-40);
+                    //                     } else{
+                    //                         jAlert("对不起！资源时间已到，将在5秒后关掉！", "资源超时警告", null, 5000,null,"warn",null,null);
+                    //                     }
+                    //
+                    //                     var mpsSrc = LocationUtil.getContextPath() + "sound/countdown.wav"
+                    //                     document.getElementById("mps").src= mpsSrc;
+                    //                     document.getElementById("mps").play();
+                    //                 }
+                    //                 sys_second -= 1;
+                    //                 var day = Math.floor((sys_second / 3600) / 24);
+                    //                 var hour = day * 24 + Math.floor((sys_second / 3600) % 24);
+                    //                 var minute = Math.floor((sys_second / 60) % 60);
+                    //                 var second = Math.floor(sys_second % 60);
+                    //                 day_elem && $(day_elem).text(day); //计算天
+                    //                 $(hour_elem).text(hour < 10 ? "0" + hour: hour); //计算小时
+                    //                 $(minute_elem).text(minute < 10 ? "0" + minute: minute); //计算分
+                    //                 $(second_elem).text(second < 10 ? "0" + second: second); // 计算秒
+                    //             } else {
+                    //
+                    //                 clearInterval(timer);
+                    //                 $("#blackBg").css("display", "block");
+                    //                 $("#prompt_box").css("display", "block");
+                    //                 if(resource_jsp=="rum"){
+                    //                     window.open('','_parent','');
+                    //                     window.close();
+                    //                 }else {
+                    //                     if (stopFctft($("#ceid").val(), "true")) {
+                    //                         resetFctf();
+                    //                         stopsuccess();
+                    //                         //li_xlong 课程有题目加时钟
+                    //                         var leftr=parent.document.getElementById("rightFrame").contentWindow.document.body;
+                    //                         var couid=$(leftr).find("#courName-a").attr("href").split("=")[1];
+                    //                         var leftiframe=parent.document.getElementById("leftFrame").contentWindow.document.body;
+                    //                         var divEle = $(leftiframe).find("#courseList").find("#"+couid).find("div").eq(1);
+                    //                         $(divEle).empty();
+                    //                     } else {
+                    //                         jAlert("系统繁忙，销毁失败，请刷新页面，再手动销毁..！", null, function() {}, 5000);
+                    //                     }
+                    //                 }
+                    //             }
+                    //         },
+                    //         1000);
+                    // }
+                    // function deleteTimer(){
+                    //     clearInterval(timer);
+                    // }
 
 				</script>
 				<audio id="mps" src="" >
 				</audio>
 
 				<div class="fctf_right_list">
-
-
-
+					<input id="fctf_id" type="hidden" th:value="${fctf.fctf_id}">
 					<div class="fctf_name" title="">[[${fctf.fctf_name}]]</div>
 					<div class="hr"></div>
 					<div class="fctf_introduce_name">题目描述：
@@ -178,19 +176,19 @@
 					</div>
 					<div class="hr"></div>
 					<!-- 三种题目类型-->
-					<div id="three-type">
+					<div id="three-type" th:if="${user} ne null">
 						<!-- 桌面型 -->
-						<div id="desktop" style="height: 50px">
+						<div id="desktop" th:if="${fctf.type} eq 'desktop'" style="height: 50px">
 							<button class="fctf_create_btn" id="create_kvm" style="width:157px;height:39px;line-height:39px;text-align:center;background-color:#f16f37;color:#fff;border-radius:3px;margin-top:0px;cursor:pointer;border:none">创建虚拟机</button>
 						</div>
 
 						<!-- 服务型 -->
-						<div id="service" style="height: 50px">
-							<a href="">地址：http://ddsds.dsdsds</a>
+						<div id="service" th:if="${fctf.type} eq 'service'" style="height: 50px">
+							<a th:href="${fctf.content_addr}">[[${fctf.content_addr}]]</a>
 						</div>
 
 						<!-- 附件型 -->
-						<div id="download" style="height: 50px">
+						<div id="download" th:if="${fctf.type} eq 'download'" style="height: 50px">
 							<a href="">download</a>
 						</div>
 					</div>
@@ -206,12 +204,14 @@
 
 					</div>
 					<div style="width:1000px">
-						<input type="text" id="input_ans"  class="input_ans"/>
-						<button class="fctf_begin_btn" id="addfctf-button" style="display:block;border:none">
+						<input type="text" id="input_ans"  class="input_ans" required="true"/>
+						<button class="fctf_begin_btn" onclick="isflag()" id="addfctf-button" style="display:block;border:none">
 							提交
 						</button>
 					</div>
-
+					<div id="show-result">
+						<label id="isnull" style="color: red;display: none">不能为空</label>
+					</div>
 					<div id="end-mac" class="mac" style="display:none;margin-top: 6px;"><a href="javascript:void(0)">结束并释放题目机</a></div>
 					<div id="ending-mac" class="mac" style="display:none;"><img src="/img/loading4.gif}">正在发送请求</div>
 					<div id="creating-mac" class="mac" style="display:none;margin-top: 6px;">创建中…先预习一下题目指导书吧！</div>
@@ -247,10 +247,14 @@
 					<div id="evaluate_list" class="fctf" data-name="题目评价">
 						<div class="evaluate">
 							<div class="addevaluatediv" style="display: block !important;">
-								<div class="head_img"><img src="/images/head/default.jpg}"/></div>
+								<div class="head_img"><img th:src="@{/images/default.jpg}"/></div>
 								<div class="evaluate_editor">
-
-									<textarea id="evaluate_editor_text" rows="" cols=""></textarea>
+									<div class="satisfaction">
+										<span>整体评价：</span>
+										<div id="evaluate-start" style="cursor: pointer; width: 90px;">
+											<input name="score" type="hidden">
+										</div>
+									</div>
 									<div class="addevaluate_btn" style="width:80px;height:28px;line-height:28px;text-align:center;background-color:#0f7afe;color:#fff;font-size:12px;float:right;margin-top:6px;border-radius:3px;cursor:pointer;">发表评价</div>
 									<p class="error-message"></p>
 								</div>
@@ -292,38 +296,69 @@
 
 </div>
 
-<script th:src="@{/js/jquery-3.2.1.min.js}"></script>
-<script th:src="@{/js/fctfPage.js}"></script>
-<script th:src="@{/js/fctf_env.js}"></script>
-<script th:src="@{/js/page.js}"></script>
+<!--<script th:src="@{/js/jquery-3.2.1.min.js}"></script>-->
 <script th:src="@{/js/jquery-1.7.2.min.js}"></script>
 <script th:src="@{/js/jquery.select-1.3.6.js}"></script>
+<script th:src="@{/js/jquery/jquery.raty.js}"></script>
+<script th:src="@{/js/fctfPage.js}"></script>
+<!--<script th:src="@{/js/fctf_env.js}"></script>-->
+<script th:src="@{/js/page.js}"></script>
+
 <script th:src="@{/js/custom/loading.js}"></script>
 <script th:src="@{/js/CommonUtil.js}"></script>
-
+<script th:src="@{/layer/layer.js}"></script>
 <script th:src="@{/styles/bootstrap4/popper.js}"></script>
 <script th:src="@{/styles/bootstrap4/bootstrap.min.js}"></script>
-<script th:src="@{/plugins/greensock/TweenMax.min.js}"></script>
-<script th:src="@{/plugins/greensock/TimelineMax.min.js}"></script>
-<script th:src="@{/plugins/scrollmagic/ScrollMagic.min.js}"></script>
-<script th:src="@{/plugins/greensock/animation.gsap.min.js}"></script>
-<script th:src="@{/plugins/greensock/ScrollToPlugin.min.js}"></script>
-<script th:src="@{/plugins/scrollTo/jquery.scrollTo.min.js}"></script>
+<!--<script th:src="@{/plugins/greensock/TweenMax.min.js}"></script>-->
+<!--<script th:src="@{/plugins/greensock/TimelineMax.min.js}"></script>-->
+<!--<script th:src="@{/plugins/scrollmagic/ScrollMagic.min.js}"></script>-->
+<!--<script th:src="@{/plugins/greensock/animation.gsap.min.js}"></script>-->
+<!--<script th:src="@{/plugins/greensock/ScrollToPlugin.min.js}"></script>-->
+<!--<script th:src="@{/plugins/scrollTo/jquery.scrollTo.min.js}"></script>-->
 <script th:src="@{/plugins/easing/easing.js}"></script>
 <script th:src="@{/js/courses_custom.js}"></script>
 
 <script>
-	$(document).ready(function(){
-        var typeCurrent = $("#type").val();
-        var typeList = document.getElementById("three-type").children;
-        for(var i = 0; i < typeList.length; i++){
-            if(typeCurrent == typeList[i].id){
-                document.getElementById(typeList[i].id).style.display="block";
-            }else{
-                document.getElementById(typeList[i].id).style.display="none";
-            }
-        }
-    });
+    // $(document).ready(function(){
+    //     var typeCurrent = $("#type").val();
+    //     var typeList = document.getElementById("three-type").children;
+    //     for(var i = 0; i < typeList.length; i++){
+    //         if(typeCurrent == typeList[i].id){
+    //             document.getElementById(typeList[i].id).style.display="block";
+    //         }else{
+    //             document.getElementById(typeList[i].id).style.display="none";
+    //         }
+    //     }
+    // });
+	//判断答案
+	function isflag() {
+		var flag = $("#input_ans").val();
+		if(flag == null || flag == ""){
+		    $("#isnull").show();
+		}else{
+            $("#isnull").hide();
+            $.ajax({
+                url:"/fctf/isflag/"+flag+"?fctf_id="+$("#fctf_id").val(),
+                type:"POST",
+                success:function (data) {
+                    if(data.code == 0){
+                        if(data.data == "true"){
+                            layer.msg("答案正确！");
+                        }else {
+                            layer.msg("答案错误！");
+                        }
+                    }else if(data.code==500210){
+                        window.location.href="/login";
+                    } else{
+                        layer.msg(data.msg);
+                    }
+                },
+                error:function(){
+                    layer.closeAll();
+                }
+            });
+		}
+    }
 </script>
 
 </body>

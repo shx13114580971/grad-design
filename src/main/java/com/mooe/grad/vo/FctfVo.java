@@ -10,6 +10,7 @@ public class FctfVo {
     private String host_ip;
     private String kvm_ip;
     private String type;
+    private String content_addr;
     private String degree;
     private Date date;
 
@@ -59,6 +60,14 @@ public class FctfVo {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getContent_addr() {
+        return content_addr;
+    }
+
+    public void setContent_addr(String content_addr) {
+        this.content_addr = content_addr;
     }
 
     public String getDegree() {

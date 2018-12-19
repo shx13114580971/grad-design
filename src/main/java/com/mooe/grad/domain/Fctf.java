@@ -6,8 +6,10 @@ public class Fctf {
     private int fctf_id;
     private String fctf_name;
     private String type;
+    private String content_addr;
     private String degree;
     private String area;
+    private String flag;
     private String envir_name;
     private String host_ip;
     private String kvm_ip;
@@ -43,6 +45,14 @@ public class Fctf {
         this.area = area;
     }
 
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
+    }
+
     public String getEnvir_name() {
         return envir_name;
     }
@@ -57,6 +67,14 @@ public class Fctf {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getContent_addr() {
+        return content_addr;
+    }
+
+    public void setContent_addr(String content_addr) {
+        this.content_addr = content_addr;
     }
 
     public String getHost_ip() {

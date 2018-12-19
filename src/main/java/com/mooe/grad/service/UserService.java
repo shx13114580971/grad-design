@@ -8,10 +8,7 @@ import com.mooe.grad.redis.RedisService;
 import com.mooe.grad.redis.UserKey;
 import com.mooe.grad.result.CodeMsg;
 import com.mooe.grad.util.UUIDUtil;
-import com.mooe.grad.vo.ExperimentVo;
-import com.mooe.grad.vo.LoginVo;
-import com.mooe.grad.vo.RegisterVo;
-import com.mooe.grad.vo.UserExpVo;
+import com.mooe.grad.vo.*;
 import com.sun.deploy.net.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -121,5 +118,21 @@ public class UserService implements Serializable{
 
     public List<ExperimentVo> listExp(int user_id) {
         return userDao.listExperiment(user_id);
+    }
+
+    public List<FctfVo> listFctf(int user_id) {
+        return userDao.listFctf(user_id);
+    }
+
+    public void addFctf(int user_id, int fctf_id) {
+        List<UserFctfVo> userFctfVoList = userDao.getByUserIdAndFctfId(user_id, fctf_id);
+        if(userFctfVoList.size() == 0){
+            Date createTime = new Date();
+            UserFctfVo userFctfVo = new UserFctfVo();
+            userFctfVo.setUser_id(user_id);
+            userFctfVo.setFctf_id(fctf_id);
+            userFctfVo.setCreate_time(createTime);
+            userDao.insertFctf(userFctfVo);
+        }
     }
 }

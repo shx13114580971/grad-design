@@ -69,30 +69,56 @@ public class ExperimentService {
     }
 
     //获取实验环境，打开实验机
-    public String getExp(String envir_name) throws Exception {
+    public String getExp(int user_id, String envir_name) throws Exception {
         RemoteShellExeUtil remoteShellExecutor =
                 new RemoteShellExeUtil(ServerInfoUtil.VmServerIp, ServerInfoUtil.VmServerUserName,
                         ServerInfoUtil.VmServerPassword, ServerInfoUtil.port);
+        //根据实验环境名命名模板，根据实验环境名加上用户id命名实例
+        if(redisService.exists(ExpKey.existARunningVm, String.valueOf(user_id)))return "";
+        //这里的value是随便设置的，因为主要就是想判断当前用户是不是有在进行的实验
+        redisService.set(ExpKey.existARunningVm, String.valueOf(user_id),1);
         //redis中是否有实验机个数的缓存
-        if(!redisService.exists(ExpKey.expVmNum, envir_name)){
-            redisService.set(ExpKey.expVmNum, envir_name, 0);
-        }
+//        if(!redisService.exists(ExpKey.expVmNum, envir_name)){
+//            redisService.set(ExpKey.expVmNum, envir_name, 0);
+//        }
         if(!redisService.exists(VncPortKey.vncPort, "")){
             //vnc默认端口为5900
             redisService.set(VncPortKey.vncPort, "", 5900);
         }
-        //虚拟机个数先加一
-        redisService.incr(ExpKey.expVmNum, envir_name);
+//        //虚拟机个数先加一
+//        redisService.incr(ExpKey.expVmNum, envir_name);
         //端口号加一
         redisService.incr(VncPortKey.vncPort, "");
-        //获取当前虚拟机个数
-        int vmNum = redisService.get(ExpKey.expVmNum, envir_name, Integer.class);
+//        //获取当前虚拟机个数
+//        int vmNum = redisService.get(ExpKey.expVmNum, envir_name, Integer.class);
         //获取当前点口号
         int vncPortNum = redisService.get(VncPortKey.vncPort, "", Integer.class);
         //格式：bash ...../实验名.bash 实验名 虚拟机个数 vnc端口号
         //例：bash ...../ssrf111.bash ssrf111_2 5901
-        String cmd_createVm = "bash /home/sheeta/kvm/"+envir_name+".bash "+envir_name+" "+vmNum+" "+vncPortNum;
+        String cmd_createVm = "bash /home/sheeta/kvm/backing_file/"+envir_name+"/"+envir_name+".bash "+envir_name+" "+user_id+" "+vncPortNum;
         System.out.println(remoteShellExecutor.exec(cmd_createVm));
-        return "http://172.26.2.38:"+(vncPortNum+3000)+"/vnc.html?path=?token="+envir_name+"_"+vmNum;
+        return "http://172.26.2.38:"+(vncPortNum+3000)+"/vnc.html?path=?token="+envir_name+""+user_id;
+    }
+
+    public String endExp(int user_id, String envir_name) throws Exception {
+        RemoteShellExeUtil remoteShellExecutor =
+                new RemoteShellExeUtil(ServerInfoUtil.VmServerIp, ServerInfoUtil.VmServerUserName,
+                        ServerInfoUtil.VmServerPassword, ServerInfoUtil.port);
+
+//        //端口号加一
+//        redisService.incr(VncPortKey.vncPort, "");
+//        //获取当前点口号
+//        int vncPortNum = redisService.get(VncPortKey.vncPort, "", Integer.class);
+//        //格式：bash ...../实验名.bash 实验名 用户ID
+//        //例：bash ...../undefine-remove.bash ssrf111_2
+        String cmd_destroyVm = "bash /home/sheeta/kvm/backing_file/"+envir_name+"/undefine-remove.bash "+envir_name+" "+user_id;
+        System.out.println(remoteShellExecutor.exec(cmd_destroyVm));
+        return "";
+    }
+
+    public String isRunning(int user_id) {
+        //该用户有正在运行的实验机，则返回true
+        if(redisService.exists(ExpKey.existARunningVm, String.valueOf(user_id)))return "true";
+        else return "false";
     }
 }

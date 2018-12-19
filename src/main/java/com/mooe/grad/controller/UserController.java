@@ -4,6 +4,7 @@ import com.mooe.grad.domain.Experiment;
 import com.mooe.grad.domain.User;
 import com.mooe.grad.service.UserService;
 import com.mooe.grad.vo.ExperimentVo;
+import com.mooe.grad.vo.FctfVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,6 +39,8 @@ public class UserController {
     public String fctf(User user, Model model){
         if(user == null)return "login";
         model.addAttribute("user", user);
+        List<FctfVo> fctfList = userService.listFctf(user.getUser_id());
+        model.addAttribute("fctfList",fctfList);
         return "myhome_fctf";
     }
 
