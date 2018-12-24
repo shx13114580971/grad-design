@@ -1,8 +1,10 @@
 package com.mooe.grad.dao;
 
 import com.mooe.grad.domain.Experiment;
+import com.mooe.grad.domain.Fctf;
 import com.mooe.grad.domain.UserExpTest;
 import com.mooe.grad.vo.ExperimentVo;
+import com.mooe.grad.vo.FctfVo;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -33,4 +35,10 @@ public interface TestDao {
 
     @Select("select expTest_id from user_exp_test where exp_id = #{exp_id} and user_id = #{user_id}")
     public List<Integer> getExpByExpIdAndUserId(@Param("exp_id")int exp_id, @Param("user_id")int user_id);
+
+    @Select("select * from fctf_info where fctf_id = #{testId}")
+    public Fctf getFctfById(@Param("testId")String testId);
+
+    @Select("select * from fctf_info where area = #{area}")
+    public List<FctfVo> getExpByArea(@Param("area") String area);
 }

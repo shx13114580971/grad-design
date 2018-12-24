@@ -51,6 +51,7 @@ public class ExperimentController {
         //添加到用户的记录
         userService.addExp(user.getUser_id(), exp_id);
         String url = experimentService.getExp(user.getUser_id(),envir_name);
+        if ("".equals(url) || url == null)return Result.error(CodeMsg.VM_CREATE_ERROR);
         return Result.success(url);
     }
 
@@ -66,8 +67,9 @@ public class ExperimentController {
     @RequestMapping("/experiment/endExp/{envir_name}")
     public Result<String> endExp(@PathVariable("envir_name") String envir_name, @RequestParam("exp_id") int exp_id, User user, Model model) throws Exception {
         if(user == null)return Result.error(CodeMsg.SESSION_ERROR);
-        String url = experimentService.endExp(user.getUser_id(),envir_name);
-        return Result.success(url);
+        String result = experimentService.endExp(user.getUser_id(),envir_name);
+        if ("".equals(result) || result == null)return Result.error(CodeMsg.VM_DESTROY_ERROR);
+        return Result.success(result);
     }
 
     @RequestMapping("/experiment/comment")

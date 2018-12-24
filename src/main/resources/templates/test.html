@@ -48,17 +48,16 @@
 		
 	</div>
 
-	<!-- News -->
+	<!-- exp -->
 
 	<div class="news">
-		<form id="startTest" action="/test/test_exp" method="post">
 			<div class="container">
 				<div class="row">
 
-					<!-- News Column -->
+					<!-- Exps Column -->
 
 					<div class="col-sm-6 col-md-4">
-						<a class="startTest" href="javascript:"value = "Web安全">
+						<a class="startExpTest" test-type="expTest" href="javascript:"value = "Web安全">
 							<div class="card rc_4">
 
 								<div class="circle">
@@ -108,8 +107,79 @@
 					</div>
 				</div>
 			</div>
-		</form>
+	</div>
 
+	<!-- exp -->
+
+	<div class="news">
+			<div class="container">
+				<div class="row">
+
+					<!-- Exps Column -->
+
+					<div class="col-sm-6 col-md-4">
+						<a class="startFctfTest" test-type="fctfTest" href="javascript:"value = "Web">
+							<div class="card rc_4">
+
+								<div class="circle">
+									<div class="icon" data-reactid=".0.0.0.4.0.0.$card-skill-challenge.0.0.0">
+										<img alt="" th:src="@{/images/icon_selfguided.png}" class="img-responsive" data-reactid=".0.0.0.4.0.0.$card-skill-challenge.0.0.0.0">
+									</div>
+								</div>
+								<h2>Web</h2>
+							</div>
+						</a>
+					</div>
+					<div class="col-sm-6 col-md-4">
+
+						<div class="card rc_4">
+							<!-- News Post -->
+							<div class="circle">
+								<div class="icon" data-reactid=".0.0.0.4.0.0.$card-skill-challenge.0.0.0">
+									<img alt="" th:src="@{/images/icon_simulatedexam.png}" class="img-responsive" data-reactid=".0.0.0.4.0.0.$card-skill-challenge.0.0.0.0">
+								</div>
+							</div>
+							<h2>reversing</h2>
+						</div>
+					</div>
+					<div class="col-sm-6 col-md-4">
+
+						<div class="card rc_4">
+							<!-- News Post -->
+							<div class="circle">
+								<div class="icon" data-reactid=".0.0.0.4.0.0.$card-skill-challenge.0.0.0">
+									<img alt="" th:src="@{/images/icon_personalize.png}" class="img-responsive" data-reactid=".0.0.0.4.0.0.$card-skill-challenge.0.0.0.0">
+								</div>
+							</div>
+							<h2>crypto</h2>
+						</div>
+					</div>
+					<div class="col-sm-6 col-md-4">
+
+						<div class="card rc_4">
+							<!-- News Post -->
+							<div class="circle">
+								<div class="icon" data-reactid=".0.0.0.4.0.0.$card-skill-challenge.0.0.0">
+									<img alt="" th:src="@{/images/icon_progressive.png}" class="img-responsive" data-reactid=".0.0.0.4.0.0.$card-skill-challenge.0.0.0.0">
+								</div>
+							</div>
+							<h2>forensics</h2>
+						</div>
+					</div>
+					<div class="col-sm-6 col-md-4">
+
+						<div class="card rc_4">
+							<!-- News Post -->
+							<div class="circle">
+								<div class="icon" data-reactid=".0.0.0.4.0.0.$card-skill-challenge.0.0.0">
+									<img alt="" th:src="@{/images/icon_progressive.png}" class="img-responsive" data-reactid=".0.0.0.4.0.0.$card-skill-challenge.0.0.0.0">
+								</div>
+							</div>
+							<h2>pwn</h2>
+						</div>
+					</div>
+				</div>
+			</div>
 	</div>
 
 	<!-- Footer -->
@@ -145,7 +215,7 @@
         );
     });
 
-    $(".startTest").click(function (e) {
+    $(".startExpTest").click(function (e) {
         var testClass = $(this).attr("value");
         $.ajax({
             url: "/test/test_exp/?testClass="+testClass,
@@ -180,7 +250,41 @@
         //     document.location.href = "/test/test_exp?testClass="+$(this).attr("value");
         // }
     });
+    $(".startFctfTest").click(function (e) {
+        var testArea = $(this).attr("value");
+        $.ajax({
+            url: "/test/test_fctf/?testArea="+testArea,
+            type: "POST",
+            success:function(data){
+                if(data.code == 0){
+                    if(data.data == null) {
+                        layer.confirm("您已通过所有实验测试，是否重新开始？",{ skin:"layer-btn", btn: ['确定', '取消']
+                        }, function(index, layero){
+                            //按钮【按钮一】的回调
+                        }, function(index){
+                            //按钮【按钮二】的回调
+                        });
+                    }else{
+                        document.location.href = "/test/test_fctf?testArea="+testArea+"&testId="+data.data;
+                    }
 
+                }else if(data.code==500210){
+                    layer.msg("请先登录");
+                } else{
+                    layer.msg(data.msg);
+                }
+            },
+            error:function(){
+                layer.closeAll();
+            }
+        });
+        // if(user == null || user == ""){
+        //     layer.msg("请先登录");
+        // }else {
+        //
+        //     document.location.href = "/test/test_exp?testClass="+$(this).attr("value");
+        // }
+    });
 </script>
 <style>
 

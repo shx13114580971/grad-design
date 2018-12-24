@@ -3,6 +3,8 @@ package com.mooe.grad.service;
 import com.mooe.grad.dao.TestDao;
 import com.mooe.grad.domain.Experiment;
 
+import com.mooe.grad.domain.Fctf;
+import com.mooe.grad.vo.FctfVo;
 import org.apache.commons.collections15.IteratorUtils;
 import com.mooe.grad.domain.UserExpTest;
 import com.mooe.grad.vo.ExperimentVo;
@@ -82,6 +84,40 @@ public class TestService {
                     experimentVoIter.remove();
                 }
             }
+            experimentVoIter.remove();
         }
+    }
+
+    private void removePassedOrLearnedFctf(Iterator<FctfVo> fctfVoIter,
+                                          List<Integer> allUnusedFctfId) {
+        while (fctfVoIter.hasNext()){
+            FctfVo experimentVo = fctfVoIter.next();
+            for(Integer unusedFctfId : allUnusedFctfId){
+                if(experimentVo.getFctf_id() == unusedFctfId){
+                    fctfVoIter.remove();
+                }
+            }
+            fctfVoIter.remove();
+        }
+    }
+
+    public String getStartTestFctfId(String area, int user_id) {
+        List<FctfVo> listFctfClass1 = testDao.getExpByArea(area);
+        Iterator<FctfVo> fctfVoIter = listFctfClass1.iterator();
+        List<Integer> allPassedExpId = testDao.listAllPassedExpId(user_id, area);
+        //排除掉已经测试通过的实验，通过的实验就不再测试了
+        removePassedOrLearnedFctf(fctfVoIter, allPassedExpId);
+
+//        for(ExperimentVo experiment : listExpClass1){
+//        }
+        if(listFctfClass1.size() > 0){
+            int index = (int)(Math.random()*listFctfClass1.size());
+            return String.valueOf(listFctfClass1.get(index).getFctf_id());
+        }
+        return null;
+    }
+
+    public Fctf startTestFctf(String testId) {
+        return testDao.getFctfById(testId);
     }
 }

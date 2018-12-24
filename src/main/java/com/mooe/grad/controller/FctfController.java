@@ -1,11 +1,14 @@
 package com.mooe.grad.controller;
 
+
 import com.mooe.grad.domain.Fctf;
+import com.mooe.grad.domain.FctfWriteup;
 import com.mooe.grad.domain.User;
 import com.mooe.grad.result.CodeMsg;
 import com.mooe.grad.result.Result;
 import com.mooe.grad.service.FctfService;
 import com.mooe.grad.service.UserService;
+import com.mooe.grad.vo.FctfMinVo;
 import com.mooe.grad.vo.FctfVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,7 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import java.util.List;
 
 @Controller
@@ -56,4 +58,26 @@ public class FctfController {
             return Result.success("false");
         }
     }
+
+    @RequestMapping("/fctf/createWriteup/{fctf_id}")
+    public String createWriteup(@PathVariable("fctf_id")int fctf_id, User user, Model model){
+        model.addAttribute("user", user);
+        String fctfName = fctfService.findNameById(fctf_id);
+        FctfMinVo fctfMinVo = new FctfMinVo(fctf_id, fctfName);
+        model.addAttribute("fctf", fctfMinVo);
+        FctfWriteup fctfWriteup = fctfService.isUploaded(fctf_id, user.getUser_id());
+        model.addAttribute("fctfWriteup", fctfWriteup);
+        return "fctf_create_writeup";
+    }
+
+
+    @ResponseBody
+    @RequestMapping("/fctf/uploadWriteup")
+    public Result<String> uploadWriteup(User user, FctfWriteup fctfWriteup){
+        if(user == null)return Result.error(CodeMsg.SESSION_ERROR);
+        if("".equals(fctfWriteup.getContent()) || fctfWriteup.getContent() == null)return Result.error(CodeMsg.EMPTY);
+        fctfService.addWriteup(fctfWriteup);
+        return Result.success("");
+    }
+
 }

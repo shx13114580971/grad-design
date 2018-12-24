@@ -45,6 +45,7 @@
 	
 	<!-- Home -->
 
+	<input type="hidden" id="user" th:value="${user}"/>
 	<div class="home">
 		<div class="home_background_container prlx_parent">
 			<div class="home_background prlx" style="background-image:url(/images/courses_background.jpg)"></div>
@@ -154,80 +155,89 @@
 				</script>
 				<audio id="mps" src="" >
 				</audio>
-
-				<div class="fctf_right_list">
-					<input id="fctf_id" type="hidden" th:value="${fctf.fctf_id}">
-					<div class="fctf_name" title="">[[${fctf.fctf_name}]]</div>
-					<div class="hr"></div>
-					<div class="fctf_introduce_name">题目描述：
-					</div>
-
-					<div class="fctf_introduce_list" title="brief_intro">[[${fctf.brief_intro}]]</div>
-					<div class="hr"></div>
-					<div class="inerColl">
-						<i class="icon gray"><i class="icon orange" style="width:82.38%;"></i></i>
-						<div class="fctf_menu" style="display: inline-block;">
-							<div class="personNum ri"><img src="/images/person-icon.png}"/>学习人数：208</div>
-							<div class="difficulty ri"><img src="/images/difficulty-icon.png}"/>难度：[[${fctf.degree}]]</div>
-							<div class="area ri">方向：[[${fctf.area}]]</div>
-							<div class="type ri">类型：[[${fctf.type}]]</div>
-							<input type="hidden" id="type" th:value="${fctf.type}"/>
-						</div>
-					</div>
-					<div class="hr"></div>
-					<!-- 三种题目类型-->
-					<div id="three-type" th:if="${user} ne null">
-						<!-- 桌面型 -->
-						<div id="desktop" th:if="${fctf.type} eq 'desktop'" style="height: 50px">
-							<button class="fctf_create_btn" id="create_kvm" style="width:157px;height:39px;line-height:39px;text-align:center;background-color:#f16f37;color:#fff;border-radius:3px;margin-top:0px;cursor:pointer;border:none">创建虚拟机</button>
+				<div class="fctf_left_list">
+					<div class="fctf_right_list">
+						<input id="fctf_id" type="hidden" th:value="${fctf.fctf_id}">
+						<div class="fctf_name" title="">[[${fctf.fctf_name}]]</div>
+						<div class="hr"></div>
+						<div class="fctf_introduce_name">题目描述：
 						</div>
 
-						<!-- 服务型 -->
-						<div id="service" th:if="${fctf.type} eq 'service'" style="height: 50px">
-							<a th:href="${fctf.content_addr}">[[${fctf.content_addr}]]</a>
+						<div class="fctf_introduce_list" title="brief_intro">[[${fctf.brief_intro}]]</div>
+						<div class="hr"></div>
+						<div class="inerColl">
+							<i class="icon gray"><i class="icon orange" style="width:82.38%;"></i></i>
+							<div class="fctf_menu" style="display: inline-block;">
+								<div class="personNum ri"><img th:src="@{/images/person-icon.png}"/>学习人数：208</div>
+								<div class="difficulty ri"><img th:src="@{/images/difficulty-icon.png}"/>难度：[[${fctf.degree}]]</div>
+								<div class="area ri">方向：[[${fctf.area}]]</div>
+								<div class="type ri">类型：[[${fctf.type}]]</div>
+								<input type="hidden" id="type" th:value="${fctf.type}"/>
+							</div>
+						</div>
+						<div class="hr"></div>
+						<!-- 三种题目类型-->
+						<div id="three-type" th:if="${user} ne null">
+							<!-- 桌面型 -->
+							<div id="desktop" th:if="${fctf.type} eq 'desktop'" style="height: 50px">
+								<button class="fctf_create_btn" id="create_kvm" style="width:157px;height:39px;line-height:39px;text-align:center;background-color:#f16f37;color:#fff;border-radius:3px;margin-top:0px;cursor:pointer;border:none">创建虚拟机</button>
+							</div>
+
+							<!-- 服务型 -->
+							<div id="service" th:if="${fctf.type} eq 'service'" style="height: 50px">
+								<a th:href="${fctf.content_addr}">[[${fctf.content_addr}]]</a>
+							</div>
+
+							<!-- 附件型 -->
+							<div id="download" th:if="${fctf.type} eq 'download'" style="height: 50px">
+								<a href="">download</a>
+							</div>
 						</div>
 
-						<!-- 附件型 -->
-						<div id="download" th:if="${fctf.type} eq 'download'" style="height: 50px">
-							<a href="">download</a>
-						</div>
-					</div>
 
+						<!-- 三种题目类型-->
+						<div class="affiliation ri" style="margin-left: 10px;">
+							<div class="affiliationlist">
 
-					<!-- 三种题目类型-->
-					<div class="affiliation ri" style="margin-left: 10px;">
-						<div class="affiliationlist">
+								<p title="SQL注入进阶"><a href="cour.do?w=1&c=C172.19.104.182014090911000400001" target="_blank">SQL注入进阶</a></p>
 
-							<p title="SQL注入进阶"><a href="cour.do?w=1&c=C172.19.104.182014090911000400001" target="_blank">SQL注入进阶</a></p>
+							</div>
 
 						</div>
+						<div style="width:100%">
+							<input type="text" id="input_ans"  class="input_ans" required="true"/>
+							<button class="fctf_begin_btn" onclick="isflag()" id="addfctf-button" style="display:block;border:none">
+								提交
+							</button>
+						</div>
+						<div id="show-result">
+							<label id="isnull" style="color: red;display: none">不能为空</label>
+						</div>
+						<div id="end-mac" class="mac" style="display:none;margin-top: 6px;"><a href="javascript:void(0)">结束并释放题目机</a></div>
+						<div id="ending-mac" class="mac" style="display:none;"><img src="/img/loading4.gif}">正在发送请求</div>
+						<div id="creating-mac" class="mac" style="display:none;margin-top: 6px;">创建中…先预习一下题目指导书吧！</div>
+
+
+						<div id="queue" class="mac" style="display: none;margin-top: 21px;">
+
+
+
+							<img src="/images/queue.png}">分配环境的人数过多，感谢您的耐心等待！当前排第<font style="color: red;font-size: 26px;">3</font>位
+
+
+						</div>
+
 
 					</div>
-					<div style="width:1000px">
-						<input type="text" id="input_ans"  class="input_ans" required="true"/>
-						<button class="fctf_begin_btn" onclick="isflag()" id="addfctf-button" style="display:block;border:none">
-							提交
-						</button>
-					</div>
-					<div id="show-result">
-						<label id="isnull" style="color: red;display: none">不能为空</label>
-					</div>
-					<div id="end-mac" class="mac" style="display:none;margin-top: 6px;"><a href="javascript:void(0)">结束并释放题目机</a></div>
-					<div id="ending-mac" class="mac" style="display:none;"><img src="/img/loading4.gif}">正在发送请求</div>
-					<div id="creating-mac" class="mac" style="display:none;margin-top: 6px;">创建中…先预习一下题目指导书吧！</div>
-
-
-					<div id="queue" class="mac" style="display: none;margin-top: 21px;">
-
-
-
-						<img src="/images/queue.png}">分配环境的人数过多，感谢您的耐心等待！当前排第<font style="color: red;font-size: 26px;">3</font>位
-
-
-					</div>
-
-
 				</div>
+				<div class="fctf_writeup_list">
+					<div class="fctf_right_list">
+						<div class="fctf_name" title="">WriteUp列表</div>
+						<div class="hr"></div>
+						<div id="createWriteup" style="font-size: 18px;color: #2aabd2">分享我的WriteUp</div>
+					</div>
+				</div>
+
 			</div>
 		</div>
 	</div>
@@ -359,6 +369,16 @@
             });
 		}
     }
+    $("#createWriteup").click(function (e) {
+		var id = $("#fctf_id").val();
+		if($("#user").val() == null){
+		    layer.msg("请先登录");
+		}else{
+            window.location.href = "/fctf/createWriteup/"+id;
+		}
+
+    })
+
 </script>
 
 </body>

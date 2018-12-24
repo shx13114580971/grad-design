@@ -3,6 +3,7 @@ package com.mooe.grad.service;
 import com.mooe.grad.dao.FctfDao;
 import com.mooe.grad.domain.Experiment;
 import com.mooe.grad.domain.Fctf;
+import com.mooe.grad.domain.FctfWriteup;
 import com.mooe.grad.vo.ExperimentVo;
 import com.mooe.grad.vo.FctfVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,5 +37,25 @@ public class FctfService {
 
     public String getFlag(int fctf_id) {
         return fctfDao.getFlag(fctf_id);
+    }
+
+    public String findNameById(int fctf_id) {
+        return fctfDao.findNameById(fctf_id);
+    }
+
+    public void addWriteup(FctfWriteup fctfWriteup) {
+        FctfWriteup writeup = fctfDao.findByUserIdAndFctfId(fctfWriteup.getUser_id(), fctfWriteup.getFctf_id());
+        if(writeup != null){
+            fctfDao.updateWriteup(fctfWriteup);
+        }else{
+            fctfDao.addWriteup(fctfWriteup);
+
+        }
+
+    }
+
+    public FctfWriteup isUploaded(int fctf_id, int user_id) {
+        FctfWriteup writeup = fctfDao.findByUserIdAndFctfId(user_id, fctf_id);
+        return writeup;
     }
 }

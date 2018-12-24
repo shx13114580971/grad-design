@@ -1,6 +1,7 @@
 package com.mooe.grad.controller;
 
 import com.mooe.grad.domain.Experiment;
+import com.mooe.grad.domain.Fctf;
 import com.mooe.grad.domain.User;
 import com.mooe.grad.domain.UserExp;
 import com.mooe.grad.result.CodeMsg;
@@ -67,6 +68,23 @@ public class TestController {
         Experiment experiment = testService.startTestExp(testId);
         model.addAttribute("experiment", experiment);
         return "test_exp";
+    }
+
+    @ResponseBody
+    @RequestMapping("/test_fctf/")
+    public Result<String> getTestFctfId(@RequestParam("testArea") String area, User user){
+        if (user == null)return Result.error(CodeMsg.SESSION_ERROR);
+        String testId = testService.getStartTestFctfId(area, user.getUser_id());
+        return Result.success(testId);
+    }
+
+    @RequestMapping("/test_fctf")
+    public String getTestFctf(@RequestParam("testArea") String area,
+                             @RequestParam("testId") String testId, User user, Model model){
+        model.addAttribute("user", user);
+        Fctf fctf = testService.startTestFctf(testId);
+        model.addAttribute("fctf", fctf);
+        return "test_fctf";
     }
 
     @ResponseBody

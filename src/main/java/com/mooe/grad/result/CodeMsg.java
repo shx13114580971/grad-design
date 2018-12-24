@@ -22,8 +22,9 @@ public class CodeMsg {
 	public static CodeMsg PASSWORD_ERROR = new CodeMsg(500216, "密码错误");
 	
 	
-	//商品模块 5003XX
-	
+	//实验模块 5003XX
+	public static CodeMsg VM_CREATE_ERROR = new CodeMsg(500301, "实验机创建失败");
+	public static CodeMsg VM_DESTROY_ERROR = new CodeMsg(500302, "实验机销毁失败");
 	
 	//订单模块 5004XX
 	public static CodeMsg ORDER_NOT_EXIST = new CodeMsg(500400, "订单不存在");

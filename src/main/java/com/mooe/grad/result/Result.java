@@ -1,7 +1,7 @@
 package com.mooe.grad.result;
 
 public class Result<T> {
-	
+
 	private int code;
 	private String msg;
 	private T data;
@@ -25,20 +25,21 @@ public class Result<T> {
 		this.data = data;
 		this.msg = "success";
 	}
-	
+
 	private Result(int code, String msg) {
 		this.code = code;
 		this.msg = msg;
 	}
-	
+
+
+
 	private Result(CodeMsg codeMsg) {
 		if(codeMsg != null) {
 			this.code = codeMsg.getCode();
 			this.msg = codeMsg.getMsg();
 		}
 	}
-	
-	
+
 	public int getCode() {
 		return code;
 	}
@@ -57,4 +58,5 @@ public class Result<T> {
 	public void setData(T data) {
 		this.data = data;
 	}
+
 }

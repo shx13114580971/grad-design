@@ -372,7 +372,7 @@ var timer ;
 <script th:src="@{/js/jquery/jquery.raty.js}"></script>
 <script th:src="@{/js/loading.js}"></script>
 <script th:src="@{/js/experimentPage.js}"></script>
-<script th:src="@{/js/experiment_env.js}"></script>
+<!--<script th:src="@{/js/experiment_env.js}"></script>-->
 <script th:src="@{/js/page.js}"></script>
 <script th:src="@{/js/CommonUtil.js}"></script>
 <script th:src="@{/layer/layer.js}"></script>
@@ -433,7 +433,7 @@ var timer ;
             url : "/experiment/endExp/"+envir_name+"?exp_id="+parseInt($("#experiment_id").val()),
             type : "post",
             success : function(data) {
-                flag = true;
+                layer.msg(data.msg);
             },
             error : function(x, s, e) {
             }
