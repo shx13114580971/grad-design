@@ -371,7 +371,8 @@
     }
     $("#createWriteup").click(function (e) {
 		var id = $("#fctf_id").val();
-		if($("#user").val() == null){
+		var user = $("#user").val();
+		if(user == null || user == ""){
 		    layer.msg("请先登录");
 		}else{
             window.location.href = "/fctf/createWriteup/"+id;

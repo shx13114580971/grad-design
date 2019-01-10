@@ -84,7 +84,7 @@
 								提交
 							</button>
 						</div>
-						<div><textarea id="writeup" name="writeup" style="display: none"> </textarea></div>
+						<div><textarea id="writeup" name="writeup" style="display: none"></textarea></div>
 
 						<div id="show-result">
 							<label id="isnull" style="color: red;display: none">不能为空</label>
@@ -155,12 +155,12 @@
         html.replace('\n','');
         html=html.replace(/\r\n/g,"");
         html=html.replace(/\n/g,"");
-        if(html.indexOf("\\\'")>-1||html.indexOf('\\\"')>-1){alert('bingo');}
-        else
-        {
-            html=html.replace(/\'/g,"\\'");
-            html=html.replace(/\"/g,'\\"');
-        }
+        // if(html.indexOf("\\\'")>-1||html.indexOf('\\\"')>-1){alert('bingo');}
+        // else
+        // {
+        //     html=html.replace(/\'/g,"\\'");
+        //     html=html.replace(/\"/g,'\\"');
+        // }
         if(html.indexOf("<img src=\"data:image")>-1 && html.indexOf("base64")>-1)
         {
             alert('请不要粘贴图片到编辑框,内容不会被保存');

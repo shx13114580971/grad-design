@@ -9,7 +9,6 @@ import com.mooe.grad.redis.UserKey;
 import com.mooe.grad.result.CodeMsg;
 import com.mooe.grad.util.UUIDUtil;
 import com.mooe.grad.vo.*;
-import com.sun.deploy.net.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,9 +16,7 @@ import org.springframework.util.StringUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 

@@ -5,8 +5,6 @@ import com.mooe.grad.domain.Experiment;
 
 import com.mooe.grad.domain.Fctf;
 import com.mooe.grad.vo.FctfVo;
-import org.apache.commons.collections15.IteratorUtils;
-import com.mooe.grad.domain.UserExpTest;
 import com.mooe.grad.vo.ExperimentVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 @Service
 public class TestService {
