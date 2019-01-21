@@ -273,12 +273,13 @@
 
         </nav>
         <!-- /. NAV SIDE  -->
+        <div id="fade" class="black_overlay" style="height: 200%"></div>
         <div id="page-wrapper" >
             <div id="page-inner">
 			 <div class="row">
                  <div class="col-md-12">
                         <h1 class="page-header">
-                            添加新实验
+                            主机信息
                         </h1>
 
 
@@ -286,100 +287,58 @@
                  <!-- /. ROW  -->
                  <div class="row">
                 <div class="col-md-12">
-                    <!-- Advanced Tables -->
-                    <div id="fade" class="black_overlay"></div>
+                    <!-- 环境模板信息-->
+
                     <div class="panel panel-default">
-                        <div class="panel-heading">
-                            实验信息
-                        </div>
                         <div class="panel-body">
                             <div class="table-responsive">
-                                <form id="exp-info" name="exp-info" >
-                                    <input type="hidden" id="exp_id" th:value="${experiment.exp_id}">
-                                    <p >
-                                        <span style="font-size: 16px;font-weight: 600;color: #63686e;">实验名：</span>
-                                        <input type="text" id="exp_name" name="exp_name" placeholder="请输入内容" th:value="${experiment.exp_name}">
-                                        <!--<span style="font-size: 16px;font-weight: 600;color: #63686e;margin-left: 70px">环境名：</span>-->
-                                        <!--<input type="text" id="envir_name" name="envir_name" placeholder="请输入内容" th:value="${experiment.envir_name}">-->
-                                    </p>
-                                    <p >
-                                        <span style="font-size: 16px;font-weight: 600;color: #63686e;">方向：</span>
-                                        <input type="text" id="class1" name="class1" placeholder="请输入内容" th:value="${experiment.class1}" style="margin-left: 10px">
-                                        <span style="font-size: 16px;font-weight: 600;color: #63686e;margin-left: 70px">类别：</span>
-                                        <input type="text" id="class2" name="class2" placeholder="请输入内容" th:value="${experiment.class2}">
-                                        <span style="font-size: 16px;font-weight: 600;color: #63686e;margin-left: 70px">难度：</span>
-                                        <input type="hidden" name='degree-val' th:value="${experiment.degree}">
-                                        <label><input  type="radio" name="degree" value="初级"/>初级</label>
-                                        <label><input  type="radio" name="degree" value="中级"/>中级</label>
-                                        <label><input  type="radio" name="degree" value="高级"/>高级</label>
-
-                                    </p>
-                                    <p class="kiss">
-                                        <span>实验简介：</span>
-                                        <textarea id="brief_intro" name="brief_intro" placeholder="请输入内容"
-                                                  class="textarea" style="min-height: 32.9886px; z-index: auto; position: relative; line-height: 21px; font-size: 14px; transition: none 0s ease 0s; background: transparent !important;">[[${experiment.brief_intro}]]</textarea>
-                                    </p>
+                                <form enctype="multipart/form-data" id="envir-info" name="envir-info" method="post">
+                                    <!-- 添加主机浮板 -->
                                     <div class="kiss">
-                                        <span>实验文档：</span>
-                                        <a id="btn_document" name="btn_document" href="javascript:;" onclick="openDocDiv()" style="line-height: 35px;font-size: 16px">输入文档内容</a>
-                                        <div id="document" class="white_content">
-
-                                            This is the lightbox content.
+                                        <div id="add_host" style="height: 600px">
                                             <p class="kiss">
-                                                <span>内容背景：</span>
-                                                <textarea id="content" name="content" placeholder="请输入内容" class="textarea"
-                                                          style="min-height: 32.9886px; z-index: auto; position: relative; line-height: 21px; font-size: 14px; transition: none 0s ease 0s; background: transparent !important;">[[${experiment.content}]]</textarea>
+                                                <span>主机名：</span>
+                                                <input type="text" class="envir-input" th:value="${vmHost.host_name}" readonly id="host_name" name="host_name" placeholder="请输入内容">
                                             </p>
                                             <p class="kiss">
-                                                <span>实验环境：</span>
-                                                <textarea id="environment" name="environment" placeholder="请输入内容" class="textarea"
-                                                          style="min-height: 32.9886px; z-index: auto; position: relative; line-height: 21px; font-size: 14px; transition: none 0s ease 0s; background: transparent !important;">[[${experiment.environment}]]</textarea>
+                                                <span>ip地址：</span>
+                                                <input type="text" class="envir-input" th:value="${vmHost.host_ip}" readonly id="host_ip" name="host_ip" placeholder="请输入内容">
                                             </p>
                                             <p class="kiss">
-                                                <span>实验目的：</span>
-                                                <textarea id="purpose" name="purpose" placeholder="请输入内容" class="textarea"
-                                                          style="min-height: 32.9886px; z-index: auto; position: relative; line-height: 21px; font-size: 14px; transition: none 0s ease 0s; background: transparent !important;">[[${experiment.purpose}]]</textarea>
+                                                <span>工具：</span>
+                                                <input type="text" class="envir-input" th:value="${vmHost.tools}" readonly id="host_tools" name="host_tools" placeholder="请输入内容">
                                             </p>
                                             <p class="kiss">
-                                                <span>操作步骤：</span>
-                                                <input id="step" name="file" type="file" class="textarea" accept="application/pdf"
-                                                       style="min-height: 32.9886px; z-index: auto; position: relative; line-height: 21px; font-size: 14px; transition: none 0s ease 0s; background: transparent !important;"></input>
+                                                <span>操作系统：</span>
+                                                <input type="text" class="envir-input" th:value="${vmHost.os}" readonly id="host_os" name="host_os" placeholder="请输入内容">
                                             </p>
-                                            <a href="javascript:void(0)" onclick="two()">Close</a>
+                                            <p class="kiss">
+                                                <span>用户名：</span>
+                                                <input type="text" class="envir-input" th:value="${vmHost.username}" readonly id="host_username" name="host_username" placeholder="请输入内容">
+                                            </p>
+                                            <p class="kiss">
+                                                <span>密码：</span>
+                                                <input type="text" class="envir-input" th:value="${vmHost.password}" readonly id="host_password" name="host_password" placeholder="请输入内容">
+                                            </p>
+                                            <p class="kiss">
+                                                <span>备注（详细配置需求）：</span>
+                                                <textarea type="text" class="envir-input" th:value="${vmHost.remark}" readonly id="host_remark" name="host_remark" placeholder="请输入内容"></textarea>
+                                            </p>
+                                            <p class="kiss" style="height: 70px">
+                                                <button class="page-button" onclick="">返回</button>
+                                            </p>
                                         </div>
-
                                     </div>
 
-                                    <p class="kiss">
-                                        <span>实验图片：</span>
-                                        <input type="file" id="image" name="file" class="textarea" placeholder="浏览" accept=".jpg,.png,.jpeg">
-                                    </p>
-                                    <p class="kiss">
-                                        <span>实验视频：</span>
-                                        <input type="file" id="video" name="file" class="textarea" placeholder="浏览" accept="application/mp4">
-                                    </p>
-                                    <p class="kiss" id="add-question">
-                                        <input type="hidden" id='question-json' th:value="${experiment.question}">
-                                        <span>实验测题：</span><a href="javascript:" class="item-operation" onclick="addQues()">添加题目</a>
 
-
-
-
-                                    </p>
-                                    <p class="kiss">
-                                        <span>备注：</span>
-                                        <textarea id="remark" name="remark" class="textarea" style="min-height: 32.9886px; z-index: auto; position: relative; line-height: 21px; font-size: 14px; transition: none 0s ease 0s; background: transparent !important;">[[${experiment.remark}]]</textarea>
-                                    </p>
-                                    <p>
-                                        <input type="submit" class="page-button" onclick="addExp()">
-                                    </p>
-
+                                    <!-- 添加主机浮板 -->
                                 </form>
                             </div>
                             
                         </div>
                     </div>
-                    <!--End Advanced Tables -->
+                    <!--环境模板信息 -->
+
                 </div>
             </div>
             </div>
@@ -405,133 +364,14 @@
     <script th:src="@{/js/dataTables/dataTables.bootstrap.js}"></script>
     <script>
         $(document).ready(function () {
-            var degree = document.getElementsByName("degree");
-            var degree_val = document.getElementsByName("degree-val");
-            for(var i = 0; i < degree.length; i++){
-                if(degree[i].value == degree_val[0].value){
-                    degree[i].checked = true;
-                }
-            }
-            var questionHtml = "";
-            var questionJson = $("#question-json").val();
-            var questionList = JSON.parse(questionJson);
-            var count_ques = questionList.length;
-            for(var i=0;i<count_ques;i++) {
-                var question = JSON.stringify(questionList[i]);
-                var placeholder = "{\"questionStatement\": \"\",\"answer\": \"item1\",\"items\": [{\"item1\": \"\",\"item2\": \"\",\"item3\": \"\",\"item4\": \"\"}]}";
-                str = "<textarea id=\"question-content"+i+"\" name=\"question-content\" placeholder="+placeholder+" class=\"textarea\">"+question+"</textarea><a href='javascript:' class='item-operation' onclick='deleteques(this,\"question-content"+ i +"\")'>删除题目</a>";
-                $("#add-question").append(str);
-            }
-        })
-
-    </script>
-    <script>
-        $(document).ready(function () {
             $('#dataTables-example').dataTable();
         });
-        function openDocDiv(){
-            document.getElementById('document').style.display='block';
-            document.getElementById('fade').style.display='block'
-        }
-        function two(){
-            document.getElementById('document').style.display='none';
-            document.getElementById('fade').style.display='none'
-        }
     </script>
          <!-- Custom Js -->
     <script th:src="@{/js/custom-scripts.js}"></script>
-
-
         <script>
-            function deleteques(this_a,textId){
-                $("#"+textId).remove();
-                $(this_a).remove();
-            }
-
-            function addQues(){
-                var count_ques = $("#add-question").children("textarea").length;
-                var placeholder = "{\"questionStatement\": \"\",\"answer\": \"item1\",\"items\": [{\"item1\": \"\",\"item2\": \"\",\"item3\": \"\",\"item4\": \"\"}]}";
-                str = "<textarea id=\"question-content"+count_ques+"\" name=\"question-content\" placeholder="+placeholder+" class=\"textarea\">"+placeholder+"</textarea><a href='javascript:' class='item-operation' onclick='deleteques(this,\"question-content"+ count_ques +"\")'>删除题目</a>";
-                count_ques += 1;
-                $("#add-question").append(str);
-            }
-            function addExp(){
-                $("#exp-info").validate({
-                    submitHandler:function(form){
-                        doAdd();
-                    }
-                });
-            }
-
-            function doAdd(){
-                g_showLoading();
-                //构造测题的json数据
-                var question = "";
-                    //先构造测题选项的json数据
-                for(var i = 0; i < $("#add-question").children("textarea").length; i++){
-                    //key是div子radio元素的value，value是div的文本内容
-                    // var value = $("#"+divId).contents().filter(function (index, content) {
-                    //     //console.log(content)
-                    //     return content.nodeType === 3;
-                    // }).text().trim();
-                    //{key:value,key:value}
-                    question = question + $("#question-content"+i).val();
-                    if(i < $("#add-question").children("textarea").length-1)
-                        question = question + ",";
-                }
-                //answer = $("input[type=radio][name=question-item]:checked").val().trim();
-                question = "["+question+"]";
-                // var s = $('#image')[0].files[0];
-                // var formData = new FormData();
-                // formData.append("file", s);
-                var form=new FormData($("#exp-info")[0]);//拿到表单对象
-                $.ajax({
-                    url: "/admin/exp_update",
-                    enctype:"multipart/form-data",
-                    type: "POST",
-                    data:form,
-                    processData:false,
-                    contentType:false,
-                    // data:{
-                    //     exp_id:$("#exp_id").val(),
-                    //     envir_name:$("#envir_name").val(),
-                    //     exp_name:$("#exp_name").val(),
-                    //     remark:$("#remark").val(),
-                    //     class1:$("#class1").val(),
-                    //     class2:$("#class2").val(),
-                    //     degree:$("input[type=radio][name=degree]:checked").val(),
-                    //     image:formData,
-                    //     video:$("#video").val(),
-                    //     brief_intro:$("#brief_intro").val(),
-                    //     host_ip:$("#host_ip").val(),
-                    //     kvm_ip:$("#kvm_ip").val(),
-                    //     question:question,
-                    //     content:$("#content").val(),
-                    //     step:$("#step").val(),
-                    //     purpose:$("#purpose").val(),
-                    //     environment:$("#environment").val(),
-                    //     summary:$("#summary").val(),
-                    //
-                    // },
-                    success:function(data){
-                        layer.closeAll();
-                        if(data.code == 0){
-                            layer.msg("成功");
-                            window.location.href="/admin/exp_list";
-                        }else{
-                            layer.msg(data.msg);
-                            //layer.msg("成功");
-                            // window.location.href="/login";
-                        }
-                    },
-                    error:function(){
-                        layer.closeAll();
-                    }
-                });
-            }
 
         </script>
-
 
 </body>
 

@@ -1,7 +1,9 @@
 package com.mooe.grad.admin;
 
 
+import com.mooe.grad.domain.Environment;
 import com.mooe.grad.domain.Experiment;
+import com.mooe.grad.domain.VmHost;
 import com.mooe.grad.result.Result;
 import com.mooe.grad.service.ExperimentService;
 import com.mooe.grad.vo.ExperimentVo;
@@ -29,6 +31,59 @@ public class AdminExperimentController {
         List<ExperimentVo> list = experimentSeivice.listAll();
         model.addAttribute("experimentsList",list);
         return "admin/exp_list";
+    }
+
+    //添加环境页面
+    @RequestMapping("/add_envir/{exp_id}")
+    public String addEnvir(@PathVariable("exp_id")int exp_id,Model model){
+        String exp_name = experimentSeivice.getExpNameByid(exp_id);
+        model.addAttribute("exp_id", exp_id);
+        model.addAttribute("exp_name", exp_name);
+        return "admin/envir_add";
+    }
+
+    //查看环境页面
+    @RequestMapping("/view_envir/{exp_id}")
+    public String viewEnvir(@PathVariable("exp_id")int exp_id,Model model){
+        String exp_name = experimentSeivice.getExpNameByid(exp_id);
+        Environment environment = experimentSeivice.findEnvirById(exp_id);
+        List<VmHost> vmHostList = experimentSeivice.listVmHost(environment.getEnvir_id());
+        model.addAttribute("exp_id", exp_id);
+        model.addAttribute("exp_name", exp_name);
+        model.addAttribute("environment", environment);
+        model.addAttribute("vmHostList",vmHostList);
+        return "admin/envir_view";
+    }
+
+    //提交部署环境
+    @ResponseBody
+    @RequestMapping("/commit_envir/{exp_id}")
+    public Result<String> commitEnvir(@PathVariable("exp_id")int exp_id){
+        experimentSeivice.updateToDeploying(exp_id);
+        return Result.success("");
+    }
+
+    //查看主机信息
+    @RequestMapping("/view_host/{host_id}")
+    public String viewHost(@PathVariable("host_id")int host_id, Model model){
+        VmHost vmHost = experimentSeivice.getVmHost(host_id);
+        model.addAttribute("vmHost", vmHost);
+        return "admin/host_view";
+    }
+
+    @ResponseBody
+    @RequestMapping("/do_envirAdd")
+    public Result<String> doAdd(Environment environment){
+        experimentSeivice.addEnvir(environment);
+        return Result.success("");
+    }
+
+    //添加主机
+    @ResponseBody
+    @RequestMapping("/do_hostAdd")
+    public Result<String> doHostAdd(VmHost vmHost){
+        experimentSeivice.addVmHost(vmHost);
+        return Result.success("");
     }
 
     //页面跳转

@@ -1,0 +1,280 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+      <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+	<!-- Bootstrap Styles-->
+    <link th:href="@{/styles/bootstrap.css}" rel="stylesheet" />
+    <!-- FontAwesome Styles-->
+    <link th:href="@{/styles/font-awesome.css}" rel="stylesheet" />
+    <!-- Custom Styles-->
+    <link th:href="@{/styles/resource-common.css}" rel="stylesheet" />
+     <!-- Google Fonts-->
+   <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+     <!-- TABLE STYLES-->
+    <link th:href="@{/js/dataTables/dataTables.bootstrap.css}" rel="stylesheet" />
+</head>
+<body>
+    <div id="wrapper">
+        <nav th:replace="/common/resource_top :: resource_top" class="navbar navbar-default top-navbar">
+        </nav>
+
+        <!-- /. NAV SIDE  -->
+        <nav th:replace="/common/resource_left :: resource_left" class="navbar-default navbar-side">
+        </nav>
+        <div id="fade" class="black_overlay" style="height: 200%"></div>
+        <div id="page-wrapper" >
+            <div id="page-inner">
+			 <div class="row">
+                 <div class="col-md-12">
+                        <h1 class="page-header">
+                            添加实验环境
+                        </h1>
+
+
+                    </div>
+                 <!-- /. ROW  -->
+                 <div class="row">
+                <div class="col-md-12">
+                    <!-- 环境模板信息-->
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            环境信息
+                        </div>
+                        <input type="hidden" id="exp_id" th:value="${exp_id}">
+                        <input type="hidden" id="envir_id" th:value="${environment.envir_id}">
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <form enctype="multipart/form-data" id="envir-info" name="envir-info" method="post">
+                                    <p >
+                                        <span style="font-size: 16px;;font-weight: 600;color: #63686e;">实验名：</span>
+                                        <input type="text" class="envir-input" id="exp_name" name="exp_name" th:value="${exp_name}" disabled placeholder="请输入内容">
+                                        <span style="margin-left: 70px;font-size: 16px;font-weight: 600;color: #63686e;">环境名：</span>
+                                        <input type="text" class="envir-input" id="envir_name" name="envir_name" th:value="${environment.envir_name}" disabled placeholder="请输入内容">
+                                    </p>
+                                    <p>
+                                        <span style="font-size: 16px;font-weight: 600;color: #63686e;">是否提供虚拟机：</span>
+                                        <select class="envir-input" id="is_provide_vm" name="is_provide_vm" disabled placeholder="请输入内容">
+                                            <option th:checked="${environment.is_provide_vm == 1}">是</option>
+                                            <option th:checked="${environment.is_provide_vm == 0}">否</option>
+                                        </select>
+                                        <span style="margin-left: 70px;font-size: 16px;font-weight: 600;color: #63686e;">主机数量：</span>
+                                        <input type="text" class="envir-input" id="host_num" name="host_num" th:value="${environment.host_num}"  placeholder="请输入内容">
+                                    </p>
+                                    <!-- 添加主机浮板 -->
+                                    <div class="kiss">
+                                        <a style="height:40px;font-size:22px;" id="addEnvir_btn" href="javascript:;"  value="添加主机" onclick="openDocDiv()">添加主机</a>
+                                        <div id="add_host" class="white_content" style="height: 600px">
+                                            <p class="kiss" style="font-size: 24px;height: 60px;font-weight: bold">
+                                                <span style="font-size:22px;width:120px">主机信息：</span>
+                                            </p>
+
+                                            <p class="kiss">
+                                                <span>主机名：</span>
+                                                <input type="text" class="envir-input" id="host_name" name="host_name" placeholder="请输入内容">
+                                            </p>
+                                            <p class="kiss">
+                                                <span>ip地址：</span>
+                                                <input type="text" class="envir-input" id="host_ip" name="host_ip" placeholder="请输入内容">
+                                            </p>
+                                            <p class="kiss">
+                                                <span>工具：</span>
+                                                <input type="text" class="envir-input" id="host_tools" name="host_tools" placeholder="请输入内容">
+                                            </p>
+                                            <p class="kiss">
+                                                <span>操作系统：</span>
+                                                <input type="text" class="envir-input" id="host_os" name="host_os" placeholder="请输入内容">
+                                            </p>
+                                            <p class="kiss">
+                                                <span>用户名：</span>
+                                                <input type="text" class="envir-input" id="host_username" name="host_username" placeholder="请输入内容">
+                                            </p>
+                                            <p class="kiss">
+                                                <span>密码：</span>
+                                                <input type="text" class="envir-input" id="host_password" name="host_password" placeholder="请输入内容">
+                                            </p>
+                                            <p class="kiss">
+                                                <span>备注（详细配置需求）：</span>
+                                                <textarea type="text" class="envir-input" id="host_remark" name="host_remark" placeholder="请输入内容"/>
+                                            </p>
+                                            <p class="kiss" style="height: 70px">
+                                                <button class="page-button" onclick="addHost()">保存</button>
+                                            </p>
+                                            <a href="javascript:void(0)" onclick="two()">Close</a>
+                                        </div>
+                                    </div>
+
+
+                                    <!-- 添加主机浮板 -->
+                                </form>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <!--环境模板信息 -->
+
+                    <!--主机列表 -->
+                    <div class="panel panel-default">
+                        <div class="row" id="host_list" >
+                            <ul th:if="${vmHostList != null}">
+                                <li th:each="vmHost:${vmHostList}">
+                                    <div class="col-xs-12 col-sm-4">
+                                        <div class="panel panel-success panel-data" style="height: 150px;width: 300px;margin: 20px">
+                                            <div class="panel-heading">
+
+                                                <h3 class="panel-title">
+                                                    <a th:href="'/admin/view_host/'+${vmHost.host_id}"><strong>[[${vmHost.host_name}]]</strong></a>
+                                                    <a href="#editHost1" class="pull-right">
+                                                        <span class="glyphicon glyphicon-pencil"></span>
+                                                    </a>
+                                                </h3>
+
+                                            </div>
+                                            <div class="panel-body">
+                                                <p>
+                                                    <input type="hidden" name="host_id" th:value="${vmHost.host_ip}">
+                                                    <button type="submit" class="pull-right btn btn-xs btn-danger" name="host_del"
+                                                            title="Delete"
+                                                            onclick="return confirm('Are you sure?')">
+                                                        <span class="glyphicon glyphicon-trash"></span>
+                                                    </button>
+                                                <p><strong>Host_IP : </strong>[[${vmHost.host_ip}]]
+                                                </p>
+                                                <p><strong>Update : </strong>[[${vmHost.update_time}]]</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+
+                        </div>
+                    </div>
+                    <!--主机列表 -->
+                </div>
+            </div>
+            </div>
+               <footer><p>Copyright &copy; 2016.Company name All rights reserved.More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></p></footer>
+            </div>
+             <!-- /. PAGE INNER  -->
+        </div>
+         <!-- /. PAGE WRAPPER  -->
+     <!-- /. WRAPPER  -->
+    <!-- JS Scripts-->
+    <!-- jQuery Js -->
+    <script th:src="@{/js/jquery-1.11.1.js}"></script>
+      <!-- Bootstrap Js -->
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/common.js}"></script>
+    <script th:src="@{/layer/layer.js}"></script>
+    <script th:src="@{/js/morris/morris.js}"></script>
+    <!-- Metis Menu Js -->
+    <script th:src="@{/js/jquery.metisMenu.js}"></script>
+    <script th:src="@{/js/jquery/jquery.validate.min.js}"></script>
+     <!-- DATA TABLE SCRIPTS -->
+    <script th:src="@{/js/dataTables/jquery.dataTables.js}"></script>
+    <script th:src="@{/js/dataTables/dataTables.bootstrap.js}"></script>
+    <script>
+        $(document).ready(function () {
+            $('#dataTables-example').dataTable();
+        });
+    </script>
+         <!-- Custom Js -->
+    <script th:src="@{/js/custom-scripts.js}"></script>
+
+
+        <script>
+            function openDocDiv(){
+                $("#add_host").show();
+                $("#fade").show();
+            }
+            function two(){
+                $("#add_host").hide();
+                $("#fade").hide();
+            }
+            function addEnvir(){
+                $("#envir-info").validate({
+                    submitHandler:function(form){
+                        doAdd();
+                    }
+                });
+            }
+
+            function doAdd(){
+                g_showLoading();
+                var update_time = new Date().format("yy-MM-dd hh:mm:ss");
+                $.ajax({
+                    url: "/admin/do_envirAdd",
+                    type: "POST",
+                    data:{
+                        envir_name:$("#envir_name").val(),
+                        exp_id:$("#exp_id").val(),
+                        is_provide_vm:$("#is_provide_vm option:selected").val(),
+                        update_time:update_time,
+                        status:"制作中",
+                        host_num:$("#host_num").val()
+                    },
+                    success:function(data){
+                        layer.closeAll();
+                        if(data.code == 0){
+                            layer.msg("成功");
+                            $("#envir_name").attr("disabled", "disabled");
+                            $("#is_provide_vm").attr("disabled", "disabled");
+                            $("#host_num").attr("disabled", "disabled");
+                            $("#addEnvir_btn").hide();
+                        }else{
+                            layer.msg(data.msg);
+                            //layer.msg("成功");
+                            // window.location.href="/login";
+                        }
+                    },
+                    error:function(){
+                        layer.closeAll();
+                    }
+                });
+            }
+
+            function deleteques(textId){
+                $("#"+textId).remove();
+            }
+        </script>
+        <script>
+            function addHost() {
+                var update_time = new Date().format("yy-MM-dd hh:mm:ss");
+                $.ajax({
+                    url: "/admin/do_hostAdd",
+                    type: "POST",
+                    data:{
+                        envir_id:$("#envir_id").val(),
+                        host_name:$("#host_name").val(),
+                        host_ip:$("#host_ip").val(),
+                        host_tools:$("#host_tools").val(),
+                        host_os:$("#host_os").val(),
+                        host_username:$("#host_username").val(),
+                        host_password:$("#host_password").val(),
+                        host_remark:$("#host_remark").val(),
+                        update_time:update_time
+                    },
+                    success:function(data){
+                        layer.closeAll();
+                        if(data.code == 0){
+                            layer.msg("成功");
+                            window.location.reload();
+                        }else{
+                            layer.msg(data.msg);
+                            //layer.msg("成功");
+                            // window.location.href="/login";
+                        }
+                    },
+                    error:function(){
+                        layer.closeAll();
+                    }
+                });
+            }
+        </script>
+
+</body>
+
+
+</html>

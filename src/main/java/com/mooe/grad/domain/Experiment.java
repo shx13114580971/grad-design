@@ -12,8 +12,6 @@ public class Experiment {
     private String class2;
     private String degree;
     private String brief_intro;
-    private String host_ip;
-    private String kvm_ip;
     private Date date;
     private int user_count;
     private String image;
@@ -21,10 +19,9 @@ public class Experiment {
     private String question;
     private String content;
     private String step;
-    private String introduce;
     private String purpose;
     private String environment;
-    private String summary;
+    private String status;
     private String remark;
 
     public int getExp_id() {
@@ -47,8 +44,8 @@ public class Experiment {
         return envir_name;
     }
 
-    public void setEnvir_name(String envri_name) {
-        this.envir_name = envri_name;
+    public void setEnvir_name(String envir_name) {
+        this.envir_name = envir_name;
     }
 
     public String getClass1() {
@@ -81,22 +78,6 @@ public class Experiment {
 
     public void setBrief_intro(String brief_intro) {
         this.brief_intro = brief_intro;
-    }
-
-    public String getHost_ip() {
-        return host_ip;
-    }
-
-    public void setHost_ip(String host_ip) {
-        this.host_ip = host_ip;
-    }
-
-    public String getKvm_ip() {
-        return kvm_ip;
-    }
-
-    public void setKvm_ip(String kvm_ip) {
-        this.kvm_ip = kvm_ip;
     }
 
     public Date getDate() {
@@ -155,14 +136,6 @@ public class Experiment {
         this.step = step;
     }
 
-    public String getIntroduce() {
-        return introduce;
-    }
-
-    public void setIntroduce(String introduce) {
-        this.introduce = introduce;
-    }
-
     public String getPurpose() {
         return purpose;
     }
@@ -179,12 +152,12 @@ public class Experiment {
         this.environment = environment;
     }
 
-    public String getSummary() {
-        return summary;
+    public String getStatus() {
+        return status;
     }
 
-    public void setSummary(String summary) {
-        this.summary = summary;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getRemark() {

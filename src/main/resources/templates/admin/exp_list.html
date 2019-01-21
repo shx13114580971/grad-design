@@ -288,7 +288,6 @@
 
                     </div>
                  <!-- /. ROW  -->
-               
             <div class="row">
                 <div class="col-md-12">
                     <!-- Advanced Tables -->
@@ -302,22 +301,34 @@
                                     <thead>
                                         <tr>
                                             <th>实验名</th>
-                                            <th>环境名</th>
-                                            <th>主机IP</th>
-                                            <th>虚拟机IP</th>
+                                            <th>难度</th>
                                             <th>方向</th>
+                                            <th>类别</th>
+                                            <th>修改日期</th>
 											<th>操作</th>
+                                            <th>状态</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                     <tr class="odd gradeX" th:each="experiment,experimentStat:${experimentsList}">
                                         <td th:text="${experiment.exp_name}"></td>
-                                        <td th:text="${experiment.envir_name}"></td>
-                                        <td th:text="${experiment.host_ip}"></td>
-                                        <td th:text="${experiment.kvm_ip}"></td>
+                                        <td th:text="${experiment.degree}"></td>
                                         <td th:text="${experiment.class1}"></td>
-                                        <td><a th:href="'/admin/exp_update/'+${experiment.exp_id}">修改</a></td>
-
+                                        <td th:text="${experiment.class2}"></td>
+                                        <td th:text="${experiment.date}"></td>
+                                        <td style="width:15%">
+                                            <a th:href="'/admin/exp_update/'+${experiment.exp_id}">修改信息</a>
+                                            <a th:if="${experiment.envir_name == null || experiment.envir_name == ''}" th:href="'/admin/add_envir/'+${experiment.exp_id}">添加环境</a>
+                                            <a th:if="${experiment.envir_name != null && experiment.envir_name != ''}" th:href="'/admin/view_envir/'+${experiment.exp_id}" style="color: #4cae4c">查看环境</a>
+                                        </td>
+                                        <td>
+                                            <label th:if="${experiment.envir_name == null || experiment.envir_name == ''}" style="color: rgba(136,138,103,0.97);">暂无状态</label>
+                                            <label th:if="${experiment.envir_name != null && experiment.envir_name != '' && experiment.status == '0'}" style="color: rgba(138,53,69,0.97);margin-left: 5px">制作中</label>
+                                            <label th:if="${experiment.envir_name != null && experiment.envir_name != '' && experiment.status == '1'}" style="color: rgba(194,177,38,0.97);margin-left: 5px">部署中</label>
+                                            <a th:if="${experiment.envir_name != null && experiment.envir_name != '' && experiment.status == '2'}" onclick="commitTest()" href="javascript:;" th:value="${experiment.exp_id}" style="color: #4cae4c" id="test_status">提交测试</a>
+                                            <a th:if="${experiment.envir_name != null && experiment.envir_name != '' && experiment.status == '3'}"  href="javascript:;" disabled style="color: rgba(200,182,38,0.97)">测试中</a>
+                                            <a th:if="${experiment.envir_name != null && experiment.envir_name != '' && experiment.status == '4'}" onclick="commitPublish()" href="javascript:;" th:value="${experiment.exp_id}" style="color: #4cae4c" id="pub_status">发布实验</a>
+                                        </td>
 
                                         </tr>
                                     </tbody>
@@ -376,62 +387,12 @@
                     </div>
                     <!-- End  Hover Rows  -->
                 </div>
-                <div class="col-md-6">
-                     <!--    Context Classes  -->
-                    <div class="panel panel-default">
-                       
-                        <div class="panel-heading">
-                            Context Classes
-                        </div>
-                        
-                        <div class="panel-body">
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>First Name</th>
-                                            <th>Last Name</th>
-                                            <th>Username</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr class="success">
-                                            <td>1</td>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                        </tr>
-                                        <tr class="info">
-                                            <td>2</td>
-                                            <td>Jacob</td>
-                                            <td>Thornton</td>
-                                            <td>@fat</td>
-                                        </tr>
-                                        <tr class="warning">
-                                            <td>3</td>
-                                            <td>Larry</td>
-                                            <td>the Bird</td>
-                                            <td>@twitter</td>
-                                        </tr>
-                                        <tr class="danger">
-                                            <td>4</td>
-                                            <td>John</td>
-                                            <td>Smith</td>
-                                            <td>@jsmith</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <!--  end  Context Classes  -->
-                </div>
             </div>
                 <!-- /. ROW  -->
         </div>
                <footer><p>Copyright &copy; 2016.Company name All rights reserved.More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></p></footer>
     </div>
+
              <!-- /. PAGE INNER  -->
             </div>
          <!-- /. PAGE WRAPPER  -->
@@ -443,18 +404,29 @@
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <!-- Metis Menu Js -->
     <script th:src="@{/js/jquery.metisMenu.js}"></script>
+    <script th:src="@{/layer/layer.js}"></script>
     <script th:src="@{/js/morris/morris.js}"></script>
      <!-- DATA TABLE SCRIPTS -->
     <script th:src="@{/js/dataTables/jquery.dataTables.js}"></script>
     <script th:src="@{/js/dataTables/dataTables.bootstrap.js}"></script>
+    <script th:src="@{/js/custom-scripts.js}"></script>
     <script>
             $(document).ready(function () {
                 $('#dataTables-example').dataTable();
             });
     </script>
          <!-- Custom Js -->
-    <script th:src="@{/js/custom-scripts.js}"></script>
+
+            <script>
+
+                function commitTest() {
+
+                }
+                function commitPublish() {
+
+                }
+            </script>
     
-   
+
 </body>
 </html>

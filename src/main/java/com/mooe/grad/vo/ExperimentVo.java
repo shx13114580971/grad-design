@@ -6,15 +6,14 @@ public class ExperimentVo {
 
     private int exp_id;
     private String exp_name;
-    private String envir_name;
     private Date date;
-    private String host_ip;
-    private String kvm_ip;
     private String image;
+    private String brief_info;
     private String class1;
     private String class2;
     private String degree;
-    private String summary;
+    private String envir_name;
+    private String status;
 
     public int getExp_id() {
         return exp_id;
@@ -32,12 +31,12 @@ public class ExperimentVo {
         this.exp_name = exp_name;
     }
 
-    public String getEnvir_name() {
-        return envir_name;
+    public String getBrief_info() {
+        return brief_info;
     }
 
-    public void setEnvir_name(String envir_name) {
-        this.envir_name = envir_name;
+    public void setBrief_info(String brief_info) {
+        this.brief_info = brief_info;
     }
 
     public Date getDate() {
@@ -46,22 +45,6 @@ public class ExperimentVo {
 
     public void setDate(Date date) {
         this.date = date;
-    }
-
-    public String getHost_ip() {
-        return host_ip;
-    }
-
-    public void setHost_ip(String host_ip) {
-        this.host_ip = host_ip;
-    }
-
-    public String getKvm_ip() {
-        return kvm_ip;
-    }
-
-    public void setKvm_ip(String kvm_ip) {
-        this.kvm_ip = kvm_ip;
     }
 
     public String getImage() {
@@ -96,11 +79,19 @@ public class ExperimentVo {
         this.degree = degree;
     }
 
-    public String getSummary() {
-        return summary;
+    public String getEnvir_name() {
+        return envir_name;
     }
 
-    public void setSummary(String summary) {
-        this.summary = summary;
+    public void setEnvir_name(String envir_name) {
+        this.envir_name = envir_name;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

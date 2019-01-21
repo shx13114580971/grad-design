@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+</head>
+<body>
+<nav th:fragment="resource_left" id="resource_left"   class="navbar-default navbar-side" role="navigation">
+        <div id="sideNav" href=""><i class="fa fa-caret-right"></i></div>
+        <div class="sidebar-collapse">
+            <ul class="nav" id="main-menu">
+
+                <li>
+                    <a th:href="@{/admin/}" class="active-menu"><i class="fa fa-dashboard"></i> Dashboard</a>
+                </li>
+                <li>
+                    <a th:href="@{/admin/user}"><i class="fa fa-desktop"></i> 文件资源</a>
+                </li>
+                <li>
+                    <a th:href="@{/admin/test}"><i class="fa fa-bar-chart-o"></i>实验部署</a>
+                </li>
+                <li>
+                    <a th:href="@{/admin/exp_list}"><i class="fa fa-qrcode"></i>资源状态监控</a>
+                </li>
+
+                <li>
+                    <a th:href ="@{/admin/fctf_list}" ><i class="fa fa-table"></i>日志管理</a>
+                </li>
+                <!--
+                                    <li>
+                                        <a href="#"><i class="fa fa-sitemap"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
+                                        <ul class="nav nav-second-level">
+                                            <li>
+                                                <a href="#">Second Level Link</a>
+                                            </li>
+                                            <li>
+                                                <a href="#">Second Level Link</a>
+                                            </li>
+                                            <li>
+                                                <a href="#">Second Level Link<span class="fa arrow"></span></a>
+                                                <ul class="nav nav-third-level">
+                                                    <li>
+                                                        <a href="#">Third Level Link</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">Third Level Link</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">Third Level Link</a>
+                                                    </li>
+
+                                                </ul>
+
+                                            </li>
+                                        </ul>
+                                    </li>-->
+            </ul>
+
+        </div>
+
+    </nav>
+</body>
+</html>

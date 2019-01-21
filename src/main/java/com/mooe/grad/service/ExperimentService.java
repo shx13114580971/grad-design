@@ -3,9 +3,7 @@ package com.mooe.grad.service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.mooe.grad.dao.ExperimentDao;
-import com.mooe.grad.domain.Experiment;
-import com.mooe.grad.domain.ExperimentComment;
-import com.mooe.grad.domain.User;
+import com.mooe.grad.domain.*;
 import com.mooe.grad.redis.ExpKey;
 import com.mooe.grad.redis.RedisService;
 import com.mooe.grad.redis.VncPortKey;
@@ -134,5 +132,34 @@ public class ExperimentService {
         //该用户有正在运行的实验机，则返回true
         if(redisService.exists(ExpKey.existARunningVm, String.valueOf(user_id)))return "true";
         else return "false";
+    }
+
+    public String getExpNameByid(int exp_id) {
+        return experimentDao.getExpNameById(exp_id);
+    }
+
+    public void addEnvir(Environment environment) {
+        experimentDao.addEnvir(environment);
+        experimentDao.addEnvirToExp(environment.getEnvir_name(), environment.getExp_id());
+    }
+
+    public Environment findEnvirById(int exp_id) {
+        return experimentDao.findEnvirById(exp_id);
+    }
+
+    public List<VmHost> listVmHost(int envir_id) {
+        return experimentDao.listVmHost(envir_id);
+    }
+
+    public void addVmHost(VmHost vmHost) {
+        experimentDao.addVmHost(vmHost);
+    }
+
+    public VmHost getVmHost(int host_id) {
+        return experimentDao.getVmHost(host_id);
+    }
+
+    public void updateToDeploying(int exp_id) {
+        experimentDao.updateToDeploying(exp_id);
     }
 }

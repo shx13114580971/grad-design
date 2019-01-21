@@ -3,7 +3,8 @@
 ------------------------------------------------*/
 body {
     font-family: 'Open Sans', sans-serif;
-    background: #6888a1 url(../images/bg-img.jpg) !important;
+    background: rgb(255, 255, 255);
+    /*background: rgb(255, 255, 255) url(../images/bg-img.jpg) !important;*/
 
 }
 
@@ -14,7 +15,7 @@ body {
 #page-wrapper {
     padding: 15px 15px;
     min-height: 600px;
-    background: #E6E6E6;
+    background: #f1f1f1;
 }
 
 #page-inner {
@@ -74,7 +75,7 @@ h4 {
 
 
 .navbar-side .nav > li > a > i {
-    color: #FFFFFF;
+    color: #a8a8a8;
     padding: 8px;
     width: 30px;
     text-align: center;
@@ -333,7 +334,7 @@ form p.kiss span {
 
 .panel-left .fa-5x {
     font-size: 3em;
-    color: rgba(255, 255, 255, 0.69);
+    color: rgb(255, 255, 255);
     padding: 29px 0;
     margin-bottom: 30px;
 }
@@ -682,8 +683,8 @@ footer p {
 }
 
 .active-menu {
-    background-color: #18A0A9 !important;
-    color: #fff !important;
+    background-color: rgba(189, 232, 221, 0.37) !important;
+    color: #2bc0ff !important;
 }
 
 .active-menu i {
@@ -725,9 +726,11 @@ footer p {
 }
 
 .sidebar-collapse .nav > li > a {
-    color: #FFFFFF;
+    color: #636363;
     background: transparent;
     text-shadow: none;
+    font-size: 18px;
+    height: 62px;
 }
 
 .sidebar-collapse > .nav > li > a {
@@ -735,11 +738,12 @@ footer p {
 }
 
 .sidebar-collapse > .nav > li {
-    border-bottom: 1px solid rgba(107, 108, 109, 0.19);
+    /*border-bottom: 1px solid rgba(107, 108, 109, 0.19);*/
+    height: 65px;
 }
 
 ul.nav.nav-second-level.collapse.in {
-    background: #096E75;
+    background: #ffffff;
 }
 
 .sidebar-collapse .nav > li > a:hover,
@@ -750,7 +754,7 @@ ul.nav.nav-second-level.collapse.in {
 
 .navbar-side {
     border: none;
-    background: #6888a1 url(../img/bg-img.jpg) !important;
+    background: rgb(255, 255, 255) url(../img/bg-img.jpg) !important;
 }
 
 .top-navbar {
