@@ -9,7 +9,7 @@
     <!-- FontAwesome Styles-->
     <link th:href="@{/styles/font-awesome.css}" rel="stylesheet" />
     <!-- Custom Styles-->
-    <link th:href="@{/styles/custom-styles.css}" rel="stylesheet" />
+    <link th:href="@{/styles/resource-common.css}" rel="stylesheet" />
      <!-- Google Fonts-->
    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
      <!-- TABLE STYLES-->
@@ -17,13 +17,12 @@
 </head>
 <body>
     <div id="wrapper">
-        <nav th:replace="/common/admin_top :: admin_top" class="navbar navbar-default top-navbar">
+        <nav th:replace="/common/resource_top :: resource_top" class="navbar navbar-default top-navbar">
         </nav>
 
         <!-- /. NAV SIDE  -->
-        <nav th:replace="/common/admin_left :: admin_left" class="navbar-default navbar-side">
+        <nav th:replace="/common/resource_left :: resource_left" class="navbar-default navbar-side">
         </nav>
-        <!-- /. NAV SIDE  -->
         <div id="fade" class="black_overlay" style="height: 200%"></div>
         <div id="page-wrapper" >
             <div id="page-inner">
@@ -72,11 +71,11 @@
                                                 <input type="text" class="envir-input" th:value="${vmHost.password}" readonly id="host_password" name="host_password" placeholder="请输入内容">
                                             </p>
                                             <p class="kiss">
-                                                <span>备注（详细配置需求）：</span>
-                                                <textarea type="text" class="envir-input" th:value="${vmHost.remark}" readonly id="host_remark" name="host_remark" placeholder="请输入内容">[[${vmHost.remark}}]]</textarea>
+                                                <span>备注:<span>（详细配置需求）</span></span>
+                                                <textarea type="text" class="envir-input" style="width: 596px; height: 177px;" th:value="${vmHost.remark}" readonly id="host_remark" name="host_remark" placeholder="请输入内容">[[${vmHost.remark}]]</textarea>
                                             </p>
                                             <p class="kiss" style="height: 70px">
-                                                <button class="page-button" onclick="">返回</button>
+                                                <button class="page-button" onclick="">生成脚本</button>
                                             </p>
                                         </div>
                                     </div>

@@ -1,11 +1,9 @@
 package com.mooe.grad.dao;
 
-import com.mooe.grad.domain.Environment;
-import com.mooe.grad.domain.Experiment;
-import com.mooe.grad.domain.ExperimentComment;
-import com.mooe.grad.domain.VmHost;
+import com.mooe.grad.domain.*;
 import com.mooe.grad.vo.CommemtVo;
 import com.mooe.grad.vo.ExperimentVo;
+import com.mooe.grad.vo.VmHostVo;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -52,7 +50,7 @@ public interface ExperimentDao {
     public Environment findEnvirById(@Param("exp_id") int exp_id);
 
     @Select("select * from vm_host where envir_id = #{envir_id}")
-    public List<VmHost> listVmHost(@Param("envir_id") int envir_id);
+    public List<VmHostVo> listVmHost(@Param("envir_id") int envir_id);
 
     @Insert("insert into vm_host(host_name, envir_id, host_ip, tools, os, username, password, remark, update_time)" +
             " value(#{host_name}, #{envir_id}, #{host_ip}, #{tools}, #{os}, #{username}, #{password}, #{remark}, #{update_time})")
@@ -61,6 +59,14 @@ public interface ExperimentDao {
     @Select("select * from vm_host where host_id = #{host_id}")
     public VmHost getVmHost(@Param("host_id") int host_id);
 
-    @Update("update experiment_info set status = 1 where exp_id = #{exp_id}")
+    @Update("update experiment_info set status = 1 where exp_id = #{exp_id};" +
+            "update environment set status = 1 where exp_id = #{exp_id}")
     public void updateToDeploying(@Param("exp_id") int exp_id);
+
+    @Select("select * from environment where exp_id in (select exp_id from experiment_info where status > '0')")
+    public List<Environment> listEnvir();
+
+
+    @Select("select * from deliver_info")
+    public List<DeliverInfo> listDeliver();
 }

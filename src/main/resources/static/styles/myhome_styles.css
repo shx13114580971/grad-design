@@ -987,14 +987,14 @@ form p.kiss span {
 button:focus, input[type=button], input[type=submit] {
     outline-width: 0;
 }
-form .preservation {
-    display: block;
+.preservation {
+    /*display: block;*/
     width: 100px;
     height: 32px;
     background: #FF7800;
     border: none;
     margin-top: 10px;
-    margin-left: 126px;
+    margin-left: 26px;
     color: #fff;
     border-radius: 3px;
 }
@@ -1334,3 +1334,32 @@ p.b_bottom {
 /*@-webkit-keyframes system_security      { 0%  { width:0px;} 100%{ width:50%;}  }*/
 /*@-webkit-keyframes app_security   { 0%  { width:0px;} 100%{ width:10%;}  }*/
 /*@-webkit-keyframes dreamweaver { 0%  { width:0px;} 100%{ width:100%;} }*/
+
+
+.blueButton
+{
+	position: absolute;
+	display: block;
+	width: 100px;
+	height: 40px;
+	background-color: #4ebed1;
+	color: #fff;
+	text-decoration: none;
+	text-align: center;
+	font:normal normal normal 16px/40px 'Microsoft YaHei';
+	cursor: pointer;
+	border-radius: 4px;
+}
+.blueButton:hover
+{
+	text-decoration: none;
+}
+/*自定义上传,位置大小都和a完全一样,而且完全透明*/
+.uploadFile
+{
+	position: absolute;
+	display: block;
+	width: 100px;
+	height: 40px;
+	opacity: 0;
+}

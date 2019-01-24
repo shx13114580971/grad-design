@@ -5,6 +5,9 @@ public class VmHostVo {
     private String host_name;
     private String host_ip;
     private String update_time;
+    private String qcow2_path;
+    private String create_bash;
+    private String destroy_bash;
 
     public int getHost_id() {
         return host_id;
@@ -36,5 +39,29 @@ public class VmHostVo {
 
     public void setUpdate_time(String update_time) {
         this.update_time = update_time;
+    }
+
+    public String getQcow2_path() {
+        return qcow2_path;
+    }
+
+    public void setQcow2_path(String qcow2_path) {
+        this.qcow2_path = qcow2_path;
+    }
+
+    public String getCreate_bash() {
+        return create_bash;
+    }
+
+    public void setCreate_bash(String create_bash) {
+        this.create_bash = create_bash;
+    }
+
+    public String getDestroy_bash() {
+        return destroy_bash;
+    }
+
+    public void setDestroy_bash(String destroy_bash) {
+        this.destroy_bash = destroy_bash;
     }
 }

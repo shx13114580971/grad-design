@@ -1,6 +1,7 @@
 package com.mooe.grad.service;
 
 import com.mooe.grad.dao.UserDao;
+import com.mooe.grad.domain.DeliverInfo;
 import com.mooe.grad.domain.Experiment;
 import com.mooe.grad.domain.User;
 import com.mooe.grad.exception.GlobalException;
@@ -131,5 +132,20 @@ public class UserService implements Serializable{
             userFctfVo.setCreate_time(createTime);
             userDao.insertFctf(userFctfVo);
         }
+    }
+
+    /**
+     * file1 is exp document
+     * file2 is deploy document or vm image zip/tar/.. file
+     * */
+    public void addDeliver(String path1, String path2, String isProvideVm, String designer, String createTime) {
+        DeliverInfo deliverInfo = new DeliverInfo();
+        deliverInfo.setDesigner(designer);
+        deliverInfo.setIs_provide_vm(isProvideVm);
+        deliverInfo.setDocument(path1);
+        if(isProvideVm.equals("0"))deliverInfo.setDeploy_RD(path2);
+        if(isProvideVm.equals("1"))deliverInfo.setVmzip(path2);
+        deliverInfo.setCreate_time(createTime);
+        userDao.addDeliver(deliverInfo);
     }
 }

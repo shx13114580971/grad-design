@@ -224,5 +224,8 @@
 
 }(jQuery));
 $(document).ready(function () {
-    listQuestion();
+
+    $(".nav-li").click(function () {
+        $(this).children("a")[0].addClass("active-menu");
+    })
 });

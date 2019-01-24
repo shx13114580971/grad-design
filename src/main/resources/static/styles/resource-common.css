@@ -883,5 +883,10 @@ ul.dropdown-menu.dropdown-messages li a div {
         margin: 14px;
     }
 }
-
-
+.host-list-li {
+    float: left;
+    list-style: none;
+    width: 350px;
+    padding-top: 20px;
+    margin-left: 25px;
+}

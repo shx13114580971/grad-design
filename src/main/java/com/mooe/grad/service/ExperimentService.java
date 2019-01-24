@@ -11,6 +11,7 @@ import com.mooe.grad.util.RemoteShellExeUtil;
 import com.mooe.grad.util.ServerInfoUtil;
 import com.mooe.grad.vo.CommemtVo;
 import com.mooe.grad.vo.ExperimentVo;
+import com.mooe.grad.vo.VmHostVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -147,7 +148,7 @@ public class ExperimentService {
         return experimentDao.findEnvirById(exp_id);
     }
 
-    public List<VmHost> listVmHost(int envir_id) {
+    public List<VmHostVo> listVmHost(int envir_id) {
         return experimentDao.listVmHost(envir_id);
     }
 
@@ -161,5 +162,13 @@ public class ExperimentService {
 
     public void updateToDeploying(int exp_id) {
         experimentDao.updateToDeploying(exp_id);
+    }
+
+    public List<Environment> listEnvir() {
+        return experimentDao.listEnvir();
+    }
+
+    public List<DeliverInfo> listDeliver() {
+        return experimentDao.listDeliver();
     }
 }

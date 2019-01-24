@@ -1,5 +1,6 @@
 package com.mooe.grad.dao;
 
+import com.mooe.grad.domain.DeliverInfo;
 import com.mooe.grad.domain.Experiment;
 import com.mooe.grad.domain.User;
 import com.mooe.grad.vo.ExperimentVo;
@@ -39,4 +40,8 @@ public interface UserDao {
 
     @Insert("insert into user_fctf(user_id,fctf_id,create_time) value(#{user_id},#{fctf_id},#{create_time})")
     public void insertFctf(UserFctfVo userFctfVo);
+
+    @Insert("insert into deliver_info(designer, document, is_provide_vm, vmzip, deploy_RD, create_time) " +
+            "value(#{designer}, #{document}, #{is_provide_vm}, #{vmzip}, #{deploy_RD}, #{create_time})")
+    public void addDeliver(DeliverInfo deliverInfo);
 }

@@ -1,12 +1,14 @@
 package com.mooe.grad.admin;
 
 
+import com.mooe.grad.domain.DeliverInfo;
 import com.mooe.grad.domain.Environment;
 import com.mooe.grad.domain.Experiment;
 import com.mooe.grad.domain.VmHost;
 import com.mooe.grad.result.Result;
 import com.mooe.grad.service.ExperimentService;
 import com.mooe.grad.vo.ExperimentVo;
+import com.mooe.grad.vo.VmHostVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,7 +31,9 @@ public class AdminExperimentController {
     @RequestMapping("/exp_list")
     public String listAll(Model model){
         List<ExperimentVo> list = experimentSeivice.listAll();
+        List<DeliverInfo> deliverInfoList = experimentSeivice.listDeliver();
         model.addAttribute("experimentsList",list);
+        model.addAttribute("deliverInfoList", deliverInfoList);
         return "admin/exp_list";
     }
 
@@ -47,7 +51,7 @@ public class AdminExperimentController {
     public String viewEnvir(@PathVariable("exp_id")int exp_id,Model model){
         String exp_name = experimentSeivice.getExpNameByid(exp_id);
         Environment environment = experimentSeivice.findEnvirById(exp_id);
-        List<VmHost> vmHostList = experimentSeivice.listVmHost(environment.getEnvir_id());
+        List<VmHostVo> vmHostList = experimentSeivice.listVmHost(environment.getEnvir_id());
         model.addAttribute("exp_id", exp_id);
         model.addAttribute("exp_name", exp_name);
         model.addAttribute("environment", environment);
