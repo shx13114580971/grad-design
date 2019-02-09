@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 
 public class FileUtil {
+    public static String basic_path = "D:\\研\\毕设\\tempFileServer\\";
     public static void uploadFile(byte[] file, String filePath, String fileName) throws Exception{
 
         File targetFile = new File(filePath);

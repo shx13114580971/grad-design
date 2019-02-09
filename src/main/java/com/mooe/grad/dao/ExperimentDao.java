@@ -39,8 +39,8 @@ public interface ExperimentDao {
     @Select("select exp_name from experiment_info where exp_id = #{exp_id}")
     public String getExpNameById(@Param("exp_id") int exp_id);
 
-    @Insert("insert into environment(envir_name, exp_id, update_time, host_num, is_provide_vm, status)" +
-            "value(#{envir_name}, #{exp_id}, #{update_time}, #{host_num} ,#{is_provide_vm}, #{status})")
+    @Insert("insert into environment(envir_name, exp_id, update_time, host_num, is_provide_vm, path, status)" +
+            "value(#{envir_name}, #{exp_id}, #{update_time}, #{host_num} ,#{is_provide_vm}, #{path}, #{status})")
     public void addEnvir(Environment environment);
 
     @Update("update experiment_info set envir_name = #{envir_name} where exp_id = #{exp_id}")
@@ -69,4 +69,7 @@ public interface ExperimentDao {
 
     @Select("select * from deliver_info")
     public List<DeliverInfo> listDeliver();
+
+    @Select("select path from environment where envir_id = #{envir_id}")
+    public String getEnvirPath(@Param("envir_id") int envir_id);
 }

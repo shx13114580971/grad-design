@@ -177,6 +177,7 @@ function vm_isRunning() {
                     $("#addexp-button").show();
                     $("#endexp-button").hide();
 				}
+				window.location.reload();
             }else if(data.code==500210){
                 //window.location.href="/login";
             } else{

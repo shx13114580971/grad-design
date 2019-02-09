@@ -72,6 +72,7 @@ public class ExperimentService {
 
     //获取实验环境，打开实验机
     public String getExp(int user_id, String envir_name) throws Exception {
+        //在本地执行命令是用这句：Process ps = Runtime.getRuntime().exec(command);
         RemoteShellExeUtil remoteShellExecutor =
                 new RemoteShellExeUtil(ServerInfoUtil.VmServerIp, ServerInfoUtil.VmServerUserName,
                         ServerInfoUtil.VmServerPassword, ServerInfoUtil.port);
@@ -141,6 +142,7 @@ public class ExperimentService {
 
     public void addEnvir(Environment environment) {
         experimentDao.addEnvir(environment);
+        //experiment_info status字段的初始值都是0，当有环境名的时候，显示制作中
         experimentDao.addEnvirToExp(environment.getEnvir_name(), environment.getExp_id());
     }
 
@@ -170,5 +172,9 @@ public class ExperimentService {
 
     public List<DeliverInfo> listDeliver() {
         return experimentDao.listDeliver();
+    }
+
+    public String getEnvirPath(int envir_id) {
+        return experimentDao.getEnvirPath(envir_id);
     }
 }

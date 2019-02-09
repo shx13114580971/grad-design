@@ -10,13 +10,9 @@ import java.util.Map;
 
 @Service
 public class test {
-    @Autowired
-    private static RedisService redisService;
-    public static void main(String[] args){
-        Map<Integer, Integer> vncPortMap = new HashMap<>();
-        vncPortMap.put(3000,1);
-        vncPortMap.put(3001,1);
-        vncPortMap.put(3002,1);
-        System.out.println(vncPortMap);
+    public static void main(String[] args) {
+
     }
+
+
 }

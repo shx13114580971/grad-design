@@ -65,9 +65,22 @@
                                                     </button>
                                                 <p><strong>Host_IP : </strong>[[${vmHost.host_ip}]]</p>
                                                 <p><strong>Update : </strong>[[${vmHost.update_time}]]</p>
-                                                <p><strong>虚拟机镜像 : </strong><label th:if="${vmHost.qcow2_path == null || vmHost.qcow2_path == ''}" style="color: red;font-weight: 500">未上传</label>[[${vmHost.qcow2_path}]]</p>
-                                                <p><strong>创建脚本 : </strong><label th:if="${vmHost.create_bash == null || vmHost.create_bash == ''}" style="color: red;font-weight: 500">未生成</label>[[${vmHost.create_bash}]]</p>
-                                                <p><strong>销毁脚本 : </strong><label th:if="${vmHost.destroy_bash == null || vmHost.destroy_bash == ''}" style="color: red;font-weight: 500">未生成</label>[[${vmHost.destroy_bash}]]</p>
+                                                <p>
+                                                    <strong>虚拟机镜像 : </strong>
+                                                    <label th:if="${vmHost.qcow2_path == null || vmHost.qcow2_path == ''}" style="color: red;font-weight: 500">未上传</label>
+                                                    <a th:unless="${vmHost.qcow2_path == null || vmHost.qcow2_path == ''}" href="#">查看信息</a>
+                                                    <a th:unless="${vmHost.qcow2_path == null || vmHost.qcow2_path == ''}" href="#">压缩镜像</a>
+                                                </p>
+                                                <p>
+                                                    <strong>启动脚本 : </strong>
+                                                    <a th:if="${vmHost.create_bash == null || vmHost.create_bash == ''}" href="#">点击生成脚本</a>
+                                                    <label th:unless="${vmHost.create_bash == null || vmHost.create_bash == ''}" style="color: #4d82ff;font-weight: 500">已生成</label>
+                                                </p>
+                                                <p>
+                                                    <strong>销毁脚本 : </strong>
+                                                    <a th:if="${vmHost.create_bash == null || vmHost.create_bash == ''}" href="#">点击生成脚本</a>
+                                                    <label th:unless="${vmHost.destroy_bash == null || vmHost.destroy_bash == ''}" style="color: #4d82ff;font-weight: 500">已生成</label>
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
@@ -108,71 +121,8 @@
          <!-- Custom Js -->
     <script th:src="@{/js/custom-scripts.js}"></script>
 
-
-        <script>
-            function openAddHostDiv(){
-                $("#add_host").show();
-                $("#fade").show();
-            }
-            function two(){
-                $("#add_host").hide();
-                $("#fade").hide();
-            }
-        </script>
         <script>
 
-            function addHost() {
-                var update_time = new Date().format("yy-MM-dd hh:mm:ss");
-                $.ajax({
-                    url: "/admin/do_hostAdd",
-                    type: "POST",
-                    data:{
-                        envir_id:$("#envir_id").val(),
-                        host_name:$("#host_name").val(),
-
-                        host_ip:$("#host_ip").val(),
-                        host_tools:$("#host_tools").val(),
-                        host_os:$("#host_os").val(),
-                        host_username:$("#host_username").val(),
-                        host_password:$("#host_password").val(),
-                        host_remark:$("#host_remark").val(),
-                        update_time:update_time
-                    },
-                    success:function(data){
-                        layer.closeAll();
-                        if(data.code == 0){
-                            layer.msg("成功");
-                            window.location.reload();
-                        }else{
-                            layer.msg(data.msg);
-                            //layer.msg("成功");
-                            // window.location.href="/login";
-                        }
-                    },
-                    error:function(){
-                        layer.closeAll();
-                    }
-                });
-            }
-
-            function commitDeploy() {
-                var exp_id = $("#exp_id").val();
-                $.ajax({
-                    url: "/admin/commit_envir/"+exp_id,
-                    type: "POST",
-                    success:function(data){
-                        layer.closeAll();
-                        if(data.code == 0){
-                            window.location.href = "/admin/exp_list";
-                        }else{
-                            layer.msg(data.msg);
-                        }
-                    },
-                    error:function(){
-                        layer.closeAll();
-                    }
-                });
-            }
         </script>
 
 </body>

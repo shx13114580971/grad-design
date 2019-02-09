@@ -7,6 +7,7 @@ import com.mooe.grad.domain.Experiment;
 import com.mooe.grad.domain.VmHost;
 import com.mooe.grad.result.Result;
 import com.mooe.grad.service.ExperimentService;
+import com.mooe.grad.util.FileUtil;
 import com.mooe.grad.vo.ExperimentVo;
 import com.mooe.grad.vo.VmHostVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +79,13 @@ public class AdminExperimentController {
     @ResponseBody
     @RequestMapping("/do_envirAdd")
     public Result<String> doAdd(Environment environment){
+        //添加环境信息之前先创建环境存储路径
+        String envirPath = FileUtil.basic_path+"backingFile\\"+environment.getEnvir_name()+"\\";
+        File envirFilePath = new File(envirPath);
+        if (!envirFilePath.exists()){
+            envirFilePath.mkdirs();
+        }
+        environment.setPath(envirFilePath.getPath());
         experimentSeivice.addEnvir(environment);
         return Result.success("");
     }
@@ -86,6 +94,12 @@ public class AdminExperimentController {
     @ResponseBody
     @RequestMapping("/do_hostAdd")
     public Result<String> doHostAdd(VmHost vmHost){
+        //在环境存储路径下创建主机存储路径
+        String hostPath = experimentSeivice.getEnvirPath(vmHost.getEnvir_id()) + "\\" + vmHost.getHost_name();
+        File hostFilePath = new File(hostPath);
+        if (!hostFilePath.exists()){
+            hostFilePath.mkdirs();
+        }
         experimentSeivice.addVmHost(vmHost);
         return Result.success("");
     }

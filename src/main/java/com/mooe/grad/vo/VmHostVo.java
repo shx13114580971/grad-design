@@ -5,6 +5,7 @@ public class VmHostVo {
     private String host_name;
     private String host_ip;
     private String update_time;
+    private int envir_id;
     private String qcow2_path;
     private String create_bash;
     private String destroy_bash;
@@ -39,6 +40,14 @@ public class VmHostVo {
 
     public void setUpdate_time(String update_time) {
         this.update_time = update_time;
+    }
+
+    public int getEnvir_id() {
+        return envir_id;
+    }
+
+    public void setEnvir_id(int envir_id) {
+        this.envir_id = envir_id;
     }
 
     public String getQcow2_path() {

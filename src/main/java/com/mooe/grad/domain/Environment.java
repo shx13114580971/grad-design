@@ -6,7 +6,10 @@ public class Environment {
     private String envir_name;
     private String update_time;
     private int host_num;
+    private String designer;
     private boolean is_provide_vm;
+    //storage path
+    private String path;
     private String status;
 
     public int getEnvir_id() {
@@ -49,12 +52,28 @@ public class Environment {
         this.host_num = host_num;
     }
 
+    public String getDesigner() {
+        return designer;
+    }
+
+    public void setDesigner(String designer) {
+        this.designer = designer;
+    }
+
     public boolean isIs_provide_vm() {
         return is_provide_vm;
     }
 
     public void setIs_provide_vm(boolean is_provide_vm) {
         this.is_provide_vm = is_provide_vm;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public String getStatus() {
