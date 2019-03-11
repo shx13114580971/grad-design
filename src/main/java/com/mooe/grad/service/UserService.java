@@ -138,8 +138,9 @@ public class UserService implements Serializable{
      * file1 is exp document
      * file2 is deploy document or vm image zip/tar/.. file
      * */
-    public void addDeliver(String path1, String path2, String isProvideVm, String designer, String createTime) {
+    public void addDeliver(String exp_name, String path1, String path2, String isProvideVm, String designer, String createTime) {
         DeliverInfo deliverInfo = new DeliverInfo();
+        deliverInfo.setExp_name(exp_name);
         deliverInfo.setDesigner(designer);
         deliverInfo.setIs_provide_vm(isProvideVm);
         deliverInfo.setDocument(path1);

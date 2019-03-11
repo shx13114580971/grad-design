@@ -82,7 +82,7 @@ public class UserController {
 
     @ResponseBody
     @RequestMapping("/myhome_deliver/do_deliver")
-    public Result<String> doDeliver(@RequestParam(name = "document", required=false) MultipartFile document,
+    public Result<String> doDeliver(String exp_name, @RequestParam(name = "document", required=false) MultipartFile document,
                                     @RequestParam(name = "deploy", required=false) MultipartFile deploy,
                                     @RequestParam(name = "vmImg", required=false) MultipartFile vmImg,
                                     String isProvideVm, String createTime , User user) throws IOException {
@@ -117,7 +117,7 @@ public class UserController {
 //        String imgPath = uploadFile2.getAbsolutePath();
         file1.transferTo(uploadFile1);
         file2.transferTo(uploadFile2);
-        userService.addDeliver(uploadFile1.getPath(), uploadFile2.getPath(), isProvideVm, user.getUsername(), createTime);
+        userService.addDeliver(exp_name, uploadFile1.getPath(), uploadFile2.getPath(), isProvideVm, user.getUsername(), createTime);
         return Result.success("");
     }
 

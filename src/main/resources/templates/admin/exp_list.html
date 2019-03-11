@@ -107,6 +107,7 @@
                                 <table class="table table-hover">
                                     <thead>
                                         <tr>
+                                            <th>实验名</th>
                                             <th>设计人</th>
                                             <th>是否提供镜像</th>
                                             <th>实验文档</th>
@@ -115,9 +116,12 @@
                                     </thead>
                                     <tbody>
                                         <tr th:each="deliverInfo,deliverInfoStat:${deliverInfoList}">
+                                            <td th:text="${deliverInfo.exp_name}"></td>
                                             <td th:text="${deliverInfo.designer}"></td>
                                             <td th:text="${deliverInfo.is_provide_vm}"></td>
-                                            <td th:text="${deliverInfo.document}"></td>
+                                            <td>
+                                                <a id="document" th:href="'/admin/downloadFile/'+${deliverInfo.deliver_id}">下载文档</a>
+                                            </td>
                                             <td th:text="${deliverInfo.create_time}"></td>
                                         </tr>
                                     </tbody>
@@ -158,6 +162,7 @@
          <!-- Custom Js -->
 
             <script>
+
 
                 function commitTest() {
 

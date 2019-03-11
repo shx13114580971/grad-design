@@ -51,7 +51,7 @@
 		</div>
 		<!-- 实验 -->
 		<input type="hidden" id="experiment_id" th:value="${experiment.exp_id}">
-		
+		<input type="hidden" id="user_id" th:value="${user.user_id}">
 	</div>
 
 	<!-- Popular -->
@@ -189,19 +189,19 @@ var timer ;
 									<div class="exp_name" title="">[[${experiment.exp_name}]]</div>
 									<div class="inerColl">
 										<i class="icon gray"><i class="icon orange" style="width:82.38%;"></i></i>
-										<span class="evaluateNum" style="margin-right:10px;">42人评价</span>
+										<span class="evaluateNum" style="margin-right:10px;">12人评价</span>
 										<div class="exp_menu" style="display: inline-block;">
-											<div class="personNum ri"><img th:src="@{/images/person-icon.png}"/>学习人数：208</div>
+											<div class="personNum ri"><img th:src="@{/images/person-icon.png}"/>学习人数：2</div>
 											<div class="difficulty ri"><img th:src="@{/images/difficulty-icon.png}"/>难度：[[${experiment.degree}]]</div>
 											
 										</div>
 										<span class="collect">收藏 <i><img title="加入收藏" th:src="@{/images/collection.png}" class="cursorimg"/></i></span>
-										<div class="labnameDIv">标签：</div>
+										<div class="labnameDIv"></div>
 <div class="labasiDIv">
 												
 													<span class="lablesp" title="Web安全">[[${experiment.class1}]]</span>
 												
-													<span class="lablesp" title="SQL注入">SQL注入</span>
+													<span class="lablesp" title="SQL注入">ssrf</span>
 												 
 										</div>
 									</div>	
@@ -224,14 +224,17 @@ var timer ;
 								
 									<div class="exp_introduce_list" title="伪静态：伪静态通俗点说就是假的静态页面，也就是通过各种技术手段，让动态页面的URL看上去和静态页面的一样。实验中主要讲了识别伪静态页面，学会在伪静态页面中寻找注入点。">[[${experiment.brief_intro}]]</div>
 							<div class="hr"></div>		
-							<span class="infoSpan">实验过程中，如果虚拟机环境存在问题，请联系qq：1212121212</span>
+							<span class="infoSpan">实验过程如果环境存在问题，请联系工作人员！</span>
 							<input type="hidden" id="envir_name" th:value="${experiment.envir_name}">
-							<button class="exp_begin_btn" onclick="getExp()" id="addexp-button" style="display:none;border:none">
+							<button class="exp_begin_btn" onclick="getExp()" id="createexp-button" style="display:none;border:none">
+								创建实验
+							</button>
+							<button class="exp_begin_btn" onclick="enterExp()" id="addexp-button" style="display:none;border:none">
 								进入实验
 							</button>
-							<button class="exp_begin_btn" onclick="endExp()" id="endexp-button" style="display:none;border:none">
+							<a href="#" onclick="endExp()" id="endexp-button" style="display:none;border:none">
 								结束实验
-							</button>
+							</a>
 								<div id="create-mac" class="mac" style="display:none;font-size:12px;left:120px;margin-top:8px;">
 								</div>
 									
@@ -261,9 +264,10 @@ var timer ;
 					<div class="expLeftList" data-name="实验左侧列表">
 						<div class="exp_menu_list">
 								<ul >
-								        <li id="guidancebook" >实验文档</li>
-										<li id="answer" >实验测题<span></span></li>
-										<li id="evaluate" >实验评价<span></span></li>
+									<li id="guidancebook" >实验文档</li>
+									<li id="answer" >实验考核<span></span></li>
+									<li id="evaluate" >实验评价<span></span></li>
+									<li id="question" >实验提问<span></span></li>
 								</ul>
 							
 							<div class="hr"><span id="span_hr"></span></div>
@@ -405,12 +409,14 @@ var timer ;
 
 	function getExp(){
 	    var envir_name = $("#envir_name").val();
+	    var url = "";
         $.ajax({
             url: "/experiment/getExp/"+envir_name+"?exp_id="+parseInt($("#experiment_id").val()),
             type: "POST",
             success:function(data){
                 if(data.code == 0){
-                    window.open(data.data);
+                    url = "http://"+window.location.hostname+":"+window.location.port+"/vnc?path=?token="+data.data;
+                    window.open(url);
                 }else if(data.code==500210){
                     window.location.href="/login";
                 } else{
@@ -436,6 +442,41 @@ var timer ;
         });
 	    vm_isRunning();
 	}
+	function enterExp() {
+	    var envir_name = $("#envir_name").val();
+	    var user_id = $("#user_id").val();
+	    var hostname = window.location.hostname;
+	    var port = window.location.port;
+	    url = "http://"+ hostname + port +"/vnc?path=?token="+envir_name+user_id;
+		window.open(url)
+    }
+         function vm_isRunning() {
+             $.ajax({
+                 url: "/experiment/vm_isRunning",
+                 type: "POST",
+                 success:function(data){
+                     if(data.code == 0){
+                         if(data.data == 'true'){
+                             $("#createexp-button").hide();
+                             $("#addexp-button").show();
+                             $("#endexp-button").show();
+                         }else{
+                             $("#createexp-button").show();
+                             $("#addexp-button").hide();
+                             $("#endexp-button").hide();
+                         }
+                       //  window.location.reload();
+                     }else if(data.code==500210){
+                         //window.location.href="/login";
+                     } else{
+                         layer.msg(data.msg);
+                     }
+                 },
+                 error:function(){
+                     layer.closeAll();
+                 }
+             });
+         }
 </script>
 <script type="text/javascript">
     var myPlayer = videojs('experiment-video');

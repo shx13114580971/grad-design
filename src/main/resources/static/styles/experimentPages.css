@@ -14,7 +14,7 @@
 .exp_img_list .exp_video{position: absolute;left:45%;top:45%;cursor:pointer;}
 .exp_img_list:hover .exp_video{transform: rotate(360deg);transition: all .6s;}
 .exp_img_list .stateicon{position:absolute;bottom:0;right:0;width:49px;height:24px;}
-.exp_right_list{width:450px;float:right;margin-top:30px;}
+.exp_right_list{width:450px;height: 400px;border-radius: 5px;float:right;margin-top:30px;background-color: #f6f6f6;box-shadow: 1px 1px 10px rgba(45, 45, 45, 0.21);padding-left: 10px;padding-top: 10px;padding-right: 10px}
 .exp_right_list .exp_name{width:450px;font-size:20px;color:#333333;height:25px;line-height:24px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display: inline-block;vertical-align: top;}
 .exp_right_list .exp_evaluate{width:100%;margin-top:9px;}
 .exp_right_list .inerColl{display: inline-block;vertical-align: top;line-height: 30px;margin-left: 5px;}
@@ -30,7 +30,7 @@
 .affiliationlist p{width:100%;text-align:center;margin-bottom:5px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
 .exp_menu .money{float:right;color:#fb3601;font-size:14px;display:inline-block;margin-top:-2px;}
 .labnameDIv{display: inline-block;vertical-align: top;}
-.labasiDIv{display: inline-block;vertical-align: top;width: 490px;height: 24px;overflow: hidden;background-color: #FFF;position: relative;z-index: 2;
+.labasiDIv{display: inline-block;vertical-align: top;width: 390px;height: 24px;overflow: hidden;position: relative;z-index: 2;
 white-space:nowrap;text-overflow:ellipsis;-o-text-overflow:ellipsis;color: #3582c9;font-size: 16px;font-weight: bold;}
 .hoverLabDIv:hover{height: auto;overflow:visible;white-space:normal;transition: all .3s ease-in 0s;box-shadow: 0px 0px 15px #ddd;}
 .lablesp{display: inline-block;vertical-align: top;margin-left: 5px;margin-right: 5px;margin-bottom: 5px;color: #666;font-size: 12px;font-weight:500;}
@@ -50,7 +50,7 @@ white-space:nowrap;text-overflow:ellipsis;-o-text-overflow:ellipsis;color: #3582
   padding:0 20px 1px 45px;
   background:url(/images/coursePage/ellipsis_bg.png) repeat-y;
 }
-.exp_right_list .exp_begin_btn{float:left;width:147px;height:39px;line-height:39px;text-align:center;background-color:#ff6f37;color:#fff;border-radius:3px;margin-top:20px;cursor:pointer;border:none}
+.exp_right_list .exp_begin_btn{float:left;width:147px;height:39px;line-height:39px;text-align:center;background-color:#ff6f37;color:#fff;border-radius:3px;margin-top:20px;cursor:pointer;border:none;box-shadow: 1px 1px 10px rgba(45, 45, 45, 0.21)}
 /*璇剧▼涓嬪崐閮ㄥ垎*/
 .expbelowpart{width:100%;min-width:1200px;overflow:hidden;margin-bottom:40px;}
 /*璇剧▼宸︿晶*/

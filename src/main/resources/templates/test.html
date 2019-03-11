@@ -15,6 +15,38 @@
 
 <div class="super_container">
 
+	<div id="fade" class="black_overlay" style="height: 200%"></div>
+	<!-- 悬浮窗口 -->
+	<div id="custom" class="white_content" style="height: 490px">
+		<p class="kiss" style="font-size: 24px;height: 60px;font-weight: 500">
+			<span  style="font-size:22px;width:120px">Web安全：</span>
+		</p>
+		<p class="hr"></p>
+		<p class="kiss">
+			<label style="font-size: 18px;font-weight:600;color: #1b1e21c9;"><input style="margin-right:10px" type="checkbox" id="easy" name="easy"/>简单：</label>
+			<input type="text" class="num-input" id="easy_num" name="easy_num" disabled="disabled">
+			<label class="deploy-label">题目数量</label>
+		</p>
+		<p class="kiss">
+			<label style="margin-top:20px;font-size: 18px;font-weight:600;color: #1b1e21c9;"><input style="margin-right:10px" type="checkbox" id="middle" name="middle"/>中等：</label>
+			<input type="text" class="num-input" id="middle_num" name="middle_num" disabled="disabled">
+			<label class="deploy-label">题目数量</label>
+		</p>
+		<p class="kiss">
+			<label style="font-size: 18px;font-weight:600;color: #1b1e21c9;"><input style="margin-right:10px" type="checkbox" id="hard" name="hard"/>困难：</label>
+			<input type="text" class="num-input" id="hard_num" name="hard_num" disabled="disabled">
+			<label class="deploy-label">题目数量</label>
+		</p>
+		<p class="kiss">
+			<label style="font-size: 18px;font-weight:600;color: #1b1e21c9;"><input style="margin-right:10px" type="checkbox" id="isInclude" name="isInclude"/>是否包括已完成题目</label>
+		</p>
+		<!--<p class="hr"></p>-->
+		<p class="kiss" style="height: 40px">
+			<button class="page-button" onclick="addDeploy()">开始测试</button>
+		</p>
+		<a href="javascript:void(0)" onclick="two()">Close</a>
+	</div>
+
 	<!-- Header -->
 	<header class="header d-flex flex-row">
 		<div th:replace="/common/header :: navi">
@@ -57,7 +89,7 @@
 					<!-- Exps Column -->
 
 					<div class="col-sm-6 col-md-4">
-						<a class="startExpTest" test-type="expTest" href="javascript:"value = "Web安全">
+						<a class="startExpTest" test-type="expTest" href="javascript:"value = "Web安全" onclick="document.getElementById('custom').style.display='block';document.getElementById('fade').style.display='block'">
 							<div class="card rc_4">
 
 								<div class="circle">
@@ -78,7 +110,7 @@
 									<img alt="" th:src="@{/images/icon_simulatedexam.png}" class="img-responsive" data-reactid=".0.0.0.4.0.0.$card-skill-challenge.0.0.0.0">
 								</div>
 							</div>
-							<h2>数据安全</h2>
+							<h2>密码学</h2>
 						</div>
 					</div>
 					<div class="col-sm-6 col-md-4">
@@ -90,7 +122,7 @@
 									<img alt="" th:src="@{/images/icon_personalize.png}" class="img-responsive" data-reactid=".0.0.0.4.0.0.$card-skill-challenge.0.0.0.0">
 								</div>
 							</div>
-							<h2>系统安全</h2>
+							<h2>逆向工程</h2>
 						</div>
 					</div>
 					<div class="col-sm-6 col-md-4">
@@ -102,7 +134,55 @@
 									<img alt="" th:src="@{/images/icon_progressive.png}" class="img-responsive" data-reactid=".0.0.0.4.0.0.$card-skill-challenge.0.0.0.0">
 								</div>
 							</div>
-							<h2>应用安全</h2>
+							<h2>隐写术</h2>
+						</div>
+					</div>
+					<div class="col-sm-6 col-md-4">
+
+						<div class="card rc_4">
+							<!-- News Post -->
+							<div class="circle">
+								<div class="icon" data-reactid=".0.0.0.4.0.0.$card-skill-challenge.0.0.0">
+									<img alt="" th:src="@{/images/icon_progressive.png}" class="img-responsive" data-reactid=".0.0.0.4.0.0.$card-skill-challenge.0.0.0.0">
+								</div>
+							</div>
+							<h2>shell提权</h2>
+						</div>
+					</div>
+					<div class="col-sm-6 col-md-4">
+
+						<div class="card rc_4">
+							<!-- News Post -->
+							<div class="circle">
+								<div class="icon" data-reactid=".0.0.0.4.0.0.$card-skill-challenge.0.0.0">
+									<img alt="" th:src="@{/images/icon_progressive.png}" class="img-responsive" data-reactid=".0.0.0.4.0.0.$card-skill-challenge.0.0.0.0">
+								</div>
+							</div>
+							<h2>溯源取证</h2>
+						</div>
+					</div>
+					<div class="col-sm-6 col-md-4">
+
+						<div class="card rc_4">
+							<!-- News Post -->
+							<div class="circle">
+								<div class="icon" data-reactid=".0.0.0.4.0.0.$card-skill-challenge.0.0.0">
+									<img alt="" th:src="@{/images/icon_progressive.png}" class="img-responsive" data-reactid=".0.0.0.4.0.0.$card-skill-challenge.0.0.0.0">
+								</div>
+							</div>
+							<h2>数据分析</h2>
+						</div>
+					</div>
+					<div class="col-sm-6 col-md-4">
+
+						<div class="card rc_4">
+							<!-- News Post -->
+							<div class="circle">
+								<div class="icon" data-reactid=".0.0.0.4.0.0.$card-skill-challenge.0.0.0">
+									<img alt="" th:src="@{/images/icon_progressive.png}" class="img-responsive" data-reactid=".0.0.0.4.0.0.$card-skill-challenge.0.0.0.0">
+								</div>
+							</div>
+							<h2>安全编程</h2>
 						</div>
 					</div>
 				</div>
@@ -204,7 +284,11 @@
 
 </body>
 <script language="javascript">
-    $(function(){
+    function two(){
+        $("#custom").hide();
+        $("#fade").hide();
+    }
+	$(function(){
         //当鼠标滑入时将div的class换成divOver
         $('.card').hover(function(){
                 $(this).addClass('card-over');
@@ -215,6 +299,30 @@
         );
     });
 
+    $("#hard").change(function () {
+        var easy_checked = $("input[type='checkbox']").is(':checked');
+        if(easy_checked == true){
+            $("#easy_num").removeAttr("disabled");
+        }else{
+            $("#easy_num").attr("disabled","disabled");
+        }
+    })
+    $("#middle").change(function () {
+        var easy_checked = $("input[type='checkbox']").is(':checked');
+        if(easy_checked == true){
+            $("#middle_num").removeAttr("disabled");
+        }else{
+            $("#middle_num").attr("disabled","disabled");
+        }
+    })
+    $("#easy").change(function () {
+        var easy_checked = $("input[type='checkbox']").is(':checked');
+        if(easy_checked == true){
+            $("#hard_num").removeAttr("disabled");
+        }else{
+            $("#hard_num").attr("disabled","disabled");
+        }
+    })
     $(".startExpTest").click(function (e) {
         var testClass = $(this).attr("value");
         $.ajax({

@@ -31,12 +31,49 @@
                         <h1 class="page-header">
                             实验环境
                         </h1>
-
-
-                    </div>
+                 </div>
                  <!-- /. ROW  -->
                  <div class="row">
-                <div class="col-md-12">
+                 <div class="col-md-12">
+                    <!--悬浮面板-->
+                    <div id="shell" class="white_content" style="height: 500px">
+                        <p class="kiss" style="font-size: 24px;height: 60px;font-weight: bold">
+                            <span  style="font-size:22px;width:120px">实例信息：</span>
+                        </p>
+
+                        <p class="kiss">
+                            <label class="deploy-label">VCPU's：</label>
+                            <input type="text" class="envir-input" id="vcpus" name="vcpus" placeholder="请输入内容">
+                        </p>
+                        <p class="kiss">
+                            <label class="deploy-label">Memory：</label>
+                            <select class="envir-input" id="memory" name="memory" placeholder="请输入内容">
+                                <option>512M</option>
+                            </select>
+                        </p>
+                        <p class="kiss">
+                            <label class="deploy-label">Disk：</label>
+                            <select class="envir-input" id="disk" name="disk" placeholder="请输入内容">
+                                <option>20G</option>
+                            </select>
+                        </p>
+                        <p class="kiss">
+                            <label class="deploy-label">Network：</label>
+                            <select class="envir-input" id="network" name="network" placeholder="请输入内容">
+                                <option>default</option>
+                            </select>
+                        </p>
+                        <p class="kiss">
+                            <label class="deploy-label">ip地址：</label>
+                            <input type="text" class="envir-input" id="ip_addr" name="ip_addr" disabled="disabled">
+                            <label><input  type="checkbox" id="static_ip" name="static_ip"/>固定IP</label>
+                        </p>
+                        <p class="kiss" style="height: 70px">
+                            <button class="page-button" onclick="addDeploy()">保存</button>
+                        </p>
+                        <a href="javascript:void(0)" onclick="two()">Close</a>
+                    </div>
+
                     <!-- 环境模板信息-->
                     <!--主机列表 -->
                     <div class="panel panel-default">
@@ -66,22 +103,13 @@
                                                 <p><strong>Host_IP : </strong>[[${vmHost.host_ip}]]</p>
                                                 <p><strong>Update : </strong>[[${vmHost.update_time}]]</p>
                                                 <p>
-                                                    <strong>虚拟机镜像 : </strong>
-                                                    <label th:if="${vmHost.qcow2_path == null || vmHost.qcow2_path == ''}" style="color: red;font-weight: 500">未上传</label>
-                                                    <a th:unless="${vmHost.qcow2_path == null || vmHost.qcow2_path == ''}" href="#">查看信息</a>
-                                                    <a th:unless="${vmHost.qcow2_path == null || vmHost.qcow2_path == ''}" href="#">压缩镜像</a>
-                                                </p>
-                                                <p>
-                                                    <strong>启动脚本 : </strong>
-                                                    <a th:if="${vmHost.create_bash == null || vmHost.create_bash == ''}" href="#">点击生成脚本</a>
+                                                    <strong>操作工具 : </strong>
+                                                    <a th:if="${vmHost.create_bash == null || vmHost.create_bash == ''}" href="#" onclick="document.getElementById('shell').style.display='block';document.getElementById('fade').style.display='block'">点击生成脚本</a>
                                                     <label th:unless="${vmHost.create_bash == null || vmHost.create_bash == ''}" style="color: #4d82ff;font-weight: 500">已生成</label>
+
                                                 </p>
-                                                <p>
-                                                    <strong>销毁脚本 : </strong>
-                                                    <a th:if="${vmHost.create_bash == null || vmHost.create_bash == ''}" href="#">点击生成脚本</a>
-                                                    <label th:unless="${vmHost.destroy_bash == null || vmHost.destroy_bash == ''}" style="color: #4d82ff;font-weight: 500">已生成</label>
-                                                </p>
-                                            </div>
+
+                                            </div   >
                                         </div>
                                     </div>
                                 </li>
@@ -116,13 +144,53 @@
     <script>
         $(document).ready(function () {
             $('#dataTables-example').dataTable();
+            $("#static_ip").change(function () {
+                var checked = $("input[type='checkbox']").is(':checked');
+                if(checked == true){
+                    $("#ip_addr").removeAttr("disabled");
+                }else{
+                    $("#ip_addr").attr("disabled","disabled");
+                }
+            })
         });
     </script>
          <!-- Custom Js -->
     <script th:src="@{/js/custom-scripts.js}"></script>
 
         <script>
+            function two(){
+                $("#shell").hide();
+                $("#fade").hide();
+            }
+            function isStaticIp() {
 
+            }
+            function addDeploy() {
+                $.ajax({
+                    url: "/resource/addInstanceDeploy",
+                    type: "POST",
+                    data:{
+                        host_id:$("#host_id").val(),
+                        vcpus:$("#vcpus").val(),
+                        memory:$("#memory").val(),
+                        disk:$("#disk").val(),
+                        network:$("#network").val(),
+                        ip_addr:$("#ip_addr").val(),
+                    },
+                    success:function(data){
+                        layer.closeAll();
+                        if(data.code == 0){
+                            layer.msg("成功");
+                            window.location.reload();
+                        }else{
+                            layer.msg(data.msg);
+                        }
+                    },
+                    error:function(){
+                        layer.closeAll();
+                    }
+                });
+            }
         </script>
 
 </body>

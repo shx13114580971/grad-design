@@ -3,6 +3,7 @@ package com.mooe.grad.resource;
 
 import com.mooe.grad.domain.Environment;
 import com.mooe.grad.domain.Experiment;
+import com.mooe.grad.domain.InstanceDeploy;
 import com.mooe.grad.domain.VmHost;
 import com.mooe.grad.result.Result;
 import com.mooe.grad.service.ExperimentService;
@@ -80,4 +81,19 @@ public class ResourceExpController {
         return "resource/host_view";
     }
 
+    //改为部署完成
+    @ResponseBody
+    @RequestMapping("/update_host")
+    public Result<String> updateHost(VmHost vmHost){
+        experimentService.updateHost(vmHost);
+        return Result.success("");
+    }
+
+    //添加配置信息
+    @ResponseBody
+    @RequestMapping("/addInstanceDeploy")
+    public Result<String> addInstanceDeploy(InstanceDeploy instanceDeploy){
+        experimentService.addInstanceDeploy(instanceDeploy);
+        return Result.success("");
+    }
 }

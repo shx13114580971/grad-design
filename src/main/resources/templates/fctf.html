@@ -168,7 +168,7 @@
 						<div class="inerColl">
 							<i class="icon gray"><i class="icon orange" style="width:82.38%;"></i></i>
 							<div class="fctf_menu" style="display: inline-block;">
-								<div class="personNum ri"><img th:src="@{/images/person-icon.png}"/>学习人数：208</div>
+								<div class="personNum ri"><img th:src="@{/images/person-icon.png}"/>学习人数：2</div>
 								<div class="difficulty ri"><img th:src="@{/images/difficulty-icon.png}"/>难度：[[${fctf.degree}]]</div>
 								<div class="area ri">方向：[[${fctf.area}]]</div>
 								<div class="type ri">类型：[[${fctf.type}]]</div>
@@ -190,7 +190,7 @@
 
 							<!-- 附件型 -->
 							<div id="download" th:if="${fctf.type} eq 'download'" style="height: 50px">
-								<a href="">download</a>
+								<a href="">下载实验附件</a>
 							</div>
 						</div>
 
@@ -233,6 +233,12 @@
 				<div class="fctf_writeup_list">
 					<div class="fctf_right_list">
 						<div class="fctf_name" title="">WriteUp列表</div>
+						<div class="hr"></div>
+						<div><a href="#">初识otf字体文件 by sheeta</a></div>
+						<div><label>web       2018-12-28</label></div>
+						<div class="hr"></div>
+						<div><a href="#">初识otf字体文件 by Leetcode</a></div>
+						<div><label>web       2018-12-29</label></div>
 						<div class="hr"></div>
 						<div id="createWriteup" style="font-size: 18px;color: #2aabd2">分享我的WriteUp</div>
 					</div>

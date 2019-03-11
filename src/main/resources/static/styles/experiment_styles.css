@@ -891,8 +891,6 @@ element.style {
 
 .exp_menu .money{float:right;color:#fb3601;font-size:14px;display:inline-block;margin-top:-2px;}
 .labnameDIv{display: inline-block;vertical-align: bottom;margin-left:20px;}
-.labasiDIv{display: inline-block;vertical-align: bottom;width: 190px;height: 30px;overflow: hidden;background-color: #FFF;position: relative;z-index: 2;
-white-space:nowrap;text-overflow:ellipsis;-o-text-overflow:ellipsis;color: #3582c9;font-size: 16px;font-weight: bold;}
 .hoverLabDIv:hover{height: auto;overflow:visible;white-space:normal;transition: all .3s ease-in 0s;box-shadow: 0px 0px 15px #ddd;}
 .lablesp{display: inline-block;vertical-align: top;margin-left: 5px;margin-right: 5px;margin-bottom: 5px;color: #666;font-size: 12px;font-weight:500;}
 

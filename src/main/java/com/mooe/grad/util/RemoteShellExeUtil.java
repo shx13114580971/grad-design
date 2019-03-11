@@ -57,11 +57,12 @@ public class RemoteShellExeUtil {
      * @return
      * @throws Exception
      */
-    public int exec(String cmds) throws Exception {
+    public RemoteResult exec(String cmds) throws Exception {
         InputStream stdOut = null;
         InputStream stdErr = null;
         String outStr = "";
         String outErr = "";
+        RemoteResult result = new RemoteResult();
         int ret = -1;
         try {
             if (login()) {
@@ -71,17 +72,17 @@ public class RemoteShellExeUtil {
                 session.execCommand(cmds);
 
                 stdOut = new StreamGobbler(session.getStdout());
-                outStr = processStream(stdOut, charset);
+                result.setOutStr(processStream(stdOut, charset));
 
                 stdErr = new StreamGobbler(session.getStderr());
-                outErr = processStream(stdErr, charset);
+                result.setOutErr(processStream(stdErr, charset));
 
                 session.waitForCondition(ChannelCondition.EXIT_STATUS, TIME_OUT);
 
                 System.out.println("outStr=" + outStr);
                 System.out.println("outErr=" + outErr);
 
-                ret = session.getExitStatus();
+                result.setRet(session.getExitStatus());
             } else {
                 throw new Exception("登录远程机器失败" + ip); // 自定义异常类 实现略
             }
@@ -92,7 +93,7 @@ public class RemoteShellExeUtil {
             IOUtils.closeQuietly(stdOut);
             IOUtils.closeQuietly(stdErr);
         }
-        return ret;
+        return result;
     }
 
     /**

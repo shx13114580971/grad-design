@@ -6,7 +6,7 @@ public class ExperimentVo {
 
     private int exp_id;
     private String exp_name;
-    private Date date;
+    private String date;
     private String image;
     private String brief_info;
     private String class1;
@@ -39,11 +39,11 @@ public class ExperimentVo {
         this.brief_info = brief_info;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

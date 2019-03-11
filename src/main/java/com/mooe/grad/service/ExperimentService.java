@@ -7,6 +7,7 @@ import com.mooe.grad.domain.*;
 import com.mooe.grad.redis.ExpKey;
 import com.mooe.grad.redis.RedisService;
 import com.mooe.grad.redis.VncPortKey;
+import com.mooe.grad.util.RemoteResult;
 import com.mooe.grad.util.RemoteShellExeUtil;
 import com.mooe.grad.util.ServerInfoUtil;
 import com.mooe.grad.vo.CommemtVo;
@@ -71,43 +72,49 @@ public class ExperimentService {
     }
 
     //获取实验环境，打开实验机
-    public String getExp(int user_id, String envir_name) throws Exception {
+    public String getExp(int user_id, String envir_name, int exp_id) throws Exception {
         //在本地执行命令是用这句：Process ps = Runtime.getRuntime().exec(command);
         RemoteShellExeUtil remoteShellExecutor =
                 new RemoteShellExeUtil(ServerInfoUtil.VmServerIp, ServerInfoUtil.VmServerUserName,
                         ServerInfoUtil.VmServerPassword, ServerInfoUtil.port);
         //根据实验环境名命名模板，根据实验环境名加上用户id命名实例
-        int vncPort = 0;
-        //redis中是否有实验机个数的缓存
-        if(!redisService.exists(VncPortKey.vncPort, "")){
-            //vnc端口范围9001--9500
-            Map<String, Integer> vncPortMap = new HashMap();
+
+        //先从数据库中取得实验机数量
+        int host_nums = experimentDao.getHostNum(exp_id);
+        for(int host_num = 0; host_num < host_nums; host_num++){
+            int vncPort = 0;
+            //redis中是否有实验机个数的缓存
+            if(!redisService.exists(VncPortKey.vncPort, "")){
+                //vnc端口范围9001--9500
+                Map<String, Integer> vncPortMap = new HashMap();
+                for(int i = 9001; i < 9500; i++){
+                    vncPortMap.put(String.valueOf(i), 0);
+                }
+                redisService.set(VncPortKey.vncPort, "", vncPortMap);
+            }
+            //确定端口号,value是0表示端口空闲，端口是1表示正在使用
+            JSONObject vncPortJson = redisService.get(VncPortKey.vncPort, "",  JSONObject.class);
             for(int i = 9001; i < 9500; i++){
-                vncPortMap.put(String.valueOf(i), 0);
+                if((int)vncPortJson.get(i) == 0){
+                    vncPort = i;
+                    System.out.println(vncPortJson);
+                    vncPortJson.put(String.valueOf(i),1);
+                    redisService.set(VncPortKey.vncPort, "", vncPortJson);
+                    break;
+                }
             }
-            redisService.set(VncPortKey.vncPort, "", vncPortMap);
+            //格式：bash ...../实验名.bash 实验名 虚拟机个数 vnc端口号
+            //例：bash ...../ssrf111.bash ssrf111_2 5901
+            String cmd_createVm = "bash /home/sheeta/kvm/backing_file/"+envir_name+"/"+envir_name+".bash "+envir_name+" "+user_id+" "+vncPort;
+            RemoteResult result = remoteShellExecutor.exec(cmd_createVm);
+            System.out.println(String.valueOf(result));
+            if(result.getRet() == -1)return "";
+            if(redisService.exists(ExpKey.existARunningVm, String.valueOf(user_id)))return "";
+            //这里的value设置为vnc端口号，辅助记录，销毁实验机d时候使用
+            redisService.set(ExpKey.existARunningVm, String.valueOf(user_id),vncPort);
         }
-        //确定端口号,value是0表示端口空闲，端口是1表示正在使用
-        JSONObject vncPortJson = redisService.get(VncPortKey.vncPort, "",  JSONObject.class);
-        for(int i = 9001; i < 9500; i++){
-            if((int)vncPortJson.get(i) == 0){
-                vncPort = i;
-                System.out.println(vncPortJson);
-                vncPortJson.put(String.valueOf(i),1);
-                redisService.set(VncPortKey.vncPort, "", vncPortJson);
-                break;
-            }
-        }
-        //格式：bash ...../实验名.bash 实验名 虚拟机个数 vnc端口号
-        //例：bash ...../ssrf111.bash ssrf111_2 5901
-        String cmd_createVm = "bash /home/sheeta/kvm/backing_file/"+envir_name+"/"+envir_name+".bash "+envir_name+" "+user_id+" "+vncPort;
-        int result = remoteShellExecutor.exec(cmd_createVm);
-        System.out.println(String.valueOf(result));
-        if(result == -1)return "";
-        if(redisService.exists(ExpKey.existARunningVm, String.valueOf(user_id)))return "";
-        //这里的value设置为vnc端口号，辅助记录，销毁实验机d时候使用
-        redisService.set(ExpKey.existARunningVm, String.valueOf(user_id),vncPort);
-        return "http://"+ServerInfoUtil.VmServerIp+":"+ServerInfoUtil.novnc_port+"/vnc.html?path=?token="+envir_name+""+user_id;
+
+        return envir_name+""+user_id;
     }
 
     public String endExp(int user_id, String envir_name) throws Exception {
@@ -117,9 +124,9 @@ public class ExperimentService {
         //格式：bash ...../实验名.bash 实验名 用户ID
         //例：bash ...../undefine-remove.bash ssrf111_2
         String cmd_destroyVm = "bash /home/sheeta/kvm/backing_file/"+envir_name+"/undefine-remove.bash "+envir_name+" "+user_id;
-        int result = remoteShellExecutor.exec(cmd_destroyVm);
+        RemoteResult result = remoteShellExecutor.exec(cmd_destroyVm);
         System.out.println(remoteShellExecutor.exec(String.valueOf(result)));
-        if(result == -1)return "";
+        if(result.getRet() == -1)return "";
         //获取当前端口号
         int vncPort = redisService.get(ExpKey.existARunningVm, String.valueOf(user_id),Integer.class);
         //将端口状态置为空闲
@@ -176,5 +183,17 @@ public class ExperimentService {
 
     public String getEnvirPath(int envir_id) {
         return experimentDao.getEnvirPath(envir_id);
+    }
+
+    public String getDocumentPath(String deliver_id) {
+        return experimentDao.getDocumentPath(deliver_id);
+    }
+
+    public void updateHost(VmHost vmHost) {
+        experimentDao.updateHost(vmHost);
+    }
+
+    public void addInstanceDeploy(InstanceDeploy instanceDeploy) {
+        experimentDao.addInstanceDeploy(instanceDeploy);
     }
 }

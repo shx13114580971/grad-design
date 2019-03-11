@@ -37,8 +37,8 @@
                  <!-- /. ROW  -->
                  <div class="row">
                 <div class="col-md-12">
+                    <input id="host_id" type="hidden" th:value="${vmHost.host_ip}">
                     <!-- 环境模板信息-->
-
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <div class="table-responsive">
@@ -75,7 +75,7 @@
                                                 <textarea type="text" class="envir-input" style="width: 596px; height: 177px;" th:value="${vmHost.remark}" readonly id="host_remark" name="host_remark" placeholder="请输入内容">[[${vmHost.remark}]]</textarea>
                                             </p>
                                             <p class="kiss" style="height: 70px">
-                                                <button class="page-button" onclick="">生成脚本</button>
+                                                <button class="page-button" onclick="save()">修改</button>
                                             </p>
                                         </div>
                                     </div>
@@ -120,7 +120,33 @@
          <!-- Custom Js -->
     <script th:src="@{/js/custom-scripts.js}"></script>
         <script>
-
+            function changeStatus() {
+                var update_time = new Date().format("yy-MM-dd hh:mm:ss");
+                var host_id = $("#host_id").val();
+                $.ajax({
+                    url: "/resource/update_host",
+                    type: "POST",
+                    data:{
+                        host_id:host_id,
+                        tools:$("#host_tools").val(),
+                        os:$("#host_os").val(),
+                        username:$("#host_username").val(),
+                        password:$("#host_password").val(),
+                        remark:$("#host_remark").val(),
+                        update_time:update_time
+                    },
+                    success:function(data){
+                        if(data.code == 0){
+                            layer.msg("操作成功！");
+                        } else{
+                            layer.msg(data.msg);
+                        }
+                    },
+                    error:function(){
+                        layer.closeAll();
+                    }
+                });
+            }
         </script>
 
 </body>

@@ -164,31 +164,7 @@ function isExpTestCorrect(){
 
 }
 //当前用户是否有正在运行的虚拟机
-function vm_isRunning() {
-    $.ajax({
-        url: "/experiment/vm_isRunning",
-        type: "POST",
-        success:function(data){
-            if(data.code == 0){
-            	if(data.data == 'true'){
-            		$("#addexp-button").hide();
-            		$("#endexp-button").show();
-				}else{
-                    $("#addexp-button").show();
-                    $("#endexp-button").hide();
-				}
-				window.location.reload();
-            }else if(data.code==500210){
-                //window.location.href="/login";
-            } else{
-                layer.msg(data.msg);
-            }
-        },
-        error:function(){
-            layer.closeAll();
-        }
-    });
-}
+
 
 //监听事件
 function examTimeScroll(){
@@ -774,33 +750,7 @@ function replybetaEditorVray(obj,replyperson){
 /**
  * 获取相关推荐实验
  */
-function queryRandExp(ecid){
-	
-	$.ajax({
-		url:"newExp!queryRandExp.action",
-		data:{ecid:ecid},
-		type:"post",
-		dataType:"json",
-		async : false,
-		success : function(data){
-			if($(data).attr("result") == "success"){
-				var mes = $(data).attr("message");
-				if(mes != null){
-					$(".recommendList ul").empty();
-					$(mes).each(function(){
-						var ecid = $(this).attr("ecid");
-						var picture = $(this).attr("ecPicture");
-						var ecname = $(this).attr("ecname");
-						getRodomCourseVray(ecid,ecname,picture);
-					})
-				}
-			}
-		},
-		error : function(){
-			
-		}
-	})
-}
+
 
 //数据渲染
 function getRodomCourseVray(ecid,ecname,picture){
@@ -817,36 +767,36 @@ function getRodomCourseVray(ecid,ecname,picture){
  */
 function getNewStudy(ecid){
 	
-	$.ajax({
-		url:"newExp!getNewStudy.action",
-		data:{ecid:ecid},
-		type:"post",
-		dataType:"json",
-		async : true,
-		success : function(data){
-			if($(data).attr("result") == "success"){
-				var mes = $(data).attr("infos");
-				if(mes != null){
-					$(".study_people_list").empty();
-					$(mes).each(function(i){
-						var userId = $(this).attr("userId");
-						var userName = $(this).attr("userName");
-						var userHead = $(this).attr("userHead");
-						getNewStudyVray(userId,userName,userHead,i);
-					})
-				}else{
-					if(languageFirst == "English"){
-						$(".study_people_list").html(noDateshow("Sorry, there's no result！"))
-					}else{
-						$(".study_people_list").html(noDateshow("暂无相关学习伙伴哦！",false))
-					}
-				}
-			}
-		},
-		error : function(){
-			
-		}
-	})
+	// $.ajax({
+	// 	url:"newExp!getNewStudy.action",
+	// 	data:{ecid:ecid},
+	// 	type:"post",
+	// 	dataType:"json",
+	// 	async : true,
+	// 	success : function(data){
+	// 		if($(data).attr("result") == "success"){
+	// 			var mes = $(data).attr("infos");
+	// 			if(mes != null){
+	// 				$(".study_people_list").empty();
+	// 				$(mes).each(function(i){
+	// 					var userId = $(this).attr("userId");
+	// 					var userName = $(this).attr("userName");
+	// 					var userHead = $(this).attr("userHead");
+	// 					getNewStudyVray(userId,userName,userHead,i);
+	// 				})
+	// 			}else{
+	// 				if(languageFirst == "English"){
+	// 					$(".study_people_list").html(noDateshow("Sorry, there's no result！"))
+	// 				}else{
+	// 					$(".study_people_list").html(noDateshow("暂无相关学习伙伴哦！",false))
+	// 				}
+	// 			}
+	// 		}
+	// 	},
+	// 	error : function(){
+	//
+	// 	}
+	// })
 }
 
 //数据渲染
@@ -865,98 +815,39 @@ function getNewStudyVray(userId,userName,userHead,i){
  * 查询是否收藏过该实验
  * @param ecid
  */
-function queryCollectionById(ecid){
-	
-	$.ajax({
-		url:"collectionAction!queryCollectionById.action",
-		data:{
-			objectId:ecid
-			},
-		dataType:"json",
-		type:"post",
-		async:true,
-		success:function(data){
-			if($(data).attr("result") == "success"){
-				var mes = $(data).attr("message");
-				if(mes != ""){
-					$(".collect").find("img").attr("src","img/news/alreadyCollect.png");
-					if(languageFirst == "English"){
-						$(".collect").find("img").attr("title","Cancel Save");
-					}else{
-						$(".collect").find("img").attr("title","取消收藏");
-					}
-					$(".collect").find("i").data("state",true);
-				}else{
-					$(".collect").find("img").attr("src","img/news/collection.png");
-					if(languageFirst == "English"){
-						$(".collect").find("img").attr("title","Join Save");
-					}else{
-						$(".collect").find("img").attr("title","加入收藏");
-					}
-					$(".collect").find("i").data("state",false);
-				}
-			}
-		},
-		error:function(){
-			
-		}
-	});
-}
 
 /**
  * 收藏实验
  * 加入收藏
  * @param ecid
  */
-function addCollectionInfo(ecid){
-	$.ajax({
-		url:"collectionAction!addCollectionInfo.action",
-		data:{
-			objectId:ecid
-			},
-		dataType:"json",
-		type:"post",
-		async:true,
-		success:function(data){
-			if($(data).attr("result") == "success"){
-				$(".collect").find("img").attr("src","img/news/alreadyCollect.png");
-				$(".collect").find("img").attr("title","取消收藏");
-				$(".collect").find("i").data("state",true);
-			}
-		},
-		error:function(){
-			
-		}
-	});
-}
+// function addCollectionInfo(ecid){
+// 	$.ajax({
+// 		url:"collectionAction!addCollectionInfo.action",
+// 		data:{
+// 			objectId:ecid
+// 			},
+// 		dataType:"json",
+// 		type:"post",
+// 		async:true,
+// 		success:function(data){
+// 			if($(data).attr("result") == "success"){
+// 				$(".collect").find("img").attr("src","img/news/alreadyCollect.png");
+// 				$(".collect").find("img").attr("title","取消收藏");
+// 				$(".collect").find("i").data("state",true);
+// 			}
+// 		},
+// 		error:function(){
+//
+// 		}
+// 	});
+// }
 
 /**
  * 收藏实验
  * 取消收藏
  * @param ecid
  */
-function delCollectionInfo(ecid){
-	
-	$.ajax({
-		url:"collectionAction!delCollectionInfo.action",
-		data:{
-			objectId:ecid
-		},
-		dataType:"json",
-		type:"post",
-		async:true,
-		success:function(data){
-			if($(data).attr("result") == "success"){
-				$(".collect").find("img").attr("src","img/news/collection.png");
-				$(".collect").find("img").attr("title","加入收藏");
-				$(".collect").find("i").data("state",false);
-			}
-		},
-		error:function(){
-			
-		}
-	});
-}
 
 
 /**************************************************************指导书********************************************************/
@@ -1650,29 +1541,29 @@ function queryContentByAssIdVray(mes,obj){
  * @param obj
  */
 function insertReply(assmentId,replyContent,ecid,obj){
-	$.ajax({
-		url:"newExp!insertReply.action",
-		data:{assId:assmentId,replyContent:replyContent,ecid:ecid},
-		type:"post",
-		dataType:"json",
-		async : true,
-		success : function(data){
-			var mes = $(data).attr("message");
-			if($(data).attr("result") == "success"){
-				queryContentByAssId(assmentId,$(obj).parent().parent().find(".questions-s img"));
-				var num = $(obj).parent().parent().find(".questions-s").text();
-				$(obj).parent().parent().find(".questions-s").html("<img src=\"/img/coursePage/reply-icon.png\" title=\"点击展开回复列表\">"+(parseInt(num)+1));
-				$(obj).parent().remove();
-			}else{
-				if(mes == "noAut"){
-					$(obj).parent().find(".error-message").html("抱歉，您的权限不足，回复失败！");
-				}
-			}
-		},
-		error : function(){
-			
-		}
-	})
+	// $.ajax({
+	// 	url:"newExp!insertReply.action",
+	// 	data:{assId:assmentId,replyContent:replyContent,ecid:ecid},
+	// 	type:"post",
+	// 	dataType:"json",
+	// 	async : true,
+	// 	success : function(data){
+	// 		var mes = $(data).attr("message");
+	// 		if($(data).attr("result") == "success"){
+	// 			queryContentByAssId(assmentId,$(obj).parent().parent().find(".questions-s img"));
+	// 			var num = $(obj).parent().parent().find(".questions-s").text();
+	// 			$(obj).parent().parent().find(".questions-s").html("<img src=\"/img/coursePage/reply-icon.png\" title=\"点击展开回复列表\">"+(parseInt(num)+1));
+	// 			$(obj).parent().remove();
+	// 		}else{
+	// 			if(mes == "noAut"){
+	// 				$(obj).parent().find(".error-message").html("抱歉，您的权限不足，回复失败！");
+	// 			}
+	// 		}
+	// 	},
+	// 	error : function(){
+	//
+	// 	}
+	// })
 	
 }
 
@@ -2348,45 +2239,45 @@ function addNotes(content,ceid){
  * @param ecid
  */
 function queryVideoByEcid(ecid,ceid){
-	$.ajax({
-		url:"newExp!queryVideoByEcid.action",
-		data:{ecid:ecid,ceid:ceid},
-		type:"post",
-		dataType:"json",
-		async : true,
-		success : function(data){
-			if($(data).attr("result") == "success"){
-				var mes = $(data).attr("message");
-				if(mes != null){
-					var str = "<img class=\"exp_video\" src=\"/img/coursePage/vedioBtn.png\">";
-					$(".exp_img_list").append(str);
-					$(".videoList").empty();
-					$(mes).each(function(i){
-						var expName = $(this).attr("ecName");
-						var provider = $(this).attr("userName");
-						var videoNum = $(this).attr("views");
-						var wareId = $(this).attr("wareId");
-						var flagShow = $(this).attr("flagShow");
-						var str = "<p id=\""+wareId+"\" data-provider=\""+provider+"\" data-videoNum=\""+videoNum+"\" data-name=\""+expName+"\">"+expName+"</p>";
-						$(".videoList").append(str);
-						if(mes.length > 1){
-							$(".videoList-bg").show();
-						}else{
-							$(".videoList-bg").hide();
-						}
-						if(flagShow){
-							$("#learnbtn").html("已学过");
-							$("#learnbtn").attr("disabled","disabled");
-							$("#learnbtn").unbind();
-						}
-					})
-				}
-			}
-		},
-		error : function(){
-			
-		}
-	})
+	// $.ajax({
+	// 	url:"newExp!queryVideoByEcid.action",
+	// 	data:{ecid:ecid,ceid:ceid},
+	// 	type:"post",
+	// 	dataType:"json",
+	// 	async : true,
+	// 	success : function(data){
+	// 		if($(data).attr("result") == "success"){
+	// 			var mes = $(data).attr("message");
+	// 			if(mes != null){
+	// 				var str = "<img class=\"exp_video\" src=\"/img/coursePage/vedioBtn.png\">";
+	// 				$(".exp_img_list").append(str);
+	// 				$(".videoList").empty();
+	// 				$(mes).each(function(i){
+	// 					var expName = $(this).attr("ecName");
+	// 					var provider = $(this).attr("userName");
+	// 					var videoNum = $(this).attr("views");
+	// 					var wareId = $(this).attr("wareId");
+	// 					var flagShow = $(this).attr("flagShow");
+	// 					var str = "<p id=\""+wareId+"\" data-provider=\""+provider+"\" data-videoNum=\""+videoNum+"\" data-name=\""+expName+"\">"+expName+"</p>";
+	// 					$(".videoList").append(str);
+	// 					if(mes.length > 1){
+	// 						$(".videoList-bg").show();
+	// 					}else{
+	// 						$(".videoList-bg").hide();
+	// 					}
+	// 					if(flagShow){
+	// 						$("#learnbtn").html("已学过");
+	// 						$("#learnbtn").attr("disabled","disabled");
+	// 						$("#learnbtn").unbind();
+	// 					}
+	// 				})
+	// 			}
+	// 		}
+	// 	},
+	// 	error : function(){
+	//
+	// 	}
+	// })
 }
 
 //调整弹出框位置

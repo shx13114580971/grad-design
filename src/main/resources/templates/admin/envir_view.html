@@ -38,6 +38,7 @@
                  <!-- /. ROW  -->
                  <div class="row">
                 <div class="col-md-12">
+
                     <!-- 环境模板信息-->
 
                     <div class="panel panel-default">
@@ -51,9 +52,9 @@
                                 <form enctype="multipart/form-data" id="envir-info" name="envir-info" method="post">
                                     <p >
                                         <span style="font-size: 16px;;font-weight: 600;color: #63686e;">实验名：</span>
-                                        <input type="text" class="envir-input" id="exp_name" name="exp_name" th:value="${exp_name}" disabled placeholder="请输入内容">
+                                        <input type="text" style="margin-left:80px;" class="envir-input" id="exp_name" name="exp_name" th:value="${exp_name}" disabled placeholder="请输入内容">
                                         <span style="margin-left: 70px;font-size: 16px;font-weight: 600;color: #63686e;">环境名：</span>
-                                        <input type="text" class="envir-input" id="envir_name" name="envir_name" th:value="${environment.envir_name}" disabled placeholder="请输入内容">
+                                        <input type="text" style="margin-left:30px;" class="envir-input" id="envir_name" name="envir_name" th:value="${environment.envir_name}" disabled placeholder="请输入内容">
                                     </p>
                                     <p>
                                         <span style="font-size: 16px;font-weight: 600;color: #63686e;">是否提供虚拟机：</span>
@@ -64,18 +65,64 @@
                                         <span style="margin-left: 70px;font-size: 16px;font-weight: 600;color: #63686e;">主机数量：</span>
                                         <input type="text" class="envir-input" id="host_num" name="host_num" th:value="${environment.host_num}"  placeholder="请输入内容">
                                     </p>
-                                    <!-- 添加主机浮板 -->
+                                    <!-- 添加配置文件浮板 向下 -->
+                                    <div id="shell" class="white_content" style="width:50%;height: 600px">
+                                        <p class="kiss" style="font-size: 24px;height: 60px;font-weight: bold">
+                                            <span  style="font-size:24px;width:200px;text-align:left">生成配置文件：</span>
+                                        </p>
+                                        <div class="hr"></div>
+                                        <p class="kiss">
+                                            <label class="deploy-label">vCPU's：</label>
+                                            <input type="text" class="envir-input" id="vcpus" name="vcpus" placeholder="请输入内容">
+                                        </p>
+                                        <p class="kiss">
+                                            <label class="deploy-label">vRAM：</label>
+                                            <select class="envir-input" style="float: right;" id="memory" name="memory" placeholder="请输入内容">
+                                                <option>512M</option>
+                                            </select>
+                                        </p>
+                                        <p class="kiss">
+                                            <label class="deploy-label">vHDD：</label>
+                                            <select class="envir-input" style="float: right;" id="disk" name="disk" placeholder="请输入内容">
+                                                <option>20G</option>
+                                            </select>
+                                        </p>
+                                        <p class="kiss">
+                                            <label class="deploy-label">Network：</label>
+                                            <select class="envir-input" style="float: right;" id="network" name="network" placeholder="请输入内容">
+                                                <option>default</option>
+                                            </select>
+                                        </p>
+                                        <p class="kiss">
+                                            <label class="deploy-label">Storage Path：</label>
+                                            <select class="envir-input" style="float: right;" id="storage-path" name="storage-path" placeholder="请输入内容">
+                                                <option>ubuntu14.04_raw.qcow2</option>
+                                            </select>
+                                        </p>
+                                        <p class="kiss" style="width:600px">
+                                            <label class="deploy-label">ip地址：</label>
+                                            <input type="text" style="margin-left:26px" class="envir-input" id="ip_addr" name="ip_addr" disabled="disabled">
+                                            <label><input style="margin-right:10px;margin-left:10px" type="checkbox" id="static_ip" name="static_ip"/>固定IP</label>
+                                        </p>
+                                        <div class="hr" style="margin-top: 0px"></div>
+                                        <p class="kiss" style="height: 40px">
+                                            <button class="page-button" onclick="addDeploy()">创建虚拟机</button>
+                                        </p>
+                                        <a href="javascript:void(0)" onclick="two()">Close</a>
+                                    </div>
+                                    <!-- 添加配置文件浮板  向上-->
+                                    <!-- 添加主机浮板  向下-->
                                     <div class="kiss">
                                         <a id="addEnvir_btn" name="addEnvir_btn" onclick="document.getElementById('add_host').style.display='block';document.getElementById('fade').style.display='block'" style="height:40px;font-size:22px;" >添加主机</a>
                                         <button style="margin-left: 70%;height: 45px" onclick="commitDeploy()" class="page-button" id="deploy_status">提交部署</button>
 
                                         <div id="add_host" class="white_content" style="height: 600px">
-                                            <p class="kiss" style="font-size: 24px;height: 60px;font-weight: bold">
-                                                <span style="font-size:22px;width:120px">主机信息：</span>
+                                            <p class="kiss" style="font-size: 24px;height: 60px;font-weight: 500">
+                                                <span  style="font-size:22px;width:120px">主机信息：</span>
                                             </p>
 
                                             <p class="kiss">
-                                                <span>主机名：</span>
+                                                <label style="font-size: 18px;font-weight:600;color: #1b1e21c9;">主机名：</label>
                                                 <input type="text" class="envir-input" id="host_name" name="host_name" placeholder="请输入内容">
                                             </p>
                                             <p class="kiss">
@@ -124,7 +171,7 @@
                             <ul th:if="${vmHostList != null}">
                                 <li th:each="vmHost:${vmHostList}" class="host-list-li">
                                     <div class="col-xs-12 col-sm-4">
-                                        <div class="panel panel-success panel-data" style="height: 150px;width: 300px;margin: 20px">
+                                        <div class="panel panel-success panel-data" style="height: 240px;width: 350px;margin: 20px">
                                             <div class="panel-heading">
 
                                                 <h3 class="panel-title">
@@ -146,6 +193,12 @@
                                                 <p><strong>Host_IP : </strong>[[${vmHost.host_ip}]]
                                                 </p>
                                                 <p><strong>Update : </strong>[[${vmHost.update_time}]]</p>
+                                                <p>
+                                                    <strong>操作工具 : </strong>
+                                                    <a th:if="${vmHost.create_bash == null || vmHost.create_bash == ''}" href="#" onclick="document.getElementById('shell').style.display='block';document.getElementById('fade').style.display='block'">点击生成配置文件</a>
+                                                    <label th:unless="${vmHost.create_bash == null || vmHost.create_bash == ''}" style="color: #4d82ff;font-weight: 500">已生成</label>
+
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
@@ -194,6 +247,7 @@
             }
             function two(){
                 $("#add_host").hide();
+                $("#custom").hide();
                 $("#fade").hide();
             }
         </script>

@@ -72,4 +72,24 @@ public interface ExperimentDao {
 
     @Select("select path from environment where envir_id = #{envir_id}")
     public String getEnvirPath(@Param("envir_id") int envir_id);
+
+    @Select("select document from deliver_info where deliver_id = #{deliver_id}")
+    public String getDocumentPath(@Param("deliver_id") String deliver_id);
+
+    @Update("update vm_host set tools = #{tools}, os = #{os}, username = #{username}, password = #{password}," +
+            "remark = #{remark}, update_time = #{update_time} where host_id = #{host_id}")
+    public void updateHost(VmHost vmHost);
+
+    @Insert("insert into instance_deploy(host_id, vcpus, memory, disk, network, ip_addr) " +
+            "value(#{host_id}, #{vcpus}, #{memory}, #{disk}, #{network}, #{ip_addr})")
+    public void addInstanceDeploy(InstanceDeploy instanceDeploy);
+
+    @Select("select cron from monitor_conf where id = 1")
+    public String getCron();
+
+    @Select("select ser_mem_top from monitor_conf where id = 1")
+    public int getSerMemTop();
+
+    @Select("select host_num from environment where exp_id = #{exp_id}")
+    public int getHostNum(@Param("exp_id") int exp_id);
 }

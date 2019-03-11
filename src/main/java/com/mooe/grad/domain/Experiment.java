@@ -12,7 +12,7 @@ public class Experiment {
     private String class2;
     private String degree;
     private String brief_intro;
-    private Date date;
+    private String date;
     private int user_count;
     private String image;
     private String video;
@@ -80,11 +80,11 @@ public class Experiment {
         this.brief_intro = brief_intro;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

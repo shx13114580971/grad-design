@@ -27,6 +27,10 @@ public class ExperimentController {
     @Autowired
     private UserService userService;
 
+    @RequestMapping("/vnc")
+    public String vnc_html(){
+        return "/vnc";
+    }
 
     @RequestMapping("/exp_profile")
     public String listAll(User user, Model model){
@@ -50,9 +54,9 @@ public class ExperimentController {
         if(user == null)return Result.error(CodeMsg.SESSION_ERROR);
         //添加到用户的记录
         userService.addExp(user.getUser_id(), exp_id);
-        String url = experimentService.getExp(user.getUser_id(),envir_name);
-        if ("".equals(url) || url == null)return Result.error(CodeMsg.VM_CREATE_ERROR);
-        return Result.success(url);
+        String token = experimentService.getExp(user.getUser_id(),envir_name, exp_id);
+        if ("".equals(token) || token == null)return Result.error(CodeMsg.VM_CREATE_ERROR);
+        return Result.success(token);
     }
 
     @ResponseBody

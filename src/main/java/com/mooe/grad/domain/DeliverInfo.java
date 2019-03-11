@@ -2,6 +2,7 @@ package com.mooe.grad.domain;
 
 public class DeliverInfo {
     private int deliver_id;
+    private String exp_name;
     private String designer;
     private String document;
     private String is_provide_vm;
@@ -15,6 +16,14 @@ public class DeliverInfo {
 
     public void setDeliver_id(int deliver_id) {
         this.deliver_id = deliver_id;
+    }
+
+    public String getExp_name() {
+        return exp_name;
+    }
+
+    public void setExp_name(String exp_name) {
+        this.exp_name = exp_name;
     }
 
     public String getDesigner() {

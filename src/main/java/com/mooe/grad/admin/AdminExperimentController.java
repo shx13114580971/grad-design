@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.IOException;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.util.Date;
 import java.util.List;
 
@@ -36,6 +36,29 @@ public class AdminExperimentController {
         model.addAttribute("experimentsList",list);
         model.addAttribute("deliverInfoList", deliverInfoList);
         return "admin/exp_list";
+    }
+
+    //下载实验文档
+    @RequestMapping("/downloadFile/{deliver_id}")
+    public void downloadFile(@PathVariable("deliver_id")String deliver_id, HttpServletResponse response) throws FileNotFoundException {
+        // 读到流中
+        String path = experimentSeivice.getDocumentPath(deliver_id);
+        String fileName = path.split("\\\\")[path.split("\\\\").length-1];
+        InputStream inStream = new FileInputStream(path);// 文件的存放路径
+        // 设置输出的格式
+        response.reset();
+        response.setContentType("bin");
+        response.addHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+        // 循环取出流中的数据
+        byte[] b = new byte[100];
+        int len;
+        try {
+            while ((len = inStream.read(b)) > 0)
+                response.getOutputStream().write(b, 0, len);
+            inStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     //添加环境页面

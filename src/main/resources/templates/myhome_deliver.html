@@ -61,6 +61,10 @@
 						<div class="jiben">
 							<form id="deliverForm" method="post" enctype="multipart/form-data" onsubmit="return false">
 								<p class="kiss">
+									<span>实验名：</span>
+									<input id="exp_name" name="exp_name" type="text" class="exp_name">
+								</p>
+								<p class="kiss">
 									<span style="width: 114px;font-size: 16px;">实验文档：</span>
 									<!--<button type="button" class="preservation" onclick="$('#document').click();">点击上传</button>-->
 									<span>
@@ -147,11 +151,13 @@
 </script>
 <script>
 	function deliver() {
+	    var exp_name = $("#exp_name").val();
 	    var createTime = new Date().format("yy-MM-dd hh:mm:ss");
         var formData = new FormData();
         var isProvideVm = $("input[type=radio][name=isProvideVm]:checked").val();
         // var createTime = new Date().format("yy-MM-dd hh:mm:ss");
-        formData.append("document", document.getElementById("document").files[0]);
+        formData.append("exp_name", exp_name);
+		formData.append("document", document.getElementById("document").files[0]);
         formData.append("isProvideVm", isProvideVm);
         formData.append("createTime", createTime);
         if(isProvideVm == "0"){
