@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +31,9 @@ public class ExperimentService {
 
     @Autowired
     private RedisService redisService;
+
+    @Autowired
+    private VmService vmService;
 
     public Experiment findById(int id){
         return experimentDao.findById(id);
@@ -60,7 +64,7 @@ public class ExperimentService {
         experimentComment.setExp_id(commemtVo.getExpfctf_id());
         experimentComment.setUser_id(user.getUser_id());
         experimentComment.setContent(commemtVo.getContent());
-        experimentComment.setCreatetime(commemtVo.getCreatetime());
+        experimentComment .setCreatetime(commemtVo.getCreatetime());
         experimentComment.setScore(commemtVo.getScore());
         experimentDao.addComment(experimentComment);
     }
@@ -71,17 +75,17 @@ public class ExperimentService {
         return list;
     }
 
-    //获取实验环境，打开实验机
+    //获取实验环境，创建实验机
     public String getExp(int user_id, String envir_name, int exp_id) throws Exception {
-        //在本地执行命令是用这句：Process ps = Runtime.getRuntime().exec(command);
-        RemoteShellExeUtil remoteShellExecutor =
-                new RemoteShellExeUtil(ServerInfoUtil.VmServerIp, ServerInfoUtil.VmServerUserName,
-                        ServerInfoUtil.VmServerPassword, ServerInfoUtil.port);
-        //根据实验环境名命名模板，根据实验环境名加上用户id命名实例
 
-        //先从数据库中取得实验机数量
-        int host_nums = experimentDao.getHostNum(exp_id);
-        for(int host_num = 0; host_num < host_nums; host_num++){
+        //根据实验环境名命名模板，根据实验环境名加上用户id命名实例
+        List<String> exps = new ArrayList<>();
+        //先从数据库中取得主机列表
+        //这里有个bug，环境id与主机id是对应关系，但此处只有实验id，因此需要先用它获取环境id
+        int envir_id  = experimentDao.getEnvirIdByExpId(exp_id);
+        List<String> hostNameList = experimentDao.listHostName(envir_id);
+        if(redisService.exists(ExpKey.existARunningVm, String.valueOf(user_id)))return null;
+        for(int host_num = 0; host_num < hostNameList.size(); host_num++){
             int vncPort = 0;
             //redis中是否有实验机个数的缓存
             if(!redisService.exists(VncPortKey.vncPort, "")){
@@ -103,36 +107,52 @@ public class ExperimentService {
                     break;
                 }
             }
-            //格式：bash ...../实验名.bash 实验名 虚拟机个数 vnc端口号
+            //格式：bash ...../实验名.bash 实验名 用户id vnc端口号 主机名
             //例：bash ...../ssrf111.bash ssrf111_2 5901
-            String cmd_createVm = "bash /home/sheeta/kvm/backing_file/"+envir_name+"/"+envir_name+".bash "+envir_name+" "+user_id+" "+vncPort;
-            RemoteResult result = remoteShellExecutor.exec(cmd_createVm);
-            System.out.println(String.valueOf(result));
-            if(result.getRet() == -1)return "";
-            if(redisService.exists(ExpKey.existARunningVm, String.valueOf(user_id)))return "";
-            //这里的value设置为vnc端口号，辅助记录，销毁实验机d时候使用
-            redisService.set(ExpKey.existARunningVm, String.valueOf(user_id),vncPort);
+            String cmd_createVm = "bash /home/sheeta/nfs-client/kvm/backing_file/"+envir_name+"/"+ hostNameList.get(host_num)
+                    +"/"+envir_name+".bash "+envir_name+" "+user_id+" "+vncPort+" "+hostNameList.get(host_num);
+            //createVM进行负载均衡选择目标服务器创建虚拟机，成功创建后返回IP地址
+            String targetIpAddr = vmService.createVM(cmd_createVm);
+            if("".equals(targetIpAddr) || targetIpAddr == null)return null;
+            //key即vnc的token
+            String key = envir_name+"_"+String.valueOf(user_id)+"_"+hostNameList.get(host_num);
+            //value是以本地ip地址与分配到的端口号组合成，为了方便之后销毁
+            String value = targetIpAddr+":"+vncPort;
+            //用户状态标识,将记录端口与ip的缓存项的key作为用户状态标识的value，即first_token
+            redisService.set(ExpKey.existARunningVm, String.valueOf(user_id), key);
+            redisService.set(ExpKey.existARunningVm, key,value);
+            //最后token是环境名+用户id+主机名
+           // exps.add(host_num, envir_name+""+user_id+""+hostNameList.get(host_num));
         }
+        //只返回第一个主机的token即可，点击“进入实验”之后再重新获取token列表
+        return envir_name+"_"+user_id+"_"+hostNameList.get(0);
+    }
 
-        return envir_name+""+user_id;
+
+    public String getFirstToken(int user_id) {
+        //获取主机列表
+        String firstToken = redisService.get(ExpKey.existARunningVm, String.valueOf(user_id), String.class);
+        if("".equals(firstToken) || firstToken == null)return "";
+        return firstToken;
     }
 
     public String endExp(int user_id, String envir_name) throws Exception {
-        RemoteShellExeUtil remoteShellExecutor =
-                new RemoteShellExeUtil(ServerInfoUtil.VmServerIp, ServerInfoUtil.VmServerUserName,
-                        ServerInfoUtil.VmServerPassword, ServerInfoUtil.port);
-        //格式：bash ...../实验名.bash 实验名 用户ID
+                //格式：bash ...../实验名.bash 实验名 用户ID
         //例：bash ...../undefine-remove.bash ssrf111_2
-        String cmd_destroyVm = "bash /home/sheeta/kvm/backing_file/"+envir_name+"/undefine-remove.bash "+envir_name+" "+user_id;
-        RemoteResult result = remoteShellExecutor.exec(cmd_destroyVm);
-        System.out.println(remoteShellExecutor.exec(String.valueOf(result)));
-        if(result.getRet() == -1)return "";
-        //获取当前端口号
-        int vncPort = redisService.get(ExpKey.existARunningVm, String.valueOf(user_id),Integer.class);
-        //将端口状态置为空闲
-        JSONObject vncPortJson = redisService.get(VncPortKey.vncPort, "", JSONObject.class);
-        vncPortJson.put(String.valueOf(vncPort),0);
-        redisService.set(VncPortKey.vncPort, "", vncPortJson);
+        int envir_id = experimentDao.getEnvirIdByEnvirName(envir_name);
+        List<String> hostNameList = experimentDao.listHostName(envir_id);
+        for(String host_name : hostNameList){
+            String vncPort = vmService.destroyVM(envir_name, user_id, host_name);
+//            RemoteResult result = remoteShellExecutor.exec(cmd_destroyVm);
+//            System.out.println(remoteShellExecutor.exec(String.valueOf(result)));
+            if(vncPort == "")return "";
+            //将端口状态置为空闲
+            JSONObject vncPortJson = redisService.get(VncPortKey.vncPort, "", JSONObject.class);
+            vncPortJson.put(vncPort,0);
+            String tokenOrKey = envir_name + "_" + String.valueOf(user_id)+ "_" + host_name;
+            redisService.set(VncPortKey.vncPort, "", vncPortJson);
+            redisService.delete(ExpKey.existARunningVm, tokenOrKey);
+        }
         redisService.delete(ExpKey.existARunningVm, String.valueOf(user_id));
         return "成功销毁实验机";
     }
@@ -196,4 +216,25 @@ public class ExperimentService {
     public void addInstanceDeploy(InstanceDeploy instanceDeploy) {
         experimentDao.addInstanceDeploy(instanceDeploy);
     }
+
+    public int getHostNum(int exp_id) {
+        return experimentDao.getHostNum(exp_id);
+    }
+
+    public List<String> listToken(String token) {
+        //token格式<环境名_用户id_主机名>
+        String[] tokenArray = token.split("_");
+        String envir_name = tokenArray[0];
+        String user_id = tokenArray[1];
+        //还是那个bug，这次需要通过envir_name获取envir_id
+        int envir_id = experimentDao.getEnvirIdByEnvirName(envir_name);
+        List<String> hostNameList = experimentDao.listHostName(envir_id);
+        //重新组装成token
+        List<String> tokenList = new ArrayList<>();
+        for(String hostName : hostNameList){
+            tokenList.add(envir_name+"_"+user_id+"_"+hostName);
+        }
+        return tokenList;
+    }
+
 }

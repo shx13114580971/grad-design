@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="noVNC_loading">
+<html class="noVNC_loading" lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 
     <!--
@@ -78,7 +78,29 @@
 </head>
 
 <body>
-
+<input type="hidden" id="token_list" th:value="${token_list}">
+<nav id="vnc_top"  class="top-navbar" role="navigation">
+    <!-- Connect button -->
+    <div class="noVNC_center">
+        <div id="noVNC_connect_dlg">
+            <div class="noVNC_logo" translate="no"><span>no</span>VNC</div>
+            <div id="noVNC_connect_button"><div>
+                <img src="/images/vnc/connect.svg"> Connect
+            </div></div>
+        </div>
+    </div>
+    <span id="virtual" class="virtualInfo">
+		<img src="/images/vnc/virtual-icon.png">实验机
+        <i class="virtualNumber">2</i>
+        <div class="virtualList" style="display: none;">
+            <div class="graph"></div>
+            <ul>
+            <li th:each="token:${token_list}" th:vmtoken="${token}" isshow="1" class="blue">
+                <img type="windows">[[${token}]]</li>
+            </ul>
+        </div>
+    </span>
+</nav>
     <div id="noVNC_fallback_error" class="noVNC_center">
         <div>
             <div>noVNC encountered an error:</div>
@@ -280,15 +302,6 @@
     <!-- Status Dialog -->
     <div id="noVNC_status"></div>
 
-    <!-- Connect button -->
-    <div class="noVNC_center">
-        <div id="noVNC_connect_dlg">
-            <div class="noVNC_logo" translate="no"><span>no</span>VNC</div>
-            <div id="noVNC_connect_button"><div>
-                <img src="/images/vnc/connect.svg"> Connect
-            </div></div>
-        </div>
-    </div>
 
     <!-- Password Dialog -->
     <div class="noVNC_center noVNC_connect_layer">
@@ -324,7 +337,30 @@
             autocorrect="off" autocomplete="off" spellcheck="false"
             mozactionhint="Enter" tabindex="-1"></textarea>
     </div>
-
-
+<script th:src="@{/js/jquery-1.7.2.min.js}"></script>
+<script>
+    $(".virtualInfo").hover(function(){
+        $(".virtualList").show();
+    },function(){
+        $(". virtualList").hide();
+    });
+    $(".virtualList").find("li").die("click").live("click",function(){
+        $(this).parent().find("li").removeClass("blue");
+        var type = $(this).find("img").attr("type");
+        // $(".virtualList").find("img[type='computer']").attr("src","../../img/expanipulator/computer.png");
+        // $(".virtualList").find("img[type='windows']").attr("src","../../img/expanipulator/windows.png");
+        // $(".virtualList").find("img[type='centos']").attr("src","../../img/expanipulator/centos.png");
+        if($(this).attr("isShow") == "1"){
+            // loadConsole($(this).attr("vmid"));
+            var targettoken = $(this).attr("vmtoken");
+            var nowtoken = window.location.href.split("token=")[1];
+            $(this).addClass("blue");
+            window.location.href =window.location.href.replace(nowtoken, targettoken);
+            // $(this).find("img").attr("src","../../img/expanipulator/"+type+"-b.png");
+        }else{
+            $(this).css("cursor","not-allowed")
+        }
+    })
+</script>
  </body>
 </html>

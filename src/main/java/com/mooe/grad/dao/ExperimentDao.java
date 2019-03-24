@@ -5,6 +5,7 @@ import com.mooe.grad.vo.CommemtVo;
 import com.mooe.grad.vo.ExperimentVo;
 import com.mooe.grad.vo.VmHostVo;
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -92,4 +93,19 @@ public interface ExperimentDao {
 
     @Select("select host_num from environment where exp_id = #{exp_id}")
     public int getHostNum(@Param("exp_id") int exp_id);
+
+    @Select("select envir_id from environment where exp_id = #{exp_id}")
+    public int getEnvirIdByExpId(@Param("exp_id") int exp_id);
+
+    @Select("select host_name from vm_host where envir_id = #{envir_id}")
+    public List<String> listHostName(@Param("envir_id") int envir_id);
+
+    @Select("select envir_id from environment where envir_name = #{envir_name}")
+    public int getEnvirIdByEnvirName(@Param("envir_name") String envir_name);
+
+    @Select("select ser_cpu_top from monitor_conf where id = 1")
+    public int getSerCpuTop();
+
+    @Select("select envir_name from environment where envir_id = #{envir_id}")
+    public String getEnvirNameByEnvirId(@Param("envir_id") int envir_id);
 }

@@ -41,6 +41,7 @@ public class LoginController {
         return Result.success(result);
     }
 
+
     @ResponseBody
     @RequestMapping("/login/do_login")
     public Result<String> doLogin(HttpServletResponse response, @Valid LoginVo loginVo){

@@ -83,6 +83,11 @@ public class UserService implements Serializable{
         return registerVo.toString();
     }
 
+
+    public void insertTest(String mobile, int id){
+        userDao.update(mobile,id);
+    }
+
     private boolean isExist(String mobile){
         User user = userDao.getByMobile(mobile);
         if(user != null)return true;
@@ -149,4 +154,5 @@ public class UserService implements Serializable{
         deliverInfo.setCreate_time(createTime);
         userDao.addDeliver(deliverInfo);
     }
+
 }

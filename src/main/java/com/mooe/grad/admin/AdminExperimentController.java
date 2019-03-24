@@ -61,6 +61,7 @@ public class AdminExperimentController {
         }
     }
 
+
     //添加环境页面
     @RequestMapping("/add_envir/{exp_id}")
     public String addEnvir(@PathVariable("exp_id")int exp_id,Model model){
@@ -172,8 +173,16 @@ public class AdminExperimentController {
         return Result.success(result);
     }
 
+    @RequestMapping("/exp_monitor")
+    public String expMonitor(){
+        return "admin/exp_monitor";
+    }
 
 
+    @RequestMapping("/exp_order")
+    public String expOrder(){
+        return "admin/exp_order";
+    }
 
 
 }

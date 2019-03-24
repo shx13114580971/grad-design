@@ -7,10 +7,7 @@ import com.mooe.grad.vo.ExperimentVo;
 import com.mooe.grad.vo.FctfVo;
 import com.mooe.grad.vo.UserExpVo;
 import com.mooe.grad.vo.UserFctfVo;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -44,4 +41,7 @@ public interface UserDao {
     @Insert("insert into deliver_info(exp_name, designer, document, is_provide_vm, vmzip, deploy_RD, create_time) " +
             "value(#{exp_name}, #{designer}, #{document}, #{is_provide_vm}, #{vmzip}, #{deploy_RD}, #{create_time})")
     public void addDeliver(DeliverInfo deliverInfo);
+
+    @Update("update user set mobile = #{mobile} where user_id = #{user_id}" )
+    public void update(@Param("mobile")String mobile, @Param("user_id")int user_id);
 }

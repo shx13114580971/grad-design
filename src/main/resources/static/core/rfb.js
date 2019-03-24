@@ -135,8 +135,8 @@ export default class RFB extends EventTargetMixin {
         this._canvas.style.outline = 'none';
         // IE miscalculates width without this :(
         this._canvas.style.flexShrink = '0';
-        this._canvas.width = 0;
-        this._canvas.height = 0;
+        this._canvas.width = 100;
+        this._canvas.height = 100;
         this._canvas.tabIndex = -1;
         this._screen.appendChild(this._canvas);
 

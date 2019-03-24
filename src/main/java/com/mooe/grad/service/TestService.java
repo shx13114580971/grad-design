@@ -8,8 +8,9 @@ import com.mooe.grad.vo.FctfVo;
 import com.mooe.grad.vo.ExperimentVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import oscats.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -64,7 +65,9 @@ public class TestService {
         return null;
     }
 
+
     public String insertThisAndGetNextExp(int exp_id, int user_id, String class1) {
+
         List<Integer> userExpTestList = testDao.getExpByExpIdAndUserId(exp_id, user_id);
         if(userExpTestList.size() == 0){
             testDao.insertPassedExp(exp_id, user_id);

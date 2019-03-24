@@ -79,8 +79,8 @@ public class RemoteShellExeUtil {
 
                 session.waitForCondition(ChannelCondition.EXIT_STATUS, TIME_OUT);
 
-                System.out.println("outStr=" + outStr);
-                System.out.println("outErr=" + outErr);
+//                System.out.println("outStr=" + outStr);
+//                System.out.println("outErr=" + outErr);
 
                 result.setRet(session.getExitStatus());
             } else {
@@ -110,5 +110,9 @@ public class RemoteShellExeUtil {
             sb.append(new String(buf, charset));
         }
         return sb.toString();
+    }
+
+    public String getIpAddr(){
+        return this.ip;
     }
 }

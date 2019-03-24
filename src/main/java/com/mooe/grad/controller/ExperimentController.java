@@ -28,8 +28,13 @@ public class ExperimentController {
     private UserService userService;
 
     @RequestMapping("/vnc")
-    public String vnc_html(){
-        return "/vnc";
+    public String vnc_html(User user,Model model,@RequestParam("path") String path ){
+        if(user == null)return "/login";
+        String firstToken = path.split("token=")[1];
+        List<String> tokenList = experimentService.listToken(firstToken);
+        model.addAttribute("token_list", tokenList);
+        model.addAttribute("token_current", tokenList.get(0));
+        return "vnc";
     }
 
     @RequestMapping("/exp_profile")
@@ -49,13 +54,13 @@ public class ExperimentController {
     }
 
     @ResponseBody
-    @RequestMapping("/experiment/getExp/{envir_name}")
-    public Result<String> getExp(@PathVariable("envir_name") String envir_name, @RequestParam("exp_id") int exp_id, User user, Model model) throws Exception {
+    @RequestMapping("/experiment/createExp/{envir_name}")
+    public Result<String> createExp(@PathVariable("envir_name") String envir_name, @RequestParam("exp_id") int exp_id, User user, Model model) throws Exception {
         if(user == null)return Result.error(CodeMsg.SESSION_ERROR);
         //添加到用户的记录
         userService.addExp(user.getUser_id(), exp_id);
         String token = experimentService.getExp(user.getUser_id(),envir_name, exp_id);
-        if ("".equals(token) || token == null)return Result.error(CodeMsg.VM_CREATE_ERROR);
+        if (token == null || "".equals(token))return Result.error(CodeMsg.VM_CREATE_ERROR);
         return Result.success(token);
     }
 
@@ -69,11 +74,20 @@ public class ExperimentController {
 
     @ResponseBody
     @RequestMapping("/experiment/endExp/{envir_name}")
-    public Result<String> endExp(@PathVariable("envir_name") String envir_name, @RequestParam("exp_id") int exp_id, User user, Model model) throws Exception {
+    public Result<String> endExp(@PathVariable("envir_name") String envir_name, User user) throws Exception {
         if(user == null)return Result.error(CodeMsg.SESSION_ERROR);
         String result = experimentService.endExp(user.getUser_id(),envir_name);
         if ("".equals(result) || result == null)return Result.error(CodeMsg.VM_DESTROY_ERROR);
         return Result.success(result);
+    }
+
+    @ResponseBody
+    @RequestMapping("/experiment/enterExp")
+    public Result<String> enterExp(User user){
+        if(user == null)return Result.error(CodeMsg.SESSION_ERROR);
+        String firstToken = experimentService.getFirstToken(user.getUser_id());
+        if("".equals(firstToken) || firstToken == null)return Result.error(CodeMsg.VM_RUNNING_ERROR);
+        return Result.success(firstToken);
     }
 
     @RequestMapping("/experiment/comment")

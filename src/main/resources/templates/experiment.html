@@ -15,7 +15,7 @@
 <link rel="stylesheet" type="text/css" th:href="@{/styles/video-js.min.css}">
 </head>
 <body>
-
+<input type="hidden" id="firstToken" value="1">
 <div class="super_container">
 
 	<!-- Header -->
@@ -52,6 +52,7 @@
 		<!-- 实验 -->
 		<input type="hidden" id="experiment_id" th:value="${experiment.exp_id}">
 		<input type="hidden" id="user_id" th:value="${user.user_id}">
+
 	</div>
 
 	<!-- Popular -->
@@ -167,26 +168,16 @@ var timer ;
 // }
 
 	</script>
-	<audio id="mps" src="" >
-</audio>
-	
 		<div class="colockbox" id="clockbox" style="background: rgba(0, 0, 0, 0) url('images/common/colockbg.png') no-repeat scroll 0 0;">
-					< font class="clockname">实验机销毁倒计时：</font>
+					<font class="clockname">实验机销毁倒计时：</font>
 					<span class="hour">&nbsp;</span> 
 					<span class="minute">&nbsp;</span> 
 					<span class="second">&nbsp;</span> </div>
-	
-	
-					
-				
 								<!--<img th:src="@{/images/clock.gif}" style="position:absolute;left:315px;bottom:20px;"/>-->
 							</div>
 						</div>
 						<div class="exp_right_list">
-							
-								
-								
-									<div class="exp_name" title="">[[${experiment.exp_name}]]</div>
+							<div class="exp_name" title="">[[${experiment.exp_name}]]</div>
 									<div class="inerColl">
 										<i class="icon gray"><i class="icon orange" style="width:82.38%;"></i></i>
 										<span class="evaluateNum" style="margin-right:10px;">12人评价</span>
@@ -197,36 +188,24 @@ var timer ;
 										</div>
 										<span class="collect">收藏 <i><img title="加入收藏" th:src="@{/images/collection.png}" class="cursorimg"/></i></span>
 										<div class="labnameDIv"></div>
-<div class="labasiDIv">
-												
-													<span class="lablesp" title="Web安全">[[${experiment.class1}]]</span>
-												
-													<span class="lablesp" title="SQL注入">ssrf</span>
-												 
+										<div class="labasiDIv">
+											<span class="lablesp" title="Web安全">[[${experiment.class1}]]</span>
+											<span class="lablesp" title="SQL注入">ssrf</span>
 										</div>
-									</div>	
-								
+									</div>
 							<div class="affiliation ri" style="margin-left: 10px;">
 										<div class="affiliationlist">
-											
-												<p title="SQL注入进阶"><a href="cour.do?w=1&c=C172.19.104.182014090911000400001" target="_blank">SQL注入进阶</a></p>
-											 
+											<p title="SQL注入进阶"><a href="cour.do?w=1&c=C172.19.104.182014090911000400001" target="_blank">SQL注入进阶</a></p>
 										</div>
-									
-								</div>
-							
-								
-							
+							</div>
 							<div class="hr"></div>
-							
-									<div class="exp_introduce_name">实验简介：
-									</div>
-								
-									<div class="exp_introduce_list" title="伪静态：伪静态通俗点说就是假的静态页面，也就是通过各种技术手段，让动态页面的URL看上去和静态页面的一样。实验中主要讲了识别伪静态页面，学会在伪静态页面中寻找注入点。">[[${experiment.brief_intro}]]</div>
+							<div class="exp_introduce_name">实验简介：
+							</div>
+							<div class="exp_introduce_list" title="伪静态：伪静态通俗点说就是假的静态页面，也就是通过各种技术手段，让动态页面的URL看上去和静态页面的一样。实验中主要讲了识别伪静态页面，学会在伪静态页面中寻找注入点。">[[${experiment.brief_intro}]]</div>
 							<div class="hr"></div>		
 							<span class="infoSpan">实验过程如果环境存在问题，请联系工作人员！</span>
 							<input type="hidden" id="envir_name" th:value="${experiment.envir_name}">
-							<button class="exp_begin_btn" onclick="getExp()" id="createexp-button" style="display:none;border:none">
+							<button class="exp_begin_btn" onclick="createExp()" id="createexp-button" style="display:none;border:none">
 								创建实验
 							</button>
 							<button class="exp_begin_btn" onclick="enterExp()" id="addexp-button" style="display:none;border:none">
@@ -237,28 +216,16 @@ var timer ;
 							</a>
 								<div id="create-mac" class="mac" style="display:none;font-size:12px;left:120px;margin-top:8px;">
 								</div>
-									
-										<div id="end-mac" class="mac" style="display:none;margin-top: 6px;"><a href="javascript:void(0)">结束并释放实验机</a></div>
-										<div id="ending-mac" class="mac" style="display:none;"><img th:src="@{/img/loading4.gif}">正在发送请求</div>
-										<div id="creating-mac" class="mac" style="display:none;margin-top: 6px;">创建中…先预习一下实验指导书吧！</div>
-									
-								
-								<div id="queue" class="mac" style="display: none;margin-top: 21px;">
-									
-										
-										
-											<img th:src="@{/images/queue.png}">分配环境的人数过多，感谢您的耐心等待！当前排第<font style="color: red;font-size: 26px;">3</font>位
-										
-									
-								</div>
-							
-							
+							<div id="end-mac" class="mac" style="display:none;margin-top: 6px;"><a href="javascript:void(0)">结束并释放实验机</a></div>
+							<div id="ending-mac" class="mac" style="display:none;"><img th:src="@{/img/loading4.gif}">正在发送请求</div>
+							<div id="creating-mac" class="mac" style="display:none;margin-top: 6px;">创建中…先预习一下实验指导书吧！</div>
+							<div id="queue" class="mac" style="display: none;margin-top: 21px;">
+								<img th:src="@{/images/queue.png}">分配环境的人数过多，感谢您的耐心等待！当前排第<font style="color: red;font-size: 26px;">3</font>位
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-
-
 			<div class="expbelowpart">
 				<div class="main">
 					<div class="expLeftList" data-name="实验左侧列表">
@@ -269,16 +236,13 @@ var timer ;
 									<li id="evaluate" >实验评价<span></span></li>
 									<li id="question" >实验提问<span></span></li>
 								</ul>
-							
 							<div class="hr"><span id="span_hr"></span></div>
 						</div>
 						<div class="main_list" id="tab_list">
 							<div id="guidancebook_list" class="exp" data-name="实验文档">
 								<div class="guidancebook">
-
 										<!--<div class="fullscreen" data-name="全屏" title="全屏"></div>
 										<div class="unfold" data-name="展开/收起" title="展开/收起"></div>-->
-
 									<div class="guidancebookList">
 										<div class="exptaskdiv"><h3>内容背景</h3></div>
 										<div id="content" class="guidancebookdiv">
@@ -296,7 +260,6 @@ var timer ;
 										<div id="step" class="guidancebookdiv">
 											<pre></pre>
 										</div>
-
 									</div>
 								</div>
 							</div>
@@ -316,7 +279,6 @@ var timer ;
 											<p class="error-message"></p>
 										</div>
 									</div>
-
 									<div class="evaluateList">
 
 									</div>
@@ -407,16 +369,16 @@ var timer ;
 		}
 	}
 
-	function getExp(){
+	function createExp(){
 	    var envir_name = $("#envir_name").val();
 	    var url = "";
         $.ajax({
-            url: "/experiment/getExp/"+envir_name+"?exp_id="+parseInt($("#experiment_id").val()),
+            url: "/experiment/createExp/"+envir_name+"?exp_id="+parseInt($("#experiment_id").val()),
             type: "POST",
             success:function(data){
                 if(data.code == 0){
-                    url = "http://"+window.location.hostname+":"+window.location.port+"/vnc?path=?token="+data.data;
-                    window.open(url);
+                    //document.cookie = "firstToken="+data.data+";expires="+exp.toUTCString();
+                    vm_isRunning();
                 }else if(data.code==500210){
                     window.location.href="/login";
                 } else{
@@ -427,7 +389,7 @@ var timer ;
                 layer.closeAll();
             }
         });
-        vm_isRunning();
+
 	}
 	function endExp(){
         var envir_name = $("#envir_name").val();
@@ -443,40 +405,56 @@ var timer ;
 	    vm_isRunning();
 	}
 	function enterExp() {
-	    var envir_name = $("#envir_name").val();
-	    var user_id = $("#user_id").val();
-	    var hostname = window.location.hostname;
-	    var port = window.location.port;
-	    url = "http://"+ hostname + port +"/vnc?path=?token="+envir_name+user_id;
-		window.open(url)
+        var envir_name = $("#envir_name").val();
+        var firstToken = "";
+        $.ajax({
+            url : "/experiment/enterExp",
+            type : "post",
+            success:function(data){
+                if(data.code == 0){
+                    firstToken = data.data;
+                    var url = "http://"+location.host + "/vnc?path=?token="+firstToken;
+                    window.open(url);
+                }else if(data.code==500210){
+                    //window.location.href="/login";
+                } else{
+                    layer.msg(data.msg);
+                }
+            },
+            error:function(){
+                layer.closeAll();
+            }
+        });
     }
-         function vm_isRunning() {
-             $.ajax({
-                 url: "/experiment/vm_isRunning",
-                 type: "POST",
-                 success:function(data){
-                     if(data.code == 0){
-                         if(data.data == 'true'){
-                             $("#createexp-button").hide();
-                             $("#addexp-button").show();
-                             $("#endexp-button").show();
-                         }else{
-                             $("#createexp-button").show();
-                             $("#addexp-button").hide();
-                             $("#endexp-button").hide();
-                         }
-                       //  window.location.reload();
-                     }else if(data.code==500210){
-                         //window.location.href="/login";
-                     } else{
-                         layer.msg(data.msg);
-                     }
-                 },
-                 error:function(){
-                     layer.closeAll();
-                 }
-             });
-         }
+    function vm_isRunning() {
+		$.ajax({
+			url: "/experiment/vm_isRunning",
+			type: "POST",
+			success:function(data){
+				if(data.code == 0){
+					if(data.data == 'true'){
+						$("#createexp-button").hide();
+						$("#addexp-button").show();
+						$("#endexp-button").show();
+					}else{
+						$("#createexp-button").show();
+						$("#addexp-button").hide();
+						$("#endexp-button").hide();
+					}
+					//  window.location.reload();
+                    //局部刷新
+                    $(".exp_right_list").load();
+				}else if(data.code==500210){
+					//window.location.href="/login";
+				} else{
+					layer.msg(data.msg);
+				}
+			},
+			error:function(){
+				layer.closeAll();
+			}
+		});
+	}
 </script>
 <script type="text/javascript">
     var myPlayer = videojs('experiment-video');
