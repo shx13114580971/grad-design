@@ -821,7 +821,7 @@ function getRegistConsole(cId,eId,uId,vmId){
 	//先判断资源是否还存在
 	var flag = queryDeployMent(eId);
 	if(flag){
-		/*var url = LocationUtil.getContextPath() + "/pages/registerUser/ru-monitor.jsp?e="+eId+"&c="+cId+"&u="+uId+"&v="+vmId;*/
+		/*var url = LocationUtil.getContextPath() + "/pages/registerUser/ru-migrate.jsp?e="+eId+"&c="+cId+"&u="+uId+"&v="+vmId;*/
 		var url ="/queryExpStudy.do?ceid="+eId;
 		var ischrome  = window.navigator.userAgent.indexOf("Chrome") > -1 ;
 		if($.browser.mozilla || ischrome) {

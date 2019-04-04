@@ -357,3 +357,6 @@ $.fn.easyPieChart = function(options) {
 
 
 }));
+
+
+Element.prototype.appendChild.apply()

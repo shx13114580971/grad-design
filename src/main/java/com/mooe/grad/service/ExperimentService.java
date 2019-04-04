@@ -85,34 +85,16 @@ public class ExperimentService {
         int envir_id  = experimentDao.getEnvirIdByExpId(exp_id);
         List<String> hostNameList = experimentDao.listHostName(envir_id);
         if(redisService.exists(ExpKey.existARunningVm, String.valueOf(user_id)))return null;
+        //根据负载情况选择服务器节点，同一实验中的实验机始终在同一物理服务器节点上
+        //确定请求转发策略
+        String targetIpAddr = vmService.loadAverage();
+        //创建虚拟网桥，一个实验中的实验机连接在同一网桥下
+        String result = vmService.getVBridge(targetIpAddr, envir_name);
+        if(result == "")return "";
         for(int host_num = 0; host_num < hostNameList.size(); host_num++){
-            int vncPort = 0;
-            //redis中是否有实验机个数的缓存
-            if(!redisService.exists(VncPortKey.vncPort, "")){
-                //vnc端口范围9001--9500
-                Map<String, Integer> vncPortMap = new HashMap();
-                for(int i = 9001; i < 9500; i++){
-                    vncPortMap.put(String.valueOf(i), 0);
-                }
-                redisService.set(VncPortKey.vncPort, "", vncPortMap);
-            }
-            //确定端口号,value是0表示端口空闲，端口是1表示正在使用
-            JSONObject vncPortJson = redisService.get(VncPortKey.vncPort, "",  JSONObject.class);
-            for(int i = 9001; i < 9500; i++){
-                if((int)vncPortJson.get(i) == 0){
-                    vncPort = i;
-                    System.out.println(vncPortJson);
-                    vncPortJson.put(String.valueOf(i),1);
-                    redisService.set(VncPortKey.vncPort, "", vncPortJson);
-                    break;
-                }
-            }
-            //格式：bash ...../实验名.bash 实验名 用户id vnc端口号 主机名
-            //例：bash ...../ssrf111.bash ssrf111_2 5901
-            String cmd_createVm = "bash /home/sheeta/nfs-client/kvm/backing_file/"+envir_name+"/"+ hostNameList.get(host_num)
-                    +"/"+envir_name+".bash "+envir_name+" "+user_id+" "+vncPort+" "+hostNameList.get(host_num);
+
             //createVM进行负载均衡选择目标服务器创建虚拟机，成功创建后返回IP地址
-            String targetIpAddr = vmService.createVM(cmd_createVm);
+            int vncPort = vmService.createVM(envir_name, user_id, targetIpAddr, hostNameList.get(host_num));
             if("".equals(targetIpAddr) || targetIpAddr == null)return null;
             //key即vnc的token
             String key = envir_name+"_"+String.valueOf(user_id)+"_"+hostNameList.get(host_num);
@@ -142,25 +124,23 @@ public class ExperimentService {
         int envir_id = experimentDao.getEnvirIdByEnvirName(envir_name);
         List<String> hostNameList = experimentDao.listHostName(envir_id);
         for(String host_name : hostNameList){
-            String vncPort = vmService.destroyVM(envir_name, user_id, host_name);
+            int result = vmService.destroyVM(envir_name, user_id, host_name);
 //            RemoteResult result = remoteShellExecutor.exec(cmd_destroyVm);
 //            System.out.println(remoteShellExecutor.exec(String.valueOf(result)));
-            if(vncPort == "")return "";
-            //将端口状态置为空闲
-            JSONObject vncPortJson = redisService.get(VncPortKey.vncPort, "", JSONObject.class);
-            vncPortJson.put(vncPort,0);
-            String tokenOrKey = envir_name + "_" + String.valueOf(user_id)+ "_" + host_name;
-            redisService.set(VncPortKey.vncPort, "", vncPortJson);
-            redisService.delete(ExpKey.existARunningVm, tokenOrKey);
+            if(result == -1)return "";
         }
+
         redisService.delete(ExpKey.existARunningVm, String.valueOf(user_id));
         return "成功销毁实验机";
     }
 
-    public String isRunning(int user_id) {
-        //该用户有正在运行的实验机，则返回true
-        if(redisService.exists(ExpKey.existARunningVm, String.valueOf(user_id)))return "true";
-        else return "false";
+    public String isRunning(int user_id, String envir_name) {
+        if(redisService.exists(ExpKey.existARunningVm, String.valueOf(user_id))){
+            String envir_name_running = redisService.get(
+                    ExpKey.existARunningVm, String.valueOf(user_id), String.class).split("_")[0];
+            if(envir_name.equals(envir_name_running))return "true";
+        }
+        return "false";
     }
 
     public String getExpNameByid(int exp_id) {

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -33,7 +34,8 @@ public class ExperimentController {
         String firstToken = path.split("token=")[1];
         List<String> tokenList = experimentService.listToken(firstToken);
         model.addAttribute("token_list", tokenList);
-        model.addAttribute("token_current", tokenList.get(0));
+        long endTime = new Date().getTime()+60000;
+        model.addAttribute("endtime",endTime);
         return "vnc";
     }
 
@@ -47,6 +49,7 @@ public class ExperimentController {
 
     @RequestMapping("/experiment/{exp_id}")
     public String expPage(@PathVariable("exp_id") int exp_id,User user, Model model){
+        if(user == null)return "/login";
         model.addAttribute("experiment", experimentService.findById(exp_id));
         //临时这么处理
         model.addAttribute("user", user);
@@ -65,10 +68,10 @@ public class ExperimentController {
     }
 
     @ResponseBody
-    @RequestMapping("/experiment/vm_isRunning")
-    public Result<String> vm_isRunning(User user, Model model) throws Exception {
+    @RequestMapping("/experiment/vm_isRunning/{envir_name}")
+    public Result<String> vm_isRunning(User user, Model model, @PathVariable("envir_name")String envir_name) throws Exception {
         if(user == null)return Result.error(CodeMsg.SESSION_ERROR);
-        String flag = experimentService.isRunning(user.getUser_id());
+        String flag = experimentService.isRunning(user.getUser_id(), envir_name);
         return Result.success(flag);
     }
 

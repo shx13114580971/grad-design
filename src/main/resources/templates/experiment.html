@@ -379,6 +379,7 @@ var timer ;
                 if(data.code == 0){
                     //document.cookie = "firstToken="+data.data+";expires="+exp.toUTCString();
                     vm_isRunning();
+                    layer.msg("成功创建实验机！")
                 }else if(data.code==500210){
                     window.location.href="/login";
                 } else{
@@ -398,11 +399,12 @@ var timer ;
             type : "post",
             success : function(data) {
                 layer.msg(data.msg);
+                vm_isRunning();
             },
             error : function(x, s, e) {
             }
         });
-	    vm_isRunning();
+
 	}
 	function enterExp() {
         var envir_name = $("#envir_name").val();
@@ -428,7 +430,7 @@ var timer ;
     }
     function vm_isRunning() {
 		$.ajax({
-			url: "/experiment/vm_isRunning",
+			url: "/experiment/vm_isRunning/"+$("#envir_name").val(),
 			type: "POST",
 			success:function(data){
 				if(data.code == 0){

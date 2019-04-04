@@ -1,9 +1,10 @@
-package com.mooe.grad.monitor;
+package com.mooe.grad.migrate;
 
-import com.mooe.grad.util.ServerInfoUtil;
 import org.libvirt.Connect;
 import org.libvirt.LibvirtException;
+import org.springframework.stereotype.Service;
 
+@Service
 public class QemuConnection {
     // 私有构造
     public QemuConnection() {}

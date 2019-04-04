@@ -19,7 +19,7 @@ $(document).ready(function(){
 	vm_isRunning();
     listTestQuestion();
 	$(".head_img img").attr("src",$(".siLg-img img").attr("src"))
-	queryCollectionById(ecid);
+	//queryCollectionById(ecid);
 	$("#select-satisfactiondiv").sSelect();
 	$("#select-timediv").sSelect();
 	queryVideoByEcid(ecid,ceid);//获取实验是否有视频资源

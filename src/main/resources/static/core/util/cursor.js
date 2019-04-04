@@ -54,7 +54,7 @@ export default class Cursor {
             this._target.addEventListener('mousemove', this._eventHandlers.mousemove, options);
             this._target.addEventListener('mouseup', this._eventHandlers.mouseup, options);
 
-            // There is no "touchleave" so we monitor touchstart globally
+            // There is no "touchleave" so we migrate touchstart globally
             window.addEventListener('touchstart', this._eventHandlers.touchstart, options);
             this._target.addEventListener('touchmove', this._eventHandlers.touchmove, options);
             this._target.addEventListener('touchend', this._eventHandlers.touchend, options);

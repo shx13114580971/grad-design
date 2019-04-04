@@ -108,4 +108,7 @@ public interface ExperimentDao {
 
     @Select("select envir_name from environment where envir_id = #{envir_id}")
     public String getEnvirNameByEnvirId(@Param("envir_id") int envir_id);
+
+    @Select("select ser_net_top from monitor_conf where id = 1")
+    public int getSerNetTop();
 }

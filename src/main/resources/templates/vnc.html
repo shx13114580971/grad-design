@@ -100,6 +100,13 @@
             </ul>
         </div>
     </span>
+    <!--计时-->
+    <div id="CountMsg" class="HotDate">
+        <span id="t_h"></span>
+        <span id="t_m"></span>
+        <span id="t_s"></span>
+    </div>
+    <input  id = "endtime" type="hidden" th:value="${endtime}">
 </nav>
     <div id="noVNC_fallback_error" class="noVNC_center">
         <div>
@@ -342,7 +349,7 @@
     $(".virtualInfo").hover(function(){
         $(".virtualList").show();
     },function(){
-        $(". virtualList").hide();
+        $(".virtualList").hide();
     });
     $(".virtualList").find("li").die("click").live("click",function(){
         $(this).parent().find("li").removeClass("blue");
@@ -361,6 +368,73 @@
             $(this).css("cursor","not-allowed")
         }
     })
+</script>
+<!--倒计时js-->
+<!--<script>-->
+    <!--function  restTime(times) {-->
+        <!--var timer = null;-->
+        <!--timer=setInterval(function () {-->
+            <!--var h = 0;-->
+            <!--var m = 0;-->
+            <!--var s = 0;-->
+            <!--{-->
+                <!--h = Math.floor(times / 60 / 60);-->
+                <!--m = Math.floor(times / 60 % 60);-->
+                <!--s = Math.floor(times / 60 / 60 % 60);-->
+                <!--times&#45;&#45;;-->
+            <!--}-->
+            <!--if(h <= 9) h = '0'+ h;-->
+            <!--if(m <= 9) m = '0'+ m;-->
+            <!--if(s <= 9) s = '0'+ s;-->
+
+        <!--},1000);-->
+        <!--if(times <= 0){-->
+            <!--clearInterval(timer);-->
+        <!--}-->
+
+    <!--}-->
+<!--</script>-->
+<script type="text/javascript">
+
+    function getRTime() {
+        //创建实验机时需要返回一个创建时间 加上规定时间之后极为截止时间  传到这里
+        var EndTime=$("#endtime").val();
+        var NowTime = new Date();
+        var t =EndTime - NowTime.getTime();
+        var h = Math.floor(t / 1000 / 60 / 60 % 24);
+        var m = Math.floor(t / 1000 / 60 % 60);
+        var s = Math.floor(t / 1000 % 60);
+        do{
+            if(h >= 0 && h < 10)
+            {document.getElementById("t_h").innerHTML = "倒计时"+ "0"+ h + ":";}
+            else
+            {document.getElementById("t_h").innerHTML = "倒计时"+ h + ":";}
+            if(m >= 0 && m < 10)
+            {document.getElementById("t_m").innerHTML = "0"+ m + ":";}
+            else
+            {document.getElementById("t_m").innerHTML = m + ":";}
+            if(s >= 0 && s  < 10)
+            {document.getElementById("t_s").innerHTML = "0"+ s;}
+            else
+            {document.getElementById("t_s").innerHTML = s;}
+        }while (h > 0);
+        //计时结束，自动销毁虚拟机
+        if(h < 0){
+            var envir_name = $("#envir_name").val();
+            $.ajax({
+                url : "/experiment/endExp/"+envir_name+"?exp_id="+parseInt($("#experiment_id").val()),
+                type : "post",
+                success : function(data) {
+                    layer.msg(data.msg);
+                },
+                error : function(x, s, e) {
+                }
+            });
+            vm_isRunning();
+        }
+    }
+    setInterval(getRTime,1000);
+
 </script>
  </body>
 </html>
