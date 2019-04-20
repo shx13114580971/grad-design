@@ -2,6 +2,7 @@ package com.mooe.grad.redis;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class RedisService {
 	JedisPool jedisPool;
 	
 	/**
-	 * 获取当个对象
+	 * 获取单个对象
 	 * */
 	public <T> T get(KeyPrefix prefix, String key,  Class<T> clazz) {
 		 Jedis jedis = null;
@@ -61,7 +62,23 @@ public class RedisService {
 			  returnToPool(jedis);
 		 }
 	}
-	
+
+	/**
+	 * 模糊查询多个对象
+	 * */
+	public Set<String> keys(KeyPrefix prefix) {
+		Jedis jedis = null;
+		try {
+			jedis =  jedisPool.getResource();
+			//生成真正的key
+			String realKey  = prefix.getPrefix() + "*";
+			Set<String> str = jedis.keys(realKey);
+			return str;
+		}finally {
+			returnToPool(jedis);
+		}
+	}
+
 	/**
 	 * 判断key是否存在
 	 * */

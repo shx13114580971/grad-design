@@ -12,6 +12,10 @@ public class ExperimentVo {
     private String class1;
     private String class2;
     private String degree;
+    private double score;
+    private String designer;
+    private int user_count;
+    private double qualityValue;
     private String envir_name;
     private String status;
 
@@ -37,6 +41,22 @@ public class ExperimentVo {
 
     public void setBrief_info(String brief_info) {
         this.brief_info = brief_info;
+    }
+
+    public double getQualityValue() {
+        return qualityValue;
+    }
+
+    public void setQualityValue(double qualityValue) {
+        this.qualityValue = qualityValue;
+    }
+
+    public double getScore() {
+        return score;
+    }
+
+    public void setScore(double score) {
+        this.score = score;
     }
 
     public String getDate() {
@@ -69,6 +89,22 @@ public class ExperimentVo {
 
     public void setClass2(String class2) {
         this.class2 = class2;
+    }
+
+    public String getDesigner() {
+        return designer;
+    }
+
+    public void setDesigner(String designer) {
+        this.designer = designer;
+    }
+
+    public int getUser_count() {
+        return user_count;
+    }
+
+    public void setUser_count(int user_count) {
+        this.user_count = user_count;
     }
 
     public String getDegree() {

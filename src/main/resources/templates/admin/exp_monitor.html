@@ -53,23 +53,21 @@
                                         <tr>
                                             <th>用户名</th>
                                             <th>实验名</th>
-                                            <th>环境创建时间</th>
-                                            <th>已进行时间</th>
+                                            <th>环境名</th>
+                                            <th>环境结束时间</th>
 											<th>操作</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    <tr class="odd gradeX" >
-                                        <td ></td>
-                                        <td ></td>
-                                        <td ></td>
-                                        <td ></td>
-                                        <td ></td>
+                                    <tr class="odd gradeX" th:each="experiment,experimentStat:${expRunningList}">
+                                        <td th:text="${experiment.userName}"></td>
+                                        <td th:text="${experiment.expName}"></td>
+                                        <td th:text="${experiment.envirName}"></td>
+                                        <td th:text="${experiment.endTime}"></td>
                                         <td style="width:15%">
                                             <a >查看环境信息</a>
                                         </td>
-
-                                        </tr>
+                                    </tr>
                                     </tbody>
                                 </table>
                             </div>

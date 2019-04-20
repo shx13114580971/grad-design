@@ -394,8 +394,9 @@ var timer ;
 	}
 	function endExp(){
         var envir_name = $("#envir_name").val();
+        //+"?exp_id="+parseInt($("#experiment_id").val())
 	    $.ajax({
-            url : "/experiment/endExp/"+envir_name+"?exp_id="+parseInt($("#experiment_id").val()),
+            url : "/experiment/endExp/"+envir_name,
             type : "post",
             success : function(data) {
                 layer.msg(data.msg);
@@ -410,7 +411,7 @@ var timer ;
         var envir_name = $("#envir_name").val();
         var firstToken = "";
         $.ajax({
-            url : "/experiment/enterExp",
+            url : "/experiment/enterExp/"+envir_name,
             type : "post",
             success:function(data){
                 if(data.code == 0){

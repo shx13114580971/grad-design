@@ -23,12 +23,6 @@ public class ScheduleRefreshDatabase {
     @Resource(name = "jobTrigger")
     private CronTrigger cronTrigger;
 
-//    @Resource(name = "jobDetail39")
-//    private JobDetail jobDetail39;
-
-    @Resource(name = "jobTrigger39")
-    private CronTrigger cronTrigger39;
-
     @Resource(name = "scheduler")
     private Scheduler scheduler;
 

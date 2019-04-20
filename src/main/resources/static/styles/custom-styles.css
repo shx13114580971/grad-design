@@ -909,3 +909,11 @@ ul.dropdown-menu.dropdown-messages li a div {
     background-color:#e6e6e6;
     margin-top: -15px;
     margin-bottom: 25px;}
+
+.nav-tabs>li {
+    float: left;
+    margin-bottom: -1px;
+    width: 20%;
+    text-align: center;
+    background-color: #c6d0d8b8;
+}

@@ -2,6 +2,8 @@ package com.mooe.grad.controller;
 
 import com.mooe.grad.domain.Experiment;
 import com.mooe.grad.domain.User;
+import com.mooe.grad.redis.ExpKey;
+import com.mooe.grad.redis.RedisService;
 import com.mooe.grad.result.CodeMsg;
 import com.mooe.grad.result.Result;
 import com.mooe.grad.service.ExperimentService;
@@ -28,13 +30,23 @@ public class ExperimentController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private RedisService redisService;
+
     @RequestMapping("/vnc")
     public String vnc_html(User user,Model model,@RequestParam("path") String path ){
         if(user == null)return "/login";
         String firstToken = path.split("token=")[1];
+        long endTime = 0;
         List<String> tokenList = experimentService.listToken(firstToken);
         model.addAttribute("token_list", tokenList);
-        long endTime = new Date().getTime()+60000;
+        String key = firstToken.split("_")[0] + "_" + firstToken.split("_")[1];
+        if(!redisService.exists(ExpKey.expEndTime, key)){
+            endTime = new Date().getTime()+120000;
+            redisService.set(ExpKey.expEndTime, key, endTime);
+        }else {
+            endTime = redisService.get(ExpKey.expEndTime, key, Long.class);
+        }
         model.addAttribute("endtime",endTime);
         return "vnc";
     }
@@ -85,10 +97,10 @@ public class ExperimentController {
     }
 
     @ResponseBody
-    @RequestMapping("/experiment/enterExp")
-    public Result<String> enterExp(User user){
+    @RequestMapping("/experiment/enterExp/{envir_name}")
+    public Result<String> enterExp(@PathVariable("envir_name")String envir_name, User user){
         if(user == null)return Result.error(CodeMsg.SESSION_ERROR);
-        String firstToken = experimentService.getFirstToken(user.getUser_id());
+        String firstToken = experimentService.getFirstToken(user.getUser_id(), envir_name);
         if("".equals(firstToken) || firstToken == null)return Result.error(CodeMsg.VM_RUNNING_ERROR);
         return Result.success(firstToken);
     }

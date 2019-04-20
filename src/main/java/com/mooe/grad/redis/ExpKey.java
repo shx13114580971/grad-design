@@ -7,6 +7,8 @@ public class ExpKey extends BasePrefix {
     public ExpKey(int expireSeconds,String prefix){
         super(expireSeconds, prefix);
     }
+
     public static ExpKey expVmNum = new ExpKey("exp");
-    public static ExpKey existARunningVm = new ExpKey("user_exp_");
+    public static ExpKey existARunningVm = new ExpKey("RunningExp-");
+    public static ExpKey expEndTime = new ExpKey("endTime-");
 }

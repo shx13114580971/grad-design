@@ -901,12 +901,12 @@ select:active {
 
 .top-navbar{
   position: fixed;
-  width: 100%;
+  width: 41%;
   height: 60px;
   z-index: 300;
-  -webkit-box-shadow: 0 3px 3px rgba(0, 0, 0, 0.05);
-  -moz-box-shadow: 0 3px 3px rgba(0, 0, 0, 0.05);
-  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.05);
+  -webkit-box-shadow: 0 5px 6px rgba(0, 0, 0, 0.50);
+  -moz-box-shadow: 0 5px 6px rgba(0, 0, 0, 0.50);
+  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.50);
   margin: 0px;
   background: rgb(245, 250, 255);
   border-bottom: none;
@@ -915,7 +915,7 @@ select:active {
   float: right;
   position: relative;
   cursor: pointer;
-  margin-right: 300px;
+  margin-right: 100px;
   line-height: 3;
   height: 100%;
   color: gray;
@@ -964,4 +964,14 @@ select:active {
 img {
   margin-right: 5px;
   vertical-align: sub;
+}
+
+.container-fluid{
+  padding-top: 5%;
+  padding-left: 1%;
+  background-color: rgb(238, 249, 238);
+  position: fixed;
+  width:40%;
+  height: 100%;
+  z-index: 200;
 }

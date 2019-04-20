@@ -108,6 +108,26 @@
     </div>
     <input  id = "endtime" type="hidden" th:value="${endtime}">
 </nav>
+
+<!-- 左侧实验步骤 -->
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span2">
+            <h2>
+                标题
+            </h2>
+            <p>
+                本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
+            </p>
+            <p>
+                <a class="btn" href="#">查看更多 »</a>
+            </p>
+        </div>
+    </div>
+</div>
+<!-- 左侧实验步骤 -->
+
+
     <div id="noVNC_fallback_error" class="noVNC_center">
         <div>
             <div>noVNC encountered an error:</div>
@@ -345,6 +365,7 @@
             mozactionhint="Enter" tabindex="-1"></textarea>
     </div>
 <script th:src="@{/js/jquery-1.7.2.min.js}"></script>
+<script th:src="@{/layer/layer.js}"></script>
 <script>
     $(".virtualInfo").hover(function(){
         $(".virtualList").show();
@@ -420,17 +441,19 @@
         }while (h > 0);
         //计时结束，自动销毁虚拟机
         if(h < 0){
-            var envir_name = $("#envir_name").val();
+            var token = $("#token_list").val().split(",")[0].split("[")[1];
+            var envir_name = token.split("_")[0];
             $.ajax({
-                url : "/experiment/endExp/"+envir_name+"?exp_id="+parseInt($("#experiment_id").val()),
+                url : "/experiment/endExp/"+envir_name,
                 type : "post",
                 success : function(data) {
                     layer.msg(data.msg);
+                    window.close();
                 },
                 error : function(x, s, e) {
                 }
             });
-            vm_isRunning();
+            //vm_isRunning();
         }
     }
     setInterval(getRTime,1000);

@@ -1,7 +1,7 @@
 package com.mooe.grad.migrate;
 
-import com.mooe.grad.vo.HostMigrateInVo;
-import com.mooe.grad.vo.VmMigrateVo;
+import com.mooe.grad.domain.HostInfo;
+import com.mooe.grad.domain.VmMigrate;
 
 import java.util.*;
 
@@ -26,19 +26,19 @@ public class Particle {
 	private  double c1;
 	private  double c2;
 	private static Random rnd;
-	private Map<VmMigrateVo, HostMigrateInVo> vmTohost;// 每个粒子每次迭代产生的放置方案
+	private Map<VmMigrate, HostInfo> vmTohost;// 每个粒子每次迭代产生的放置方案
 
 	int size;// 单个虚拟机可以放置的主机数量
-	private List<HostMigrateInVo> fitList;//每台虚拟机的候选主机列表
-	private static List<HostMigrateInVo> hostlist;
-	private List<VmMigrateVo> vmlist;
+	private List<HostInfo> fitList;//每台虚拟机的候选主机列表
+	private static List<HostInfo> hostlist;
+	private List<VmMigrate> vmlist;
 	public int count;// 最差适应度值次数
 	private double utilAvg[];// 单个物理机平均利用率向量
 	public static int runtimes;
 	private int cnt;
 
 	@SuppressWarnings("static-access")
-	public Particle(List<VmMigrateVo> vmList, List<HostMigrateInVo> hostList) {
+	public Particle(List<VmMigrate> vmList, List<HostInfo> hostList) {
 		this.vmlist = vmList;
 		this.hostlist = hostList;
 		this.dims = vmList.size();
@@ -49,19 +49,19 @@ public class Particle {
 		gbest = new int[dims];
 		fitness = 1;
 		pbest_fitness = Double.MAX_VALUE;
-		vmTohost = new HashMap<VmMigrateVo,HostMigrateInVo>();
+		vmTohost = new HashMap<VmMigrate,HostInfo>();
 		utilAvg = new double[hostList.size()];
 	}
 
 	public void init() {
 		fitList = hostlist;
 		rnd = new Random();
-		for (VmMigrateVo vm : vmlist) {
+		for (VmMigrate vm : vmlist) {
 			updateVmList(vm);
 			int size = fitList.size();
 			if (size != 0) {
 				int idx = rnd.nextInt(size);
-				HostMigrateInVo host = fitList.get(idx);
+				HostInfo host = fitList.get(idx);
 				//位置实际上就是根据应该放到哪台主机上
 				pos[vm.getId()] = idx;
 				// 对于每个粒子，在计算位置和速度过程中，只把vm加入host的属性列表中，而不更新主机资源
@@ -109,7 +109,7 @@ public class Particle {
 	 */
 	private void evaluate() {
 		// 在对物理机进行均衡度计算时 才更新每个物理机的资源状态
-		for (HostMigrateInVo host : hostlist) {
+		for (HostInfo host : hostlist) {
 			// 根据主机中vmlist编号更新主机资源（计算剩余资源）
 			VMPlacement.updateHost(host);
 			//这里用平均负载代替了欧式距离
@@ -121,7 +121,7 @@ public class Particle {
 		//与之前的适应度做对比，更好的话就将当前位置标记为局部最优位置
 		//适应度越小越好
 		if (fitness < pbest_fitness) {
-			for (VmMigrateVo vm : vmlist) {
+			for (VmMigrate vm : vmlist) {
 				pbest[vm.getId()] = pos[vm.getId()];
 			}
 			pbest_fitness = fitness;
@@ -133,12 +133,10 @@ public class Particle {
 	/**
 	 * 还原所有物理机至初始状态
 	 */
-	private void resetHost() {
-		for (HostMigrateInVo host : hostlist) {
+	private void  resetHost() {
+		for (HostInfo host : hostlist) {
 			host.getVmList().clear();
-			host.setAvailableBw(host.getBw());
-			host.setAvailableRam(host.getRam());
-			host.setAvailblePes(host.getPesNum());
+			host.resetAvailableResource();
 		}
 
 	}
@@ -157,7 +155,7 @@ public class Particle {
 		c2 = 2.5 + (0.5 - 2.5) / (Math.sqrt(2 * Math.PI) * δ)
 				* Math.exp(-(cnt / runtimes) * (cnt / runtimes) / (2 * δ * δ));
 //		k = (0.1 - 1) * (runtimes - cnt) / runtimes + 1;
-		for (VmMigrateVo vm : vmlist) {
+		for (VmMigrate vm : vmlist) {
 			updateVmList(vm);
 			size = fitList.size();
 			v[vm.getId()] = (int) (w * v[vm.getId()] + c1 * rnd.nextDouble()
@@ -185,9 +183,9 @@ public class Particle {
 	/**
 	 * 更新每个虚拟机可以匹配的主机列表，每次迭代都要退回初始状态
 	 */
-	private void updateVmList(VmMigrateVo vm) {
-		fitList = new ArrayList<HostMigrateInVo>();
-		for (HostMigrateInVo host : hostlist) {
+	private void updateVmList(VmMigrate vm) {
+		fitList = new ArrayList<HostInfo>();
+		for (HostInfo host : hostlist) {
 			//将满足虚拟机资源使用需求的主机筛选出来
 			if (VMPlacement.selFitHost(vm, host)) {
 				fitList.add(host);// 将符合条件的物理主机放入数组中
@@ -229,11 +227,11 @@ public class Particle {
 		this.pos = pos;
 	}
 
-	public Map<VmMigrateVo, HostMigrateInVo> getVmTohost() {
+	public Map<VmMigrate, HostInfo> getVmTohost() {
 		return vmTohost;
 	}
 
-	public void setVmTohost(Map<VmMigrateVo, HostMigrateInVo> vmTohost) {
+	public void setVmTohost(Map<VmMigrate, HostInfo> vmTohost) {
 		this.vmTohost = vmTohost;
 	}
 }

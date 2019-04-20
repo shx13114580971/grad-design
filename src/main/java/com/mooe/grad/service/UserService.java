@@ -1,5 +1,6 @@
 package com.mooe.grad.service;
 
+import com.mooe.grad.dao.ExperimentDao;
 import com.mooe.grad.dao.UserDao;
 import com.mooe.grad.domain.DeliverInfo;
 import com.mooe.grad.domain.Experiment;
@@ -31,6 +32,9 @@ public class UserService implements Serializable{
 
     @Autowired
     RedisService redisService;
+
+    @Autowired
+    private ExperimentDao experimentDao;
 
     @Transactional
     public String login(HttpServletResponse response, LoginVo loginVo){
@@ -115,8 +119,8 @@ public class UserService implements Serializable{
             userExpVo.setExp_id(exp_id);
             userExpVo.setCreate_time(createTime);
             userDao.insertExp(userExpVo);
+            experimentDao.updateExpCount(exp_id);
         }
-
     }
 
     public List<ExperimentVo> listExp(int user_id) {

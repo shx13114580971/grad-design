@@ -125,7 +125,7 @@ export default class RFB extends EventTargetMixin {
         // Create DOM elements
         this._screen = document.createElement('div');
         this._screen.style.display = 'flex';
-        this._screen.style.width = '100%';
+        this._screen.style.width = '145%';
         this._screen.style.height = '100%';
         this._screen.style.overflow = 'auto';
         this._screen.style.backgroundColor = 'rgb(40, 40, 40)';
@@ -241,7 +241,7 @@ export default class RFB extends EventTargetMixin {
 
         this._viewOnly = false;
         this._clipViewport = false;
-        this._scaleViewport = false;
+        this._scaleViewport = true;
         this._resizeSession = false;
     }
 
@@ -497,7 +497,7 @@ export default class RFB extends EventTargetMixin {
     }
 
     _updateScale() {
-        if (!this._scaleViewport) {
+        if (this._scaleViewport) {
             this._display.scale = 1.0;
         } else {
             const size = this._screenSize();

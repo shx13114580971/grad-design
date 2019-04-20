@@ -111,4 +111,25 @@ public interface ExperimentDao {
 
     @Select("select ser_net_top from monitor_conf where id = 1")
     public int getSerNetTop();
+
+    @Select("select * from host_info where ipaddr = #{ipaddr}")
+    public HostInfo getHostInfo(@Param("ipaddr")String ipaddr);
+
+    @Select("select exp_load_top from monitor_conf where id = 1")
+    public double getExpLoadTop();
+
+    @Update("update experiment_info set user_count = user_count+1 where exp_id = #{exp_id}")
+    public int updateExpCount(@Param("exp_id") int exp_id);
+
+    @Select("select score from experiment_comment where exp_id = #{expfctf_id}")
+    public List<Integer> listScoreOfExp(@Param("expfctf_id") int expfctf_id);
+
+    @Update("update experiment_info set score = #{scoreAver} where exp_id = #{exp_id}")
+    public void updateExpScore(@Param("scoreAver") double scoreAver, @Param("exp_id") int exp_id);
+
+    @Select("select username from user where user_id = #{user_id}")
+    public String getUserNameById(@Param("user_id") int userId);
+
+    @Select("select exp_name from experiment where envir_name = #{envir_name}")
+    public String getExpNameByEnvirName(@Param("envir_name") String envirName);
 }

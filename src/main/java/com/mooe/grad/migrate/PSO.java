@@ -1,7 +1,7 @@
 package com.mooe.grad.migrate;
 
-import com.mooe.grad.vo.HostMigrateInVo;
-import com.mooe.grad.vo.VmMigrateVo;
+import com.mooe.grad.domain.HostInfo;
+import com.mooe.grad.domain.VmMigrate;
 
 import java.util.List;
 
@@ -20,12 +20,12 @@ public class PSO {
 	private static int dim;// 维度
 	private static int Imax;// 最差纪录次数阈值
 	private int runtime; //迭代次数
-	private List<VmMigrateVo> vmlist;
-	private List<HostMigrateInVo> hostlist;
+	private List<VmMigrate> vmlist;
+	private List<HostInfo> hostlist;
 	private Solution solution;
 
 	// private static int ms;//主机的数量，这里是为了限制迭代过程中的位置
-	public PSO(int num, int runtimes, List<VmMigrateVo> vmList, List<HostMigrateInVo> hostList) {
+	public PSO(int num, int runtimes, List<VmMigrate> vmList, List<HostInfo> hostList) {
 		this.vmlist = vmList;
 		dim = vmList.size();
 		this.hostlist = hostList;
@@ -77,7 +77,7 @@ public class PSO {
 				if (global_best > pars[j].getFitness()) {
 					global_best = pars[j].getFitness();
 					tempbest = pars[j];
-					solution=new Solution(global_best,pars[j].getVmTohost());
+					solution = new Solution(global_best, pars[j].getVmTohost());
 					System.out.println(i + " -> " + global_best + "    ");
 					//System.out.println();
 				}
@@ -89,7 +89,7 @@ public class PSO {
 
 			// 发现更好的解，实际上就是给全局最优解赋值的过程
 			if (tempbest != null) {
-				for (VmMigrateVo vm : vmlist) {
+				for (VmMigrate vm : vmlist) {
 					Particle.gbest[vm.getId()] = tempbest.getPos()[vm.getId()];
 				}
 			}
@@ -98,7 +98,7 @@ public class PSO {
 			 *  计算粒子群位置的平均值存在在附加的粒子中；
 			 *  用于纠错，也就是当一个粒子的适应度值总是最差的时候，就将粒子群位置的平均值赋给这个最差粒子
 			*/
-			for (VmMigrateVo vm : vmlist) {
+			for (VmMigrate vm : vmlist) {
 				for (int j = 0; j < pcount; j++) {
 					pars[pcount].getPos()[vm.getId()] += pars[j].getPos()[vm.getId()];
 				}
@@ -110,7 +110,7 @@ public class PSO {
 			for (int j = 0; j < pcount; j++) {
 				if (pars[j].count == Imax) {// 如果粒子最差纪录次数达到预设的次数，则对粒子进行进化
 					// pars[i].updateParticle(pars[pcount]);
-					for (VmMigrateVo vm : vmlist) {
+					for (VmMigrate vm : vmlist) {
 						pars[j].getPos()[vm.getId()] = pars[pcount].getPos()[vm.getId()];
 					}
 				}

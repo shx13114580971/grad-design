@@ -1,14 +1,12 @@
 package com.mooe.grad.admin;
 
 
-import com.mooe.grad.domain.DeliverInfo;
-import com.mooe.grad.domain.Environment;
-import com.mooe.grad.domain.Experiment;
-import com.mooe.grad.domain.VmHost;
+import com.mooe.grad.domain.*;
 import com.mooe.grad.result.Result;
 import com.mooe.grad.service.ExperimentService;
 import com.mooe.grad.util.FileUtil;
 import com.mooe.grad.vo.ExperimentVo;
+import com.mooe.grad.vo.RunningExpVo;
 import com.mooe.grad.vo.VmHostVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -174,15 +173,32 @@ public class AdminExperimentController {
     }
 
     @RequestMapping("/exp_monitor")
-    public String expMonitor(){
+    public String expMonitor(Model model){
+        List<RunningExpVo> expRunningList = experimentSeivice.listRunningExp();
+        model.addAttribute("expRunningList",expRunningList);
         return "admin/exp_monitor";
     }
 
 
     @RequestMapping("/exp_order")
-    public String expOrder(){
+    public String expOrder(Model model) throws ParseException {
+        List<ExperimentVo> experimentsOrderList = experimentSeivice.expOrder();
+        model.addAttribute("experimentsOrderList",experimentsOrderList);
         return "admin/exp_order";
     }
 
+
+    /**
+     * 雅群
+     * */
+    @ResponseBody
+    @RequestMapping("/do_deployAdd")
+    public Result<String> dodeployAdd(InstanceDeploy instancedeploy){
+        //实验名--主机名--与实验同名环境模板
+        String deployPath = experimentSeivice.getEnvirPath((experimentSeivice.getVmHost(instancedeploy.getHost_id())).getEnvir_id()) + "\\" + ((experimentSeivice.getVmHost(instancedeploy.getHost_id())).getHost_name());
+        File deployfilePath = new File(deployPath);
+        experimentSeivice.addInstanceDeploy(instancedeploy);
+        return Result.success("");
+    }
 
 }
